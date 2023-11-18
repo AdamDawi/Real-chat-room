@@ -1,5 +1,6 @@
 package com.example.distancecoupleapp.presentation.login
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 
+@SuppressLint("SuspiciousIndentation")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(viewModel: LoginViewModel,
@@ -72,9 +74,9 @@ fun LoginScreen(viewModel: LoginViewModel,
 
                 if(state.isRegistering){
 
-                    OutlinedTextField(value = "",
+                    OutlinedTextField(value = state.name,
                         onValueChange ={
-
+                            viewModel.changeNameState(it)
                         },
                         label = {
                             Text("Nick")

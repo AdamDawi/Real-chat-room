@@ -9,11 +9,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun MainPhotosScreen() {
+fun MainPhotosScreen(viewModel: MainPhotosViewModel) {
+    val state = viewModel.mainPhotosState
+    viewModel.getUserName()
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "MainScreen")
+        Text(text = state.name)
     }
 }

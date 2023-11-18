@@ -8,12 +8,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.google.firebase.Firebase
+import com.example.distancecoupleapp.common.Constants
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
+import com.google.firebase.auth.userProfileChangeRequest
 
 class LoginViewModel: ViewModel(){
-    private var auth: FirebaseAuth = Firebase.auth
+    private var auth: FirebaseAuth = Constants.auth
     var loginState by mutableStateOf(LoginState())
     private set
 
@@ -35,19 +35,29 @@ class LoginViewModel: ViewModel(){
         loginState = loginState.copy(password = newPassword)
     }
 
+    fun changeNameState(newName: String){
+        loginState = loginState.copy(name = newName)
+    }
+
     fun changeIsRegisteringState(isRegistering: Boolean){
         loginState = loginState.copy(isRegistering = isRegistering)
     }
 
     fun createAccount(context: Context){
-        if(loginState.email.isNotEmpty() && loginState.password.isNotEmpty()) {
+        if(loginState.email.isNotEmpty()
+            && loginState.password.isNotEmpty()
+            && (!loginState.isRegistering
+            || (loginState.isRegistering
+            && loginState.name.isNotEmpty()))
+        ) {
             auth.createUserWithEmailAndPassword(loginState.email, loginState.password)
                 .addOnCompleteListener{ task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI
                         Log.d(TAG, "createUserWithEmail:success")
+                        updateUserName(loginState.name)
                         Toast.makeText(context, "Account created", Toast.LENGTH_SHORT).show()
-                        loginState = loginState.copy(isLogged = true, email = "", password = "")
+                        loginState = loginState.copy(isLogged = true, email = "", password = "", name = "")
                     } else {
                         // If sign in fails, display a message to the user.
                         if(!loginState.email.contains('@') || !loginState.email.contains('.'))
@@ -63,13 +73,14 @@ class LoginViewModel: ViewModel(){
     }
 
     fun signIn(context: Context, navigateToMainPhotosScreen: () -> Unit){
-        if(loginState.email.isNotEmpty() && loginState.password.isNotEmpty()) {
+        if(loginState.email.isNotEmpty() && loginState.password.isNotEmpty() ){
             auth.signInWithEmailAndPassword(loginState.email, loginState.password)
                 .addOnCompleteListener{ task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI
                         Log.d(TAG, "signInWithEmail:success")
                         navigateToMainPhotosScreen()
+                        loginState = loginState.copy(isLogged = true, email = "", password = "", name = "")
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.exception)
@@ -78,6 +89,22 @@ class LoginViewModel: ViewModel(){
             }
         }
         else Toast.makeText(context, "Field is empty", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun updateUserName(name: String){
+        if(auth.currentUser!=null)
+        {
+            val profileUpdates = userProfileChangeRequest {
+                displayName = name
+            }
+            auth.currentUser!!.updateProfile(profileUpdates)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "User profile updated.")
+                    }
+                }
+        }else Log.e("Update profile", "Current user is null. Can't have updated name.")
+
     }
 
 

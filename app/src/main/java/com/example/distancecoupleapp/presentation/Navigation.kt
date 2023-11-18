@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.distancecoupleapp.presentation.login.LoginScreen
 import com.example.distancecoupleapp.presentation.login.LoginViewModel
 import com.example.distancecoupleapp.presentation.main_photos.MainPhotosScreen
+import com.example.distancecoupleapp.presentation.main_photos.MainPhotosViewModel
 
 @Composable
 fun Navigation(
@@ -16,6 +17,7 @@ fun Navigation(
 ) {
     val navController = rememberNavController()
     val viewModel = viewModel<LoginViewModel>()
+    val mainPhotosViewModel: MainPhotosViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = Screen.LoginScreen.route ){
 
@@ -24,7 +26,7 @@ fun Navigation(
         }
 
         composable(route = Screen.MainPhotosScreen.route){
-            MainPhotosScreen()
+            MainPhotosScreen(mainPhotosViewModel)
         }
     }
 
