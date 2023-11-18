@@ -1,4 +1,4 @@
-package com.example.distancecoupleapp.ui.theme
+package com.example.distancecoupleapp.presentation.theme
 
 import android.app.Activity
 import android.os.Build

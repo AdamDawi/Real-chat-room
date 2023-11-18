@@ -1,4 +1,4 @@
-package com.example.distancecoupleapp.ui.theme
+package com.example.distancecoupleapp.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
