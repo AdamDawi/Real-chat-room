@@ -35,6 +35,10 @@ class LoginViewModel: ViewModel(){
         loginState = loginState.copy(password = newPassword)
     }
 
+    fun changeIsRegisteringState(isRegistering: Boolean){
+        loginState = loginState.copy(isRegistering = isRegistering)
+    }
+
     fun createAccount(context: Context){
         if(loginState.email.isNotEmpty() && loginState.password.isNotEmpty()) {
             auth.createUserWithEmailAndPassword(loginState.email, loginState.password)
@@ -43,7 +47,7 @@ class LoginViewModel: ViewModel(){
                         // Sign in success, update UI
                         Log.d(TAG, "createUserWithEmail:success")
                         Toast.makeText(context, "Account created", Toast.LENGTH_SHORT).show()
-                        loginState = loginState.copy(isLogged = true)
+                        loginState = loginState.copy(isLogged = true, email = "", password = "")
                     } else {
                         // If sign in fails, display a message to the user.
                         if(!loginState.email.contains('@') || !loginState.email.contains('.'))
@@ -55,7 +59,25 @@ class LoginViewModel: ViewModel(){
                     }
                 }
         }
+        else Toast.makeText(context, "Field is empty", Toast.LENGTH_SHORT).show()
+    }
 
+    fun signIn(context: Context, navigateToMainPhotosScreen: () -> Unit){
+        if(loginState.email.isNotEmpty() && loginState.password.isNotEmpty()) {
+            auth.signInWithEmailAndPassword(loginState.email, loginState.password)
+                .addOnCompleteListener{ task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI
+                        Log.d(TAG, "signInWithEmail:success")
+                        navigateToMainPhotosScreen()
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithEmail:failure", task.exception)
+                        Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                    }
+            }
+        }
+        else Toast.makeText(context, "Field is empty", Toast.LENGTH_SHORT).show()
     }
 
 
