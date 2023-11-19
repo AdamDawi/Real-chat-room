@@ -16,7 +16,7 @@ fun Navigation(
     context: Context
 ) {
     val navController = rememberNavController()
-    val viewModel = viewModel<LoginViewModel>()
+    val viewModel: LoginViewModel = viewModel()
     val mainPhotosViewModel: MainPhotosViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = Screen.LoginScreen.route ){
@@ -26,7 +26,7 @@ fun Navigation(
         }
 
         composable(route = Screen.MainPhotosScreen.route){
-            MainPhotosScreen(mainPhotosViewModel)
+            MainPhotosScreen(mainPhotosViewModel, navigateToLoginScreen = {navController.popBackStack()})
         }
     }
 

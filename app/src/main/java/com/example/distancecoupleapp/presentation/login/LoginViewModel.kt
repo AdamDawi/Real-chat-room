@@ -8,12 +8,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.distancecoupleapp.common.Constants
+import com.example.distancecoupleapp.common.FirebaseUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.userProfileChangeRequest
 
 class LoginViewModel: ViewModel(){
-    private var auth: FirebaseAuth = Constants.auth
+    private var auth: FirebaseAuth = FirebaseUtil.getFirebaseAuth()
     var loginState by mutableStateOf(LoginState())
     private set
 
@@ -23,7 +23,6 @@ class LoginViewModel: ViewModel(){
 
     private fun checkIfLogged(){
         if (auth.currentUser != null) {
-
             loginState = loginState.copy(isLogged = true)
         }
     }
@@ -41,6 +40,10 @@ class LoginViewModel: ViewModel(){
 
     fun changeIsRegisteringState(isRegistering: Boolean){
         loginState = loginState.copy(isRegistering = isRegistering)
+    }
+
+    fun changeIsLoggedState(isLogged: Boolean){
+        loginState = loginState.copy(isLogged = isLogged)
     }
 
     fun createAccount(context: Context){
@@ -64,22 +67,25 @@ class LoginViewModel: ViewModel(){
                             Toast.makeText(context, "The email address is badly formatted", Toast.LENGTH_SHORT).show()
                         else if(loginState.password.length<6)
                             Toast.makeText(context, "Password should be at least 6 characters", Toast.LENGTH_SHORT).show()
-                        else Toast.makeText(context, "Authentication failed", Toast.LENGTH_SHORT).show()
-                        Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                        else {
+                            Toast.makeText(context, "Authentication failed", Toast.LENGTH_SHORT)
+                                .show()
+                            Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                        }
                     }
                 }
         }
         else Toast.makeText(context, "Field is empty", Toast.LENGTH_SHORT).show()
     }
 
-    fun signIn(context: Context, navigateToMainPhotosScreen: () -> Unit){
+    fun signIn(context: Context){
         if(loginState.email.isNotEmpty() && loginState.password.isNotEmpty() ){
             auth.signInWithEmailAndPassword(loginState.email, loginState.password)
                 .addOnCompleteListener{ task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI
                         Log.d(TAG, "signInWithEmail:success")
-                        navigateToMainPhotosScreen()
+                        //changing login state because we need to navigate to next screen and we want to clear text fields
                         loginState = loginState.copy(isLogged = true, email = "", password = "", name = "")
                     } else {
                         // If sign in fails, display a message to the user.
@@ -104,8 +110,5 @@ class LoginViewModel: ViewModel(){
                     }
                 }
         }else Log.e("Update profile", "Current user is null. Can't have updated name.")
-
     }
-
-
 }

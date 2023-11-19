@@ -33,8 +33,15 @@ fun LoginScreen(viewModel: LoginViewModel,
                 context: Context,
                 navigateToMainPhotosScreen: () -> Unit
 ) {
-
     val state = viewModel.loginState
+
+    if(state.isLogged)
+    {
+        //anytime user is logged navigating to main photos screen
+        navigateToMainPhotosScreen()
+        //prevents you from navigating to the main photos screen again
+        viewModel.changeIsLoggedState(false)
+    }
 
         Column(
             modifier = Modifier
@@ -111,7 +118,7 @@ fun LoginScreen(viewModel: LoginViewModel,
                     Button(
                         modifier = Modifier.padding(top = 8.dp),
                         onClick = {
-                        viewModel.signIn(context) { navigateToMainPhotosScreen() } //navigate to next screen if sign in is success
+                        viewModel.signIn(context) //navigate to next screen if sign in is success
 
                     }) {
                         Text("Log in")
