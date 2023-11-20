@@ -1,4 +1,4 @@
-package com.example.distancecoupleapp.presentation.main_photos
+package com.example.distancecoupleapp.presentation.search_user
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -29,15 +30,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.distancecoupleapp.presentation.search_user.components.UserItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainPhotosScreen(
-    viewModel: MainPhotosViewModel,
-    navigateToLoginScreen: () -> Unit
+fun SearchUserScreen(
+    viewModel: SearchUserViewModel,
+    navigateToLoginScreen: () -> Unit,
+    navigateToMainBoardScreen: NavController
 ) {
-    val state = viewModel.mainPhotosState
-    viewModel.getUserName()
+    val state = viewModel.searchUserState
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -56,54 +59,22 @@ fun MainPhotosScreen(
         ) {
             Text(text = "Your nick: ${state.name}")
             Spacer(modifier = Modifier.height(20.dp))
-            OutlinedTextField(value = state.secondUserEmail,
-                onValueChange = { viewModel.changeSecondUserEmailState(it)},
+            OutlinedTextField(value = state.searchUserField,
+                onValueChange = { viewModel.changeSearchUserFieldState(it)},
                 modifier = Modifier
                     .onFocusChanged { viewModel.getUsersFromDatabase() }
 
             )
 
-//            Button(onClick = { viewModel.addPhoto("dd", "Vacation")}) {
-//                Text(text = "Add Photo")
-//            }
-//            Button(onClick = { viewModel.addComment("-NjgoJnoWgwHSkyN0V9a", "like it")}) {
-//                Text(text = "Add Comment")
-//            }
-//            Button(onClick = { viewModel.getUsersFromDatabase()}) {
-//                Text(text = "Get users")
-//            }
-            
             LazyColumn(modifier = Modifier
                 .fillMaxHeight()
                 .weight(10f)) {
                 items(state.userList.size){
-                    Spacer(modifier = Modifier.height(10.dp))
-                        Box(modifier = Modifier
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(
-                                if (state.selectedUser == it) Color.Green
-                                else Color.DarkGray
-                            )
-                            .clickable {
-                                viewModel.changeSelectedUserState(it)
-                            }
-                            .padding(10.dp)
-                        ) {
-                            Row(modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(10.dp)){
-                            Icon(Icons.Default.AccountCircle, contentDescription = null)
-                            Spacer(modifier = Modifier.width(20.dp))
-                            Text(text = state.userList[it].email)
-                            Spacer(modifier = Modifier.width(2.dp))
-                            Text(text = "(${state.userList[it].username})")
-                            }
-                        }
-
+                    UserItem(viewModel = viewModel, state = state, it)
                 }
             }
 
-            Button(onClick = { viewModel.connectWithUser()},
+            Button(onClick = { viewModel.connectWithUser(navigateToMainBoardScreen)},
                 modifier = Modifier.weight(1f)) {
                 Text(text = "Connect with user")
             }
