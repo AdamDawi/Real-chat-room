@@ -16,17 +16,15 @@ fun Navigation(
     context: Context
 ) {
     val navController = rememberNavController()
-    val viewModel: LoginViewModel = viewModel()
-    val mainPhotosViewModel: MainPhotosViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = Screen.LoginScreen.route ){
 
         composable(route = Screen.LoginScreen.route){
-            LoginScreen(viewModel = viewModel, context, navigateToMainPhotosScreen = {navController.navigate(Screen.MainPhotosScreen.route)})
+            LoginScreen(viewModel(), context, navigateToMainPhotosScreen = {navController.navigate(Screen.MainPhotosScreen.route)})
         }
 
         composable(route = Screen.MainPhotosScreen.route){
-            MainPhotosScreen(mainPhotosViewModel, navigateToLoginScreen = {navController.popBackStack()})
+            MainPhotosScreen(viewModel(), navigateToLoginScreen = {navController.popBackStack()})
         }
     }
 

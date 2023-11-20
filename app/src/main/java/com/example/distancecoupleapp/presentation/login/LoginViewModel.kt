@@ -8,12 +8,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.distancecoupleapp.common.FirebaseUtil
+import com.example.distancecoupleapp.data.FirebaseManager
+import com.example.distancecoupleapp.data.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.userProfileChangeRequest
+import com.google.firebase.database.DatabaseReference
 
 class LoginViewModel: ViewModel(){
-    private var auth: FirebaseAuth = FirebaseUtil.getFirebaseAuth()
+    private var auth: FirebaseAuth = FirebaseManager().getFirebaseAuth()
+    private val database: DatabaseReference = FirebaseManager().getFirebaseDatabaseReference()
     var loginState by mutableStateOf(LoginState())
     private set
 
@@ -59,6 +62,7 @@ class LoginViewModel: ViewModel(){
                         // Sign in success, update UI
                         Log.d(TAG, "createUserWithEmail:success")
                         updateUserName(loginState.name)
+                        addUserToDatabase(loginState.name)
                         Toast.makeText(context, "Account created", Toast.LENGTH_SHORT).show()
                         loginState = loginState.copy(isLogged = true, email = "", password = "", name = "")
                     } else {
@@ -110,5 +114,26 @@ class LoginViewModel: ViewModel(){
                     }
                 }
         }else Log.e("Update profile", "Current user is null. Can't have updated name.")
+    }
+
+    private fun addUserToDatabase(name: String){
+        if(auth.currentUser!=null)
+        {
+            val currentUserId = auth.currentUser!!.uid
+            val user = User(name, auth.currentUser?.email ?: "Error", currentUserId)
+
+            val userValues = user.toMap()
+            val childUpdates = HashMap<String, Any>()
+            childUpdates["/users/$currentUserId"] = userValues
+
+            database.updateChildren(childUpdates)
+        }else Log.e("Add user to database", "Current user is null. Can't add to database.")
+    }
+
+    private fun User.toMap(): Map<String, Any> {
+        return mapOf(
+            "username" to username,
+            "email" to email,
+        )
     }
 }
