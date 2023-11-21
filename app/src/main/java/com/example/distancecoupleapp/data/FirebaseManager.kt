@@ -17,7 +17,12 @@ class FirebaseManager {
         return FirebaseDatabase.getInstance("https://distance-couple-app-default-rtdb.europe-west1.firebasedatabase.app/").reference
     }
 
+    //getting path to all users
     fun getFirebaseDatabaseUserReference(): DatabaseReference{
         return FirebaseDatabase.getInstance("https://distance-couple-app-default-rtdb.europe-west1.firebasedatabase.app/").getReference("users")
+    }
+    //getting path in database to photos in particular room
+    fun getFirebaseDatabasePhotosReference(roomId: String): DatabaseReference{
+        return FirebaseDatabase.getInstance("https://distance-couple-app-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("rooms").child(roomId).child("photos")
     }
 }

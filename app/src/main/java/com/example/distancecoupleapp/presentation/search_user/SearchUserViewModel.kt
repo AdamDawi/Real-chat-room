@@ -27,7 +27,8 @@ class SearchUserViewModel: ViewModel() {
     }
 
     private fun getUserName() {
-        searchUserState = searchUserState.copy(name = auth.currentUser?.displayName.toString())
+        if(auth.currentUser?.displayName!=null)
+            searchUserState = searchUserState.copy(name = auth.currentUser?.displayName.toString())
     }
 
     fun changeSearchUserFieldState(newEmail: String){
@@ -86,13 +87,8 @@ class SearchUserViewModel: ViewModel() {
                         userList.add(user)
                     }
                 }
-
                 searchUserState = searchUserState.copy(userList = userList)
-                FirebaseManager().getFirebaseDatabaseUserReference().get().addOnSuccessListener {
-                    Log.i("firebase", "Got value ${it.value}")
-                }.addOnFailureListener{
-                    Log.e("firebase", "Error getting data", it)
-                }
+
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

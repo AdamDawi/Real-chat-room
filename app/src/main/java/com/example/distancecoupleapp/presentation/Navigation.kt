@@ -25,7 +25,8 @@ fun Navigation(
         }
 
         composable(route = Screen.SearchUserScreen.route){
-            SearchUserScreen(viewModel(), navigateToLoginScreen = {navController.popBackStack()},
+            SearchUserScreen(viewModel(),
+                navigateToLoginScreen = {navController.popBackStack()},
                 navigateToMainBoardScreen = navController)
         }
 
