@@ -1,4 +1,4 @@
-package com.example.distancecoupleapp.presentation.main_board
+package com.example.distancecoupleapp.presentation.comments
 
 import android.content.ContentValues
 import android.util.Log
@@ -6,72 +6,66 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavController
 import com.example.distancecoupleapp.data.Comment
 import com.example.distancecoupleapp.data.FirebaseManager
-import com.example.distancecoupleapp.data.Photo
 import com.example.distancecoupleapp.data.User
-import com.example.distancecoupleapp.presentation.Screen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import java.util.Date
 
-class MainBoardViewModel: ViewModel() {
+class CommentsViewModel: ViewModel() {
     private val auth: FirebaseAuth = FirebaseManager().getFirebaseAuth()
     private val database: DatabaseReference = FirebaseManager().getFirebaseDatabaseReference()
 
-    var mainBoardState by mutableStateOf(MainBoardState())
+    var commentsState by mutableStateOf(CommentsState())
         private set
+    fun getCommentsFromDatabase(roomId: String, photoId: String) {
+        val commentList: ArrayList<Comment> = ArrayList()
+        val postReference = FirebaseManager().getFirebaseDatabaseCommentsReference(roomId, photoId)
 
-
-    fun addPhoto(imageUrl: String, description: String, roomId: String) {
-        val currentUser = auth.currentUser
-        val ownerId = currentUser?.uid
-
-        if (ownerId != null) {
-            val photoId = database.child("photos").push().key
-
-            val photo = Photo(imageUrl, ownerId, description, photoId?:"Error", System.currentTimeMillis())
-            //class mapping to be able to insert into the database
-            val photoValues = photo.toMap()
-
-            val childUpdates = HashMap<String, Any>()
-            childUpdates["/rooms/$roomId/photos/$photoId"] = photoValues
-
-            database.updateChildren(childUpdates)
-        }
-        getPhotosFromDatabase(roomId)
-    }
-
-
-    fun getPhotosFromDatabase(roomId: String) {
-        val photoList: ArrayList<Photo> = ArrayList()
-        val postReference = FirebaseManager().getFirebaseDatabasePhotosReference(roomId)
-
-        val photosListener = object : ValueEventListener {
+        val commentsListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // for all photos in particular room
-                for (photoSnapshot in dataSnapshot.children) {
+                for (commentSnapshot in dataSnapshot.children) {
                     // getting one user
-                    var photo = photoSnapshot.getValue(Photo::class.java)
-                    photo = photo?.copy(id = photoSnapshot.key ?: "Error")
+                    val comment = commentSnapshot.getValue(Comment::class.java)
 
-                    if (photo != null && photo.id!=auth.currentUser?.uid) {
+                    if (comment != null) {
                         //adding all photos to list without the currently logged in user
-                        photoList.add(photo)
+                        commentList.add(comment)
                     }
                 }
-                mainBoardState = mainBoardState.copy(photoList = photoList)
+                commentsState = commentsState.copy(commentsList = commentList)
 
             }
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.w(ContentValues.TAG, "loadPost:onCancelled", databaseError.toException())
             }
         }
-        postReference.addValueEventListener(photosListener)
+        postReference.addValueEventListener(commentsListener)
+    }
+
+    fun addComment(photoId: String, text: String, roomId: String) {
+        val currentUser = auth.currentUser
+        val userId = currentUser?.uid
+
+        if (userId != null) {
+            val commentId = database.child("comments").push().key
+
+            val comment = Comment(userId, text, System.currentTimeMillis())
+            //class mapping to be able to insert into the database
+            val commentValues = comment.toMap()
+
+            val childUpdates = HashMap<String, Any>()
+            childUpdates["/rooms/$roomId/photos/$photoId/comments/$commentId"] = commentValues
+
+            database.updateChildren(childUpdates)
+            getCommentsFromDatabase(roomId, photoId)
+        }else{
+            Log.e("Add comment Error", "current user is null")
+        }
     }
 
     fun getUsersFromDatabase(roomId: String) {
@@ -92,8 +86,8 @@ class MainBoardViewModel: ViewModel() {
                         userList.add(user)
                     }
                 }
-                mainBoardState = mainBoardState.copy(user1 = userList[0])
-                mainBoardState = mainBoardState.copy(user2 = userList[1])
+                commentsState = commentsState.copy(user1 = userList[0])
+                commentsState = commentsState.copy(user2 = userList[1])
 
             }
 
@@ -104,25 +98,19 @@ class MainBoardViewModel: ViewModel() {
         postReference.addValueEventListener(usersListener)
     }
 
-    fun navigateToCommentScreen(navController: NavController, roomId: String, photoId: String){
-        navController.navigate(Screen.CommentsScreen.withArgs(roomId, photoId))
-    }
-
-    fun convertMillisToDateTime(millis: Long): Date {
-        return Date(millis)
-    }
-
     fun getUserNameById(id: String): String{
-        return if(mainBoardState.user1.id==id) mainBoardState.user1.username else mainBoardState.user2.username
+        return if(commentsState.user1.id==id) commentsState.user1.username else commentsState.user2.username
+    }
+
+    fun changeText(newText: String){
+        commentsState = commentsState.copy(text = newText)
     }
 
 
-    private fun Photo.toMap(): Map<String, Any> {
+    private fun Comment.toMap(): Map<String, Any> {
         return mapOf(
-            "imageUrl" to imageUrl,
-            "owner" to owner,
-            "description" to description,
-            "id" to id,
+            "user" to user,
+            "text" to text,
             "timestamp" to timestamp
         )
     }

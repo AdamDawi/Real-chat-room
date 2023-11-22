@@ -22,8 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.distancecoupleapp.presentation.main_board.MainBoardState
 import com.example.distancecoupleapp.presentation.main_board.MainBoardViewModel
@@ -33,7 +33,8 @@ fun PhotoItem(
     viewModel: MainBoardViewModel,
     state:MainBoardState,
     it: Int,
-    roomId:String
+    roomId:String,
+    navController: NavController
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier
@@ -48,7 +49,7 @@ fun PhotoItem(
                     .aspectRatio(1f)
             )
             Column(verticalArrangement = Arrangement.SpaceEvenly) {
-                Text(text = state.photoList[it].owner)
+                Text(text = viewModel.getUserNameById(state.photoList[it].owner))
                 Text(text = viewModel.convertMillisToDateTime(state.photoList[it].timestamp).toString())
             }
         }
@@ -56,7 +57,7 @@ fun PhotoItem(
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
         ){
-            Image(painter = rememberAsyncImagePainter("https://www.themealdb.com//images//media//meals//xqrwyr1511133646.jpg"),
+            Image(painter = rememberAsyncImagePainter(state.photoList[it].imageUrl),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -67,7 +68,7 @@ fun PhotoItem(
         Text(text = "Add a comment...",
             color = Color.LightGray,
             modifier = Modifier.clickable {
-                viewModel.addComment(state.photoList[it].id, "nice", roomId)
+                viewModel.navigateToCommentScreen(navController, roomId, state.photoList[it].id)
             })
         Spacer(modifier = Modifier.height(12.dp))
     }

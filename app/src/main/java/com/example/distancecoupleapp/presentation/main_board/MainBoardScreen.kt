@@ -10,13 +10,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import com.example.distancecoupleapp.presentation.main_board.components.PhotoItem
-import com.example.distancecoupleapp.presentation.search_user.components.UserItem
 
 @Composable
-fun MainBoardScreen(viewModel: MainBoardViewModel, roomId: String) {
+fun MainBoardScreen(
+    viewModel: MainBoardViewModel,
+    navController: NavController,
+    roomId: String
+) {
     val state = viewModel.mainBoardState
     viewModel.getPhotosFromDatabase(roomId)
+    viewModel.getUsersFromDatabase(roomId)
 
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -26,10 +31,10 @@ fun MainBoardScreen(viewModel: MainBoardViewModel, roomId: String) {
             .fillMaxHeight()
             .weight(10f)) {
             items(state.photoList.size){
-                PhotoItem(viewModel = viewModel, state = state, it, roomId)
+                PhotoItem(viewModel = viewModel, state = state, it, roomId, navController)
             }
         }
-        Button(onClick = { viewModel.addPhoto("dd", "Description", roomId) }) {
+        Button(onClick = { viewModel.addPhoto("https://www.themealdb.com//images//media//meals//xqrwyr1511133646.jpg", "Description", roomId) }) {
             Text(text = "Add Photo")
         }
     }

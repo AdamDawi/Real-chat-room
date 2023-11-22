@@ -6,9 +6,6 @@ import com.google.firebase.database.FirebaseDatabase
 
 class FirebaseManager {
 
-    fun currentUserId(): String?{
-        return FirebaseAuth.getInstance().uid
-    }
     fun getFirebaseAuth(): FirebaseAuth{
         return FirebaseAuth.getInstance()
     }
@@ -17,12 +14,16 @@ class FirebaseManager {
         return FirebaseDatabase.getInstance("https://distance-couple-app-default-rtdb.europe-west1.firebasedatabase.app/").reference
     }
 
-    //getting path to all users
+    //getting path to all users in database
     fun getFirebaseDatabaseUserReference(): DatabaseReference{
         return FirebaseDatabase.getInstance("https://distance-couple-app-default-rtdb.europe-west1.firebasedatabase.app/").getReference("users")
     }
     //getting path in database to photos in particular room
     fun getFirebaseDatabasePhotosReference(roomId: String): DatabaseReference{
         return FirebaseDatabase.getInstance("https://distance-couple-app-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("rooms").child(roomId).child("photos")
+    }
+    //getting path in database to comments in particular photo
+    fun getFirebaseDatabaseCommentsReference(roomId: String, photoId: String): DatabaseReference{
+        return FirebaseDatabase.getInstance("https://distance-couple-app-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("rooms").child(roomId).child("photos").child(photoId).child("comments")
     }
 }

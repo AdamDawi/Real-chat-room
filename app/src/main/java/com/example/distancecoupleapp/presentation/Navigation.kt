@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.distancecoupleapp.presentation.comments.CommentsScreen
 import com.example.distancecoupleapp.presentation.login.LoginScreen
 import com.example.distancecoupleapp.presentation.main_board.MainBoardScreen
 import com.example.distancecoupleapp.presentation.search_user.SearchUserScreen
@@ -40,7 +41,26 @@ fun Navigation(
         )
         ){
             val roomId = it.arguments?.getString("roomId")?:"Error"
-            MainBoardScreen(viewModel(), roomId)
+            MainBoardScreen(viewModel(), navController, roomId)
+        }
+
+        composable(route = Screen.CommentsScreen.route+ "/{roomId}/{photoId}", arguments =
+        listOf(
+            navArgument("roomId"){
+                type = NavType.StringType
+                defaultValue = "Error"
+                nullable = false
+            },
+            navArgument("photoId"){
+                type = NavType.StringType
+                defaultValue = "Error"
+                nullable = false
+            }
+        )
+        ){
+            val roomId = it.arguments?.getString("roomId")?:"Error"
+            val photoId = it.arguments?.getString("photoId")?:"Error"
+            CommentsScreen(viewModel(), roomId, photoId)
         }
     }
 
