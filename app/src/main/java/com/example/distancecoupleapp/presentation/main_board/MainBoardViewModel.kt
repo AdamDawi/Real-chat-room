@@ -1,13 +1,18 @@
 package com.example.distancecoupleapp.presentation.main_board
 
+import android.Manifest
 import android.content.ContentValues
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.provider.MediaStore
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.example.distancecoupleapp.data.Comment
 import com.example.distancecoupleapp.data.FirebaseManager
 import com.example.distancecoupleapp.data.Photo
 import com.example.distancecoupleapp.data.User
@@ -25,26 +30,6 @@ class MainBoardViewModel: ViewModel() {
 
     var mainBoardState by mutableStateOf(MainBoardState())
         private set
-
-
-    fun addPhoto(imageUrl: String, description: String, roomId: String) {
-        val currentUser = auth.currentUser
-        val ownerId = currentUser?.uid
-
-        if (ownerId != null) {
-            val photoId = database.child("photos").push().key
-
-            val photo = Photo(imageUrl, ownerId, description, photoId?:"Error", System.currentTimeMillis())
-            //class mapping to be able to insert into the database
-            val photoValues = photo.toMap()
-
-            val childUpdates = HashMap<String, Any>()
-            childUpdates["/rooms/$roomId/photos/$photoId"] = photoValues
-
-            database.updateChildren(childUpdates)
-        }
-        getPhotosFromDatabase(roomId)
-    }
 
 
     fun getPhotosFromDatabase(roomId: String) {
@@ -108,6 +93,10 @@ class MainBoardViewModel: ViewModel() {
         navController.navigate(Screen.CommentsScreen.withArgs(roomId, photoId))
     }
 
+    fun navigateToCameraScreen(navController: NavController, roomId: String){
+        navController.navigate(Screen.CameraScreen.withArgs(roomId))
+    }
+
     fun convertMillisToDateTime(millis: Long): Date {
         return Date(millis)
     }
@@ -117,13 +106,5 @@ class MainBoardViewModel: ViewModel() {
     }
 
 
-    private fun Photo.toMap(): Map<String, Any> {
-        return mapOf(
-            "imageUrl" to imageUrl,
-            "owner" to owner,
-            "description" to description,
-            "id" to id,
-            "timestamp" to timestamp
-        )
-    }
+
 }

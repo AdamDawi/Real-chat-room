@@ -73,9 +73,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     implementation("androidx.navigation:navigation-compose:2.7.5")
 
-    // Import the BoM for the Firebase platform
-    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
-
     // Add the dependency for the Firebase Authentication library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-auth")
@@ -88,4 +85,22 @@ dependencies {
     implementation("com.google.firebase:firebase-database")
 
     implementation("io.coil-kt:coil-compose:2.4.0")
+
+    // Add the dependency for the Cloud Storage library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-storage")
+
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material3:material3:1.2.0-alpha11")
+
+    val cameraxVersion = "1.4.0-alpha02"
+
+    implementation("androidx.camera:camera-core:$cameraxVersion")
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-video:$cameraxVersion")
+
+    implementation("androidx.camera:camera-view:$cameraxVersion")
+    implementation("androidx.camera:camera-extensions:$cameraxVersion")
 }

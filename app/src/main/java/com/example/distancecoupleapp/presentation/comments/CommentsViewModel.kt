@@ -71,6 +71,7 @@ class CommentsViewModel: ViewModel() {
     fun getUsersFromDatabase(roomId: String) {
         val userList: ArrayList<User> = ArrayList()
         val postReference = FirebaseManager().getFirebaseDatabaseUserReference()
+        //getting 2 users ids because only 2 people have access to this room
         val usersId = roomId.split('_')
 
         val usersListener = object : ValueEventListener {

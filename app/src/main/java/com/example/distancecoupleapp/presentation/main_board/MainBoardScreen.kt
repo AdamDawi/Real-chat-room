@@ -23,20 +23,25 @@ fun MainBoardScreen(
     viewModel.getPhotosFromDatabase(roomId)
     viewModel.getUsersFromDatabase(roomId)
 
-    Column(modifier = Modifier.fillMaxSize(),
+    Column(
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        LazyColumn(modifier = Modifier
-            .fillMaxHeight()
-            .weight(10f)) {
-            items(state.photoList.size){
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(10f)
+        ) {
+            items(state.photoList.size) {
                 PhotoItem(viewModel = viewModel, state = state, it, roomId, navController)
             }
         }
-        Button(onClick = { viewModel.addPhoto("https://www.themealdb.com//images//media//meals//xqrwyr1511133646.jpg", "Description", roomId) }) {
+        Button(onClick = {
+            viewModel.navigateToCameraScreen(navController, roomId)
+        }) {
             Text(text = "Add Photo")
         }
-    }
 
+    }
 }

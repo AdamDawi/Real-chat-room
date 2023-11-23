@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.distancecoupleapp.presentation.camera.CameraScreen
 import com.example.distancecoupleapp.presentation.comments.CommentsScreen
 import com.example.distancecoupleapp.presentation.login.LoginScreen
 import com.example.distancecoupleapp.presentation.main_board.MainBoardScreen
@@ -61,6 +62,17 @@ fun Navigation(
             val roomId = it.arguments?.getString("roomId")?:"Error"
             val photoId = it.arguments?.getString("photoId")?:"Error"
             CommentsScreen(viewModel(), roomId, photoId)
+        }
+
+        composable(route = Screen.CameraScreen.route+ "/{roomId}", arguments =
+        listOf(
+            navArgument("roomId"){
+                type = NavType.StringType
+                defaultValue = "Error"
+                nullable = false
+            })){
+            val roomId = it.arguments?.getString("roomId")?:"Error"
+            CameraScreen(viewModel(), context, navController, roomId)
         }
     }
 

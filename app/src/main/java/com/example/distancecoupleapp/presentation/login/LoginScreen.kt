@@ -39,7 +39,7 @@ fun LoginScreen(viewModel: LoginViewModel,
     {
         //anytime user is logged navigating to main photos screen
         navigateToMainPhotosScreen()
-        //prevents you from navigating to the main photos screen again
+        //prevents from navigating to the main photos screen again
         viewModel.changeIsLoggedState(false)
     }
 
