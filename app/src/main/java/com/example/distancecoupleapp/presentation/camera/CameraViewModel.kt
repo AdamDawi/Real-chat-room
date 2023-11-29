@@ -20,10 +20,8 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.distancecoupleapp.data.FirebaseManager
 import com.example.distancecoupleapp.data.Photo
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.storage.storage
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -37,13 +35,17 @@ class CameraViewModel: ViewModel() {
     var cameraState by mutableStateOf(CameraState())
         private set
 
-    fun changeIcon(controller: LifecycleCameraController){
-        val newimageVector = when (controller.imageCaptureFlashMode) {
+    private fun changeIsLoadingState(isLoading: Boolean){
+        cameraState = cameraState.copy(isLoading = isLoading)
+    }
+
+    fun changeIconState(controller: LifecycleCameraController){
+        val newImageVector = when (controller.imageCaptureFlashMode) {
             ImageCapture.FLASH_MODE_OFF -> Icons.Default.FlashOff
             ImageCapture.FLASH_MODE_ON -> Icons.Default.FlashOn
             else -> Icons.Default.FlashOff}
 
-        cameraState = cameraState.copy(imageVector = newimageVector)
+        cameraState = cameraState.copy(imageVector = newImageVector)
     }
 
     fun changeCameraMode(controller: LifecycleCameraController){
@@ -61,7 +63,7 @@ class CameraViewModel: ViewModel() {
         }
 
         controller.imageCaptureFlashMode = newFlashMode
-        changeIcon(controller)
+        changeIconState(controller)
     }
 
     private fun addPhoto(imageUrl: String, description: String, roomId: String, navController: NavController) {
@@ -81,6 +83,7 @@ class CameraViewModel: ViewModel() {
 
             database.updateChildren(childUpdates)
             //after adding photo to database we can go back to the previous screen
+            changeIsLoadingState(false)
             navController.popBackStack()
         }else
             Log.e("Uploading photo to database", "Owner id is null")
@@ -110,6 +113,9 @@ class CameraViewModel: ViewModel() {
                         matrix,
                         true
                     )
+                    //loading is true when you taking photo
+                    changeIsLoadingState(true)
+                    cameraState = cameraState.copy(image = rotatedBitmap)
                     uploadBitmapToFirebase(rotatedBitmap, roomId, navController)
                 }
 
@@ -128,8 +134,7 @@ class CameraViewModel: ViewModel() {
         val byteArray = stream.toByteArray()
 
         // Firebase storage reference
-        val storage = Firebase.storage
-        val storageRef = storage.reference
+        val storageRef = FirebaseManager().getFirebaseStoreReference()
         val imagesRef = storageRef.child("images")
 
         // making unique id with date
