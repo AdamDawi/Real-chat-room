@@ -18,18 +18,28 @@ import com.example.distancecoupleapp.presentation.search_user.SearchUserScreen
 fun Navigation(
     context: Context
 ) {
+    // Initialize NavController using rememberNavController() function, which allows maintaining the navigation state
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = Screen.LoginScreen.route ){
 
-        composable(route = Screen.LoginScreen.route){
-            LoginScreen(viewModel(), context, navigateToMainPhotosScreen = {navController.navigate(Screen.SearchUserScreen.route)})
+        composable(route = Screen.LoginScreen.route) {
+            LoginScreen(
+                viewModel(),
+                context,
+                // Navigate to the user search screen after successful login
+                navigateToMainPhotosScreen = { navController.navigate(Screen.SearchUserScreen.route) }
+            )
         }
 
         composable(route = Screen.SearchUserScreen.route){
-            SearchUserScreen(viewModel(),
-                navigateToLoginScreen = {navController.popBackStack()},
-                navigateToMainBoardScreen = navController)
+            SearchUserScreen(
+                viewModel(),
+                // Navigate to the previous screen (login screen)
+                navigateToLoginScreen = { navController.popBackStack() },
+                // Pass NavController to the user search screen
+                navigateToMainBoardScreen = navController
+            )
         }
 
         composable(route = Screen.MainBoardScreen.route+ "/{roomId}", arguments =
@@ -41,6 +51,7 @@ fun Navigation(
             }
         )
         ){
+            // Retrieve room ID from the navigation arguments
             val roomId = it.arguments?.getString("roomId")?:"Error"
             MainBoardScreen(viewModel(), navController, roomId)
         }
@@ -59,6 +70,7 @@ fun Navigation(
             }
         )
         ){
+            // Retrieve room ID and photo ID from the navigation arguments
             val roomId = it.arguments?.getString("roomId")?:"Error"
             val photoId = it.arguments?.getString("photoId")?:"Error"
             CommentsScreen(viewModel(), roomId, photoId)
@@ -71,9 +83,11 @@ fun Navigation(
                 defaultValue = "Error"
                 nullable = false
             })){
+            // Retrieve room ID from the navigation arguments
             val roomId = it.arguments?.getString("roomId")?:"Error"
             CameraScreen(viewModel(), context, navController, roomId)
         }
     }
+
 
 }

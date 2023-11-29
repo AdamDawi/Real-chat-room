@@ -20,15 +20,18 @@ class LoginViewModel: ViewModel(){
     var loginState by mutableStateOf(LoginState())
     private set
 
+    // Initialize the ViewModel and check if the user is already logged in
     init {
         checkIfLogged()
     }
 
+    // Check if the user is already logged in and update the state accordingly
     private fun checkIfLogged(){
         if (auth.currentUser != null) {
             loginState = loginState.copy(isLogged = true)
         }
     }
+    // Methods to update specific fields in the login state
     fun changeEmailState(newEmail: String){
         loginState = loginState.copy(email = newEmail)
     }
@@ -101,6 +104,7 @@ class LoginViewModel: ViewModel(){
         else Toast.makeText(context, "Field is empty", Toast.LENGTH_SHORT).show()
     }
 
+    // Update the username in the Firebase user profile
     private fun updateUserName(name: String){
         if(auth.currentUser!=null)
         {
@@ -116,6 +120,7 @@ class LoginViewModel: ViewModel(){
         }else Log.e("Update profile", "Current user is null. Can't have updated name.")
     }
 
+    // Add the user to the Firebase Realtime Database
     private fun addUserToDatabase(name: String){
         if(auth.currentUser!=null)
         {
@@ -130,6 +135,7 @@ class LoginViewModel: ViewModel(){
         }else Log.e("Add user to database", "Current user is null. Can't add to database.")
     }
 
+    // Convert User object to a map for database storage
     private fun User.toMap(): Map<String, Any> {
         return mapOf(
             "username" to username,

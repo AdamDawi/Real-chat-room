@@ -26,7 +26,6 @@ import java.util.Date
 
 class MainBoardViewModel: ViewModel() {
     private val auth: FirebaseAuth = FirebaseManager().getFirebaseAuth()
-    private val database: DatabaseReference = FirebaseManager().getFirebaseDatabaseReference()
 
     var mainBoardState by mutableStateOf(MainBoardState())
         private set
@@ -62,6 +61,7 @@ class MainBoardViewModel: ViewModel() {
     fun getUsersFromDatabase(roomId: String) {
         val userList: ArrayList<User> = ArrayList()
         val postReference = FirebaseManager().getFirebaseDatabaseUserReference()
+        //retrieve users ids from room id
         val usersId = roomId.split('_')
 
         val usersListener = object : ValueEventListener {

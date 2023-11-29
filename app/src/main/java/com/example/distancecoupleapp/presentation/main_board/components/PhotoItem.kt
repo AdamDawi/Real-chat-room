@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
@@ -55,14 +56,12 @@ fun PhotoItem(
         }
         Box(modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(19.dp)),
         ){
             Image(painter = rememberAsyncImagePainter(state.photoList[it].imageUrl),
                 contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
-                    .clip(RoundedCornerShape(10.dp, 10.dp, 0.dp, 0.dp)))
+                modifier = Modifier.aspectRatio(0.7f),
+                contentScale = ContentScale.Crop)
         }
         Text(text = state.photoList[it].description)
         Text(text = "Add a comment...",
