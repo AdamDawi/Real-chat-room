@@ -24,7 +24,7 @@ fun CommentsScreen(
             .fillMaxHeight()
             .weight(10f)) {
             items(state.commentsList.size){
-                CommentItem(viewModel = viewModel, state = state, it, roomId)
+                CommentItem(viewModel = viewModel, state = state, it)
             }
         }
         AddCommentItem(viewModel = viewModel, state = state, roomId = roomId, photoId = photoId)

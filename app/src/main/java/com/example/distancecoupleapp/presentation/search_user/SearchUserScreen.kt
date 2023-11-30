@@ -52,7 +52,6 @@ fun SearchUserScreen(
                 onValueChange = { viewModel.changeSearchUserFieldState(it)},
                 modifier = Modifier
                     .onFocusChanged { viewModel.getUsersFromDatabase() }
-
             )
 
             LazyColumn(modifier = Modifier

@@ -92,7 +92,8 @@ dependencies {
 
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material3:material3:1.2.0-alpha11")
+    //causes problem with lazyColumn indexing
+    //implementation("androidx.compose.material3:material3:1.2.0-alpha11")
 
     val cameraxVersion = "1.4.0-alpha02"
 

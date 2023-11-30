@@ -24,8 +24,7 @@ import com.example.distancecoupleapp.presentation.comments.CommentsViewModel
 fun CommentItem(
     viewModel: CommentsViewModel,
     state: CommentsState,
-    it: Int,
-    roomId: String
+    it: Int
 ) {
     Row(modifier = Modifier
         .fillMaxWidth()

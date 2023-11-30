@@ -35,10 +35,11 @@ class SearchUserViewModel: ViewModel() {
         searchUserState = searchUserState.copy(searchUserField = newEmail)
 
         if(newEmail.isEmpty()) getUsersFromDatabase()
-        else
+        else{
             searchUserState = searchUserState.copy(userList = searchUserState.userList.filter {
                 it.email.contains(newEmail, ignoreCase = true) || it.username.contains(newEmail, ignoreCase = true)
-        } as ArrayList<User>)
+            } as ArrayList<User>)
+        }
     }
 
     fun changeSelectedUserState(selected: Int){
@@ -59,6 +60,7 @@ class SearchUserViewModel: ViewModel() {
     }
 
     private fun getChatroomId(userId1: String, userId2: String): String{
+        // Compare user ID hashes to determine their order.
         if(userId1.hashCode()<userId2.hashCode()){
             return userId1+"_"+userId2
         }

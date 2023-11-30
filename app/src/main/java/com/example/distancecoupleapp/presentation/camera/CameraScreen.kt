@@ -67,7 +67,7 @@ fun CameraScreen(viewModel: CameraViewModel,
                 controller = controller,
                 modifier = Modifier
                     .fillMaxSize()
-            )else if(state.isLoading){
+            )else{
                 //temporary screen view, which is a photo taken when the button was clicked
                 Image(
                     bitmap = state.image?.asImageBitmap()?:Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888).asImageBitmap(),
@@ -77,7 +77,7 @@ fun CameraScreen(viewModel: CameraViewModel,
                 )
                 CircularProgressIndicator(
                     modifier = Modifier
-                        .size(30.dp)
+                        .size(40.dp)
                         .padding(3.dp)
                         .align(Alignment.Center)
                 )
