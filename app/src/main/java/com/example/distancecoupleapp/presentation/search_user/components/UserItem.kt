@@ -45,9 +45,9 @@ fun UserItem(
             .padding(10.dp)){
             Icon(Icons.Default.AccountCircle, contentDescription = null)
             Spacer(modifier = Modifier.width(20.dp))
-            Text(text = state.userList[it].email)
+            Text(text = state.filteredUserList[it].email)
             Spacer(modifier = Modifier.width(2.dp))
-            Text(text = "(${state.userList[it].username})")
+            Text(text = "(${state.filteredUserList[it].username})")
         }
     }
 }

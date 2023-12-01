@@ -30,6 +30,7 @@ fun SearchUserScreen(
     navigateToMainBoardScreen: NavController
 ) {
     val state = viewModel.searchUserState
+    viewModel.getUsersFromDatabase()
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -49,15 +50,13 @@ fun SearchUserScreen(
             Text(text = "Your nick: ${state.name}")
             Spacer(modifier = Modifier.height(20.dp))
             OutlinedTextField(value = state.searchUserField,
-                onValueChange = { viewModel.changeSearchUserFieldState(it)},
-                modifier = Modifier
-                    .onFocusChanged { viewModel.getUsersFromDatabase() }
+                onValueChange = { viewModel.changeSearchUserFieldState(it)}
             )
 
             LazyColumn(modifier = Modifier
                 .fillMaxHeight()
                 .weight(10f)) {
-                items(state.userList.size){
+                items(state.filteredUserList.size){
                     UserItem(viewModel = viewModel, state = state, it)
                 }
             }

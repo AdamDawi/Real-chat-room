@@ -8,5 +8,6 @@ data class SearchUserState(
     var searchUserField: String = "",
     var userList: ArrayList<User> = ArrayList(),
     var emailSearch: String = "",
-    var selectedUser: Int = 0
+    var selectedUser: Int = 0,
+    var filteredUserList: ArrayList<User> = ArrayList(),
 )

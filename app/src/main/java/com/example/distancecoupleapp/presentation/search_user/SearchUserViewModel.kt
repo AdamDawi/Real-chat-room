@@ -34,12 +34,10 @@ class SearchUserViewModel: ViewModel() {
     fun changeSearchUserFieldState(newEmail: String){
         searchUserState = searchUserState.copy(searchUserField = newEmail)
 
-        if(newEmail.isEmpty()) getUsersFromDatabase()
-        else{
-            searchUserState = searchUserState.copy(userList = searchUserState.userList.filter {
-                it.email.contains(newEmail, ignoreCase = true) || it.username.contains(newEmail, ignoreCase = true)
-            } as ArrayList<User>)
-        }
+        searchUserState = searchUserState.copy(filteredUserList = searchUserState.userList.filter {
+            it.email.contains(newEmail, ignoreCase = true) || it.username.contains(newEmail, ignoreCase = true)
+        } as ArrayList<User>)
+
     }
 
     fun changeSelectedUserState(selected: Int){
@@ -88,6 +86,10 @@ class SearchUserViewModel: ViewModel() {
                         //adding to list
                         userList.add(user)
                     }
+                }
+                //when its first time getting users list, filtered users list must load for the first time
+                if(searchUserState.userList.isEmpty()){
+                    searchUserState = searchUserState.copy(filteredUserList = userList)
                 }
                 searchUserState = searchUserState.copy(userList = userList)
 
