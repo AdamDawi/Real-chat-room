@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -101,12 +102,14 @@ fun LoginScreen(viewModel: LoginViewModel,
                     Button(
                         modifier = Modifier.padding(top = 8.dp),
                         onClick = {viewModel.createAccount(context) }) {
-                        Text("Register")
+                        Text("Register",
+                            color = MaterialTheme.colorScheme.secondary)
                     }
 
                 }else {
 
-                    OutlinedTextField(value = state.password,
+                    OutlinedTextField(modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.secondary),
+                        value = state.password,
                         onValueChange ={
                             viewModel.changePasswordState(it)
                         },
@@ -121,7 +124,8 @@ fun LoginScreen(viewModel: LoginViewModel,
                         viewModel.signIn(context) //navigate to next screen if sign in is success
 
                     }) {
-                        Text("Log in")
+                        Text("Log in",
+                            color = MaterialTheme.colorScheme.secondary)
                     }
                 }
             }
