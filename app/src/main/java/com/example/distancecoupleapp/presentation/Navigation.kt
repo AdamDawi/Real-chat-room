@@ -36,9 +36,9 @@ fun Navigation(
             SearchUserScreen(
                 viewModel(),
                 // Navigate to the previous screen (login screen)
-                navigateToLoginScreen = { navController.popBackStack() },
+                popToLoginScreen = { navController.popBackStack() },
                 // Pass NavController to the user search screen
-                navigateToMainBoardScreen = navController
+                navController = navController
             )
         }
 

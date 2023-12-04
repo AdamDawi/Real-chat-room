@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,13 +19,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,31 +36,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.distancecoupleapp.presentation.search_user.components.UserItem
-import java.time.format.TextStyle
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchUserScreen(
     viewModel: SearchUserViewModel,
-    navigateToLoginScreen: () -> Unit,
-    navigateToMainBoardScreen: NavController
+    popToLoginScreen: () -> Unit,
+    navController: NavController
 ) {
     val state = viewModel.searchUserState
-    viewModel.getUsersFromDatabase()
 
     Column(modifier = Modifier
         .fillMaxSize()
-        .background(MaterialTheme.colorScheme.background)
+        .background(colorScheme.background)
         .padding(8.dp),
     ) {
         Row(modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
-            Button(onClick = { viewModel.signOut(navigateToLoginScreen) }) {
+            Button(onClick = { viewModel.signOut(popToLoginScreen) }) {
                 Text(text = "SignOut",
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.secondary)
+                    color = colorScheme.secondary)
             }
         }
         Column(modifier = Modifier.fillMaxSize(),
@@ -68,7 +66,7 @@ fun SearchUserScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "Your nick: ${state.name}",
-                color = MaterialTheme.colorScheme.secondary,
+                color = colorScheme.secondary,
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp)
             Spacer(modifier = Modifier.height(20.dp))
@@ -80,7 +78,8 @@ fun SearchUserScreen(
                     .border(BorderStroke(0.dp, Color.Transparent))
                     .clip(RoundedCornerShape(16.dp))
                     .background(colorScheme.primary)
-                    .height(52.dp),
+                    .height(52.dp)
+                    .fillMaxWidth(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     textColor = colorScheme.secondary,
                     cursorColor = colorScheme.secondary,
@@ -99,15 +98,27 @@ fun SearchUserScreen(
                     fontSize = 15.sp
                     ) },
             )
-
-            LazyColumn(modifier = Modifier
-                .fillMaxHeight()
-                .weight(10f)) {
-                items(state.filteredUserList.size){
-                    UserItem(viewModel = viewModel, state = state, it, navigateToMainBoardScreen)
+            if(state.isLoading){
+                Box(modifier = Modifier.fillMaxHeight()
+                ){
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .padding(3.dp)
+                            .align(Alignment.Center),
+                        color = colorScheme.secondary
+                    )
                 }
             }
-
+            else{
+                LazyColumn(modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(10f)) {
+                    items(state.filteredUserList.size){
+                        UserItem(viewModel = viewModel, state = state, it, navController)
+                    }
+                }
+            }
         }
     }
 }

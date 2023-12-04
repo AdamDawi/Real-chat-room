@@ -23,10 +23,11 @@ class SearchUserViewModel: ViewModel() {
         private set
 
     init {
-        getUserName()
+        getLoggedUserName()
+        getUsersFromDatabase()
     }
 
-    private fun getUserName() {
+    private fun getLoggedUserName() {
         if(auth.currentUser?.displayName!=null)
             searchUserState = searchUserState.copy(name = auth.currentUser?.displayName.toString())
     }
@@ -34,22 +35,18 @@ class SearchUserViewModel: ViewModel() {
     fun changeSearchUserFieldState(newEmail: String){
         searchUserState = searchUserState.copy(searchUserField = newEmail)
 
+        //updates the user's search list by filtering the user list based on the search phrase
         searchUserState = searchUserState.copy(filteredUserList = searchUserState.userList.filter {
             it.email.contains(newEmail, ignoreCase = true) || it.username.contains(newEmail, ignoreCase = true)
         } as ArrayList<User>)
-
     }
 
-    fun changeSelectedUserState(selected: Int){
-        searchUserState = searchUserState.copy(selectedUser = selected)
-    }
-
-    fun connectWithUser(navigateToMainBoardScreen: NavController, it: Int){
+    fun connectWithUser(navController: NavController, it: Int){
         if(auth.currentUser!= null && auth.currentUser!!.uid!=searchUserState.userList[it].id){
             roomId = getChatroomId(auth.currentUser!!.uid, searchUserState.userList[it].id)
 
             //navigate to main board screen with roomId
-            navigateToMainBoardScreen.navigate(Screen.MainBoardScreen.withArgs(roomId?:"Error"))
+            navController.navigate(Screen.MainBoardScreen.withArgs(roomId?:"Error"))
 
         }else if(auth.currentUser!!.uid==searchUserState.userList[it].id)
             Log.e("Connecting with user error", "Current user is you")
@@ -65,14 +62,15 @@ class SearchUserViewModel: ViewModel() {
         return userId2+"_"+userId1
     }
 
-    fun signOut(navigateToLoginScreen: () -> Unit){
+    fun signOut(popToLoginScreen: () -> Unit){
         auth.signOut()
-        navigateToLoginScreen()
+        popToLoginScreen()
     }
 
-    fun getUsersFromDatabase() {
+    private fun getUsersFromDatabase() {
         val userList: ArrayList<User> = ArrayList()
         val postReference = FirebaseManager().getFirebaseDatabaseUserReference()
+        searchUserState = searchUserState.copy(isLoading = true)
 
         val usersListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -87,21 +85,17 @@ class SearchUserViewModel: ViewModel() {
                         userList.add(user)
                     }
                 }
-                //when its first time getting users list, filtered users list must load for the first time
+                //checking if it is first time getting users list, filtered users list must load for the first time
                 if(searchUserState.userList.isEmpty()){
                     searchUserState = searchUserState.copy(filteredUserList = userList)
                 }
                 searchUserState = searchUserState.copy(userList = userList)
-
+                searchUserState = searchUserState.copy(isLoading = false)
             }
-
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
             }
         }
         postReference.addValueEventListener(usersListener)
     }
-
-
-
 }

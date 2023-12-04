@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.FlashOff
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -79,7 +80,8 @@ fun CameraScreen(viewModel: CameraViewModel,
                     modifier = Modifier
                         .size(40.dp)
                         .padding(3.dp)
-                        .align(Alignment.Center)
+                        .align(Alignment.Center),
+                    color = MaterialTheme.colorScheme.secondary
                 )
             }
         }

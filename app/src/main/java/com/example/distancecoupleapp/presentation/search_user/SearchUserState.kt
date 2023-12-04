@@ -4,10 +4,11 @@ import com.example.distancecoupleapp.data.User
 
 data class SearchUserState(
     var name: String = "",
-    var comment: String = "",
     var searchUserField: String = "",
+    //stores user list from database
     var userList: ArrayList<User> = ArrayList(),
-    var emailSearch: String = "",
-    var selectedUser: Int = 0,
+    //stores filtered user list which is displayed on the screen
     var filteredUserList: ArrayList<User> = ArrayList(),
+    //stores state if list loading
+    var isLoading: Boolean = false
 )

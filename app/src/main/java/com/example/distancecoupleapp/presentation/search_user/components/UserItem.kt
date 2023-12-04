@@ -1,7 +1,5 @@
 package com.example.distancecoupleapp.presentation.search_user.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,19 +23,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.distancecoupleapp.presentation.search_user.SearchUserState
 import com.example.distancecoupleapp.presentation.search_user.SearchUserViewModel
-import com.example.distancecoupleapp.presentation.theme.DarkGray
 import com.example.distancecoupleapp.presentation.theme.Grey
-import com.example.distancecoupleapp.presentation.theme.LightGrey
 
 @Composable
 fun UserItem(
     viewModel: SearchUserViewModel,
     state: SearchUserState,
-    it: Int,
-    navigateToMainBoardScreen: NavController
+    index: Int,
+    navController: NavController
 ) {
     Spacer(modifier = Modifier.height(10.dp))
     Box(modifier = Modifier
@@ -53,25 +50,26 @@ fun UserItem(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.AccountCircle,
                     contentDescription = null,
-                    Modifier.size(55.dp),
+                    Modifier.size(50.dp),
                     tint = MaterialTheme.colorScheme.secondary
                 )
                 Spacer(modifier = Modifier.width(5.dp))
                 Column(verticalArrangement = Arrangement.Center) {
-                    Text(text = state.filteredUserList[it].email,
+                    Text(text = state.filteredUserList[index].email,
                         color = MaterialTheme.colorScheme.secondary,
                         fontWeight = FontWeight.Bold
                     )
-                    Text(text = state.filteredUserList[it].username,
+                    Text(text = state.filteredUserList[index].username,
                         color = Grey
                     )
                 }
             }
 
-            Button(onClick = { viewModel.connectWithUser(navigateToMainBoardScreen, it)}
+            Button(onClick = { viewModel.connectWithUser(navController, index)}
                 ) {
                 Text(text = "Connect",
                     fontWeight = FontWeight.Bold,
+                    fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.secondary
                 )
             }
