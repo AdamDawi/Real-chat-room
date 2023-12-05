@@ -106,6 +106,7 @@ fun CameraScreen(viewModel: CameraViewModel,
                 imageVector = state.imageVector?: Icons.Default.FlashOff,
                 contentDescription = "Switch flash",
                 modifier = Modifier.size(40.dp),
+                tint = MaterialTheme.colorScheme.secondary
             )
         }
 
@@ -134,6 +135,7 @@ fun CameraScreen(viewModel: CameraViewModel,
                 imageVector = Icons.Default.Cameraswitch,
                 contentDescription = "Switch camera",
                 modifier = Modifier.size(40.dp),
+                tint = MaterialTheme.colorScheme.secondary
             )
         }
     }

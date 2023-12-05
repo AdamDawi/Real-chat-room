@@ -114,7 +114,12 @@ fun SearchUserScreen(
                 LazyColumn(modifier = Modifier
                     .fillMaxHeight()
                     .weight(10f)) {
-                    items(state.filteredUserList.size){
+                    items(
+                        state.filteredUserList.size,
+                        key = {
+                            //increase scrolling efficiency
+                            state.filteredUserList[it].id
+                        },){
                         UserItem(viewModel = viewModel, state = state, it, navController)
                     }
                 }

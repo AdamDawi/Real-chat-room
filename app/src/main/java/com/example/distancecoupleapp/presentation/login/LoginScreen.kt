@@ -1,6 +1,5 @@
 package com.example.distancecoupleapp.presentation.login
 
-import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,7 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 
-@SuppressLint("SuspiciousIndentation")
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(viewModel: LoginViewModel,
@@ -38,7 +37,7 @@ fun LoginScreen(viewModel: LoginViewModel,
 
     if(state.isLogged)
     {
-        //anytime user is logged navigating to main photos screen
+        //anytime user is logged navigate to main photos screen
         navigateToMainPhotosScreen()
         //prevents from navigating to the main photos screen again
         viewModel.changeIsLoggedState(false)
@@ -107,8 +106,9 @@ fun LoginScreen(viewModel: LoginViewModel,
                     }
 
                 }else {
-
-                    OutlinedTextField(modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.secondary),
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.background),
                         value = state.password,
                         onValueChange ={
                             viewModel.changePasswordState(it)
@@ -116,13 +116,13 @@ fun LoginScreen(viewModel: LoginViewModel,
                         visualTransformation = PasswordVisualTransformation(),
                         label = {
                             Text("Password")
-                        })
+                        },
 
+                    )
                     Button(
                         modifier = Modifier.padding(top = 8.dp),
                         onClick = {
                         viewModel.signIn(context) //navigate to next screen if sign in is success
-
                     }) {
                         Text("Log in",
                             color = MaterialTheme.colorScheme.secondary)

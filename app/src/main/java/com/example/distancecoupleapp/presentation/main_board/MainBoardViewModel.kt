@@ -1,16 +1,11 @@
 package com.example.distancecoupleapp.presentation.main_board
 
-import android.Manifest
+import android.annotation.SuppressLint
 import android.content.ContentValues
-import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.provider.MediaStore
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.distancecoupleapp.data.FirebaseManager
@@ -20,9 +15,11 @@ import com.example.distancecoupleapp.presentation.Screen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 class MainBoardViewModel: ViewModel() {
     private val auth: FirebaseAuth = FirebaseManager().getFirebaseAuth()
@@ -97,8 +94,36 @@ class MainBoardViewModel: ViewModel() {
         navController.navigate(Screen.CameraScreen.withArgs(roomId))
     }
 
-    fun convertMillisToDateTime(millis: Long): Date {
-        return Date(millis)
+    @SuppressLint("SimpleDateFormat")
+    fun convertMillisToDateTime(millis: Long): String {
+        val currentDate = Date()
+        val photoDate = Date(millis)
+
+        //creates calendar object for photo date and current date for analysis later
+        val calendarInput = Calendar.getInstance().apply {
+            time = photoDate
+        }
+        val calendarCurrent = Calendar.getInstance().apply {
+            time = currentDate
+        }
+
+        return when {
+            calendarInput.get(Calendar.YEAR) == calendarCurrent.get(Calendar.YEAR) &&
+                    calendarInput.get(Calendar.MONTH) == calendarCurrent.get(Calendar.MONTH) &&
+                    calendarInput.get(Calendar.DAY_OF_MONTH) == calendarCurrent.get(Calendar.DAY_OF_MONTH) -> {
+                //when photo is from today
+                SimpleDateFormat("HH:mm:ss").format(photoDate)
+            }
+            calendarInput.get(Calendar.YEAR) == calendarCurrent.get(Calendar.YEAR) &&
+                    calendarInput.get(Calendar.MONTH) == calendarCurrent.get(Calendar.MONTH) -> {
+                //when photo is from this month
+                SimpleDateFormat("MMM d", Locale.getDefault()).format(photoDate)
+            }
+            else -> {
+                //when photo is from this year or older
+                SimpleDateFormat("dd-MM-yyyy").format(photoDate)
+            }
+        }
     }
 
     fun getUserNameById(id: String): String{

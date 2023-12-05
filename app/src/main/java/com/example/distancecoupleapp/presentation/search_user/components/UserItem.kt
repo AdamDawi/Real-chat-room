@@ -53,7 +53,7 @@ fun UserItem(
                     Modifier.size(50.dp),
                     tint = MaterialTheme.colorScheme.secondary
                 )
-                Spacer(modifier = Modifier.width(5.dp))
+                Spacer(modifier = Modifier.width(3.dp))
                 Column(verticalArrangement = Arrangement.Center) {
                     Text(text = state.filteredUserList[index].email,
                         color = MaterialTheme.colorScheme.secondary,
