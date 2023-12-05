@@ -45,7 +45,7 @@ class CameraViewModel: ViewModel() {
             ImageCapture.FLASH_MODE_ON -> Icons.Default.FlashOn
             else -> Icons.Default.FlashOff}
 
-        cameraState = cameraState.copy(imageVector = newImageVector)
+        cameraState = cameraState.copy(flashIcon = newImageVector)
     }
 
     fun changeCameraMode(controller: LifecycleCameraController){
@@ -104,6 +104,7 @@ class CameraViewModel: ViewModel() {
                     val matrix = Matrix().apply {
                         postRotate(image.imageInfo.rotationDegrees.toFloat())
                     }
+                    //rotate bitmap to good orientation
                     val rotatedBitmap = Bitmap.createBitmap(
                         image.toBitmap(),
                         0,

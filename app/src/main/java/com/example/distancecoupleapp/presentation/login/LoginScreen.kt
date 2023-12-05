@@ -22,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 
@@ -53,19 +52,22 @@ fun LoginScreen(viewModel: LoginViewModel,
                 horizontalArrangement = Arrangement.Center) {
                 Text(
                     text = "Register",
-                    Modifier.clickable { viewModel.changeIsRegisteringState(true)}
+                    Modifier.clickable { viewModel.changeIsRegisteringState(true)},
+                    color = MaterialTheme.colorScheme.secondary
                 )
                 Spacer(modifier = Modifier.width(10.dp))
 
                 Box(modifier = Modifier
                     .height(20.dp)
                     .width(1.dp)
-                    .background(Color.Black))
+                    .background(MaterialTheme.colorScheme.secondary)
+                )
 
                 Spacer(modifier = Modifier.width(10.dp))
 
                 Text(text = "Log in",
-                    Modifier.clickable { viewModel.changeIsRegisteringState(false)}
+                    Modifier.clickable { viewModel.changeIsRegisteringState(false)},
+                    color = MaterialTheme.colorScheme.secondary
                 )
             }
             Column(modifier = Modifier.fillMaxHeight(),
@@ -86,7 +88,7 @@ fun LoginScreen(viewModel: LoginViewModel,
                             viewModel.changeNameState(it)
                         },
                         label = {
-                            Text("Nick")
+                            Text("Username")
                         })
 
                     OutlinedTextField(value = state.password,

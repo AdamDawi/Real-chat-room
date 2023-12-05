@@ -51,7 +51,7 @@ class CommentsViewModel: ViewModel() {
         val currentUser = auth.currentUser
         val userId = currentUser?.uid
 
-        if (userId != null) {
+        if (userId != null && text.isNotEmpty()) {
             val commentId = database.child("comments").push().key
 
             val comment = Comment(userId, text, System.currentTimeMillis())

@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -31,11 +32,18 @@ fun CommentItem(
         .border(BorderStroke(3.dp, Color.DarkGray), shape = RoundedCornerShape(8.dp))
         .padding(20.dp)
     ) {
-        Icon(Icons.Default.AccountCircle, contentDescription = null)
+        Icon(Icons.Default.AccountCircle,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.secondary
+            )
         Spacer(modifier = Modifier.width(20.dp))
         Column {
-            Text(text = viewModel.getUserNameById(state.commentsList[it].user))
-            Text(text = state.commentsList[it].text)
+            Text(text = viewModel.getUserNameById(state.commentsList[it].user),
+                color = MaterialTheme.colorScheme.secondary
+            )
+            Text(text = state.commentsList[it].text,
+                color = MaterialTheme.colorScheme.secondary
+            )
         }
 
     }

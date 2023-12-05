@@ -49,12 +49,12 @@ fun PhotoItem(
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxHeight()
-                    .height(40.dp)
+                    .height(50.dp)
                     .aspectRatio(1f),
                 tint = MaterialTheme.colorScheme.secondary
             )
             Spacer(modifier = Modifier.width(3.dp))
-            Column(verticalArrangement = Arrangement.SpaceEvenly) {
+            Column(verticalArrangement = Arrangement.Center) {
                 Text(
                     text = viewModel.getUserNameById(state.photoList[it].owner),
                     color = MaterialTheme.colorScheme.secondary,
