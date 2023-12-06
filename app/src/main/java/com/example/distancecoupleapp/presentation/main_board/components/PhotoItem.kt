@@ -12,10 +12,12 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,6 +29,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import com.example.distancecoupleapp.presentation.main_board.MainBoardState
 import com.example.distancecoupleapp.presentation.main_board.MainBoardViewModel
@@ -70,10 +73,22 @@ fun PhotoItem(
             .fillMaxWidth()
             .clip(RoundedCornerShape(19.dp)),
         ){
-            Image(painter = rememberAsyncImagePainter(state.photoList[it].imageUrl),
+            val painter = rememberAsyncImagePainter(state.photoList[it].imageUrl)
+
+            if (painter.state is AsyncImagePainter.State.Loading || painter.state is AsyncImagePainter.State.Error) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .padding(3.dp)
+                        .align(Alignment.Center),
+                    color = MaterialTheme.colorScheme.secondary
+                )
+            }
+            Image(painter = painter,
                 contentDescription = "photo",
                 modifier = Modifier.aspectRatio(0.7f),
                 contentScale = ContentScale.Crop)
+
         }
         Text(
             text = state.photoList[it].description,
