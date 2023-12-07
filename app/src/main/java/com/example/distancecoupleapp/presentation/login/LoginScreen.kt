@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -22,8 +21,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.distancecoupleapp.presentation.login.components.LoginColumn
+import com.example.distancecoupleapp.presentation.login.components.RegisterColumn
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -82,53 +82,9 @@ fun LoginScreen(viewModel: LoginViewModel,
                     })
 
                 if(state.isRegistering){
-
-                    OutlinedTextField(value = state.name,
-                        onValueChange ={
-                            viewModel.changeNameState(it)
-                        },
-                        label = {
-                            Text("Username")
-                        })
-
-                    OutlinedTextField(value = state.password,
-                        onValueChange ={
-                            viewModel.changePasswordState(it)
-                        },
-                        visualTransformation = PasswordVisualTransformation(),
-                        label = {
-                            Text("Password")
-                        })
-
-                    Button(
-                        modifier = Modifier.padding(top = 8.dp),
-                        onClick = {viewModel.createAccount(context) }) {
-                        Text("Register",
-                            color = MaterialTheme.colorScheme.secondary)
-                    }
-
+                    RegisterColumn(viewModel = viewModel, state = state, context = context)
                 }else {
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.background),
-                        value = state.password,
-                        onValueChange ={
-                            viewModel.changePasswordState(it)
-                        },
-                        visualTransformation = PasswordVisualTransformation(),
-                        label = {
-                            Text("Password")
-                        },
-
-                    )
-                    Button(
-                        modifier = Modifier.padding(top = 8.dp),
-                        onClick = {
-                        viewModel.signIn(context) //navigate to next screen if sign in is success
-                    }) {
-                        Text("Log in",
-                            color = MaterialTheme.colorScheme.secondary)
-                    }
+                    LoginColumn(viewModel = viewModel, state = state, context = context)
                 }
             }
 

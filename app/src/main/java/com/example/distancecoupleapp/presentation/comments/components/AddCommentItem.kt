@@ -6,7 +6,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -42,7 +41,6 @@ fun AddCommentItem(
                 .border(BorderStroke(0.dp, Color.Transparent))
                 .clip(RoundedCornerShape(16.dp))
                 .background(MaterialTheme.colorScheme.primary)
-                .height(52.dp)
                 .fillMaxWidth(),
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 textColor = MaterialTheme.colorScheme.secondary,
@@ -66,6 +64,8 @@ fun AddCommentItem(
             placeholder = { Text("Add comment...",
                 fontSize = 15.sp
             ) },
+            singleLine = false,
+            maxLines = 6
         )
     }
 

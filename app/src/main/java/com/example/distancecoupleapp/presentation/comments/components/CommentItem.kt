@@ -36,7 +36,7 @@ fun CommentItem(
         Icon(Icons.Default.AccountCircle,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.secondary,
-            modifier = Modifier.size(50.dp)
+            modifier = Modifier.size(50.dp).align(Alignment.Top)
             )
 
         Spacer(modifier = Modifier.width(3.dp))
