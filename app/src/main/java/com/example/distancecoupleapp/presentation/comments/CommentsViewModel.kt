@@ -1,5 +1,6 @@
 package com.example.distancecoupleapp.presentation.comments
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -14,6 +15,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class CommentsViewModel: ViewModel() {
     private val auth: FirebaseAuth = FirebaseManager().getFirebaseAuth()
@@ -97,6 +100,36 @@ class CommentsViewModel: ViewModel() {
             }
         }
         postReference.addValueEventListener(usersListener)
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun convertMillisToReadableDateTime(millis: Long): String {
+        val currentDate = Date()
+        val commentDate = Date(millis)
+
+        //calculate difference between comment timestamp and current time
+        val diffInMillis = currentDate.time - commentDate.time
+        val diffInSeconds = diffInMillis / 1000
+        val diffInMinutes = diffInSeconds / 60
+        val diffInHours = diffInMinutes / 60
+        val diffInDays = diffInHours / 24
+        val diffInWeeks = diffInDays / 7
+        val diffInMonths = diffInDays / 30
+
+        return when {
+            diffInMonths > 12 -> SimpleDateFormat("dd-MM-yyyy").format(commentDate)
+            diffInMonths > 1 -> "$diffInMonths months ago"
+            diffInMonths == 1L -> "$diffInMonths month ago"
+            diffInWeeks > 1 -> "$diffInWeeks weeks ago"
+            diffInWeeks == 1L -> "$diffInWeeks week ago"
+            diffInDays > 1 -> "$diffInDays days ago"
+            diffInDays == 1L -> "Yesterday"
+            diffInHours > 1 -> "$diffInHours hours ago"
+            diffInHours == 1L -> "$diffInHours hour ago"
+            diffInMinutes > 1 -> "$diffInMinutes minutes ago"
+            diffInMinutes == 1L -> "$diffInMinutes minute ago"
+            else -> "Just now"
+        }
     }
 
     fun getUserNameById(id: String): String{

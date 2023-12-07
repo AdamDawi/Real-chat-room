@@ -8,5 +8,6 @@ data class MainBoardState (
     //the currently logged in user
     var user1: User = User(),
     //user which is connected with the currently logged in user
-    var user2: User = User()
+    var user2: User = User(),
+
 )

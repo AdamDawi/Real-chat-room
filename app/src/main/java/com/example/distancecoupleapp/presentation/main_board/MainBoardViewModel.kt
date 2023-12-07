@@ -17,16 +17,13 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 
 class MainBoardViewModel: ViewModel() {
     private val auth: FirebaseAuth = FirebaseManager().getFirebaseAuth()
 
     var mainBoardState by mutableStateOf(MainBoardState())
         private set
-
 
     fun getPhotosFromDatabase(roomId: String) {
         val photoList: ArrayList<Photo> = ArrayList()
@@ -95,34 +92,32 @@ class MainBoardViewModel: ViewModel() {
     }
 
     @SuppressLint("SimpleDateFormat")
-    fun convertMillisToDateTime(millis: Long): String {
+    fun convertMillisToReadableDateTime(millis: Long): String {
         val currentDate = Date()
         val photoDate = Date(millis)
 
-        //creates calendar object for photo date and current date for analysis later
-        val calendarInput = Calendar.getInstance().apply {
-            time = photoDate
-        }
-        val calendarCurrent = Calendar.getInstance().apply {
-            time = currentDate
-        }
+        //calculate difference between photo timestamp and current time
+        val diffInMillis = currentDate.time - photoDate.time
+        val diffInSeconds = diffInMillis / 1000
+        val diffInMinutes = diffInSeconds / 60
+        val diffInHours = diffInMinutes / 60
+        val diffInDays = diffInHours / 24
+        val diffInWeeks = diffInDays / 7
+        val diffInMonths = diffInDays / 30
 
         return when {
-            calendarInput.get(Calendar.YEAR) == calendarCurrent.get(Calendar.YEAR) &&
-                    calendarInput.get(Calendar.MONTH) == calendarCurrent.get(Calendar.MONTH) &&
-                    calendarInput.get(Calendar.DAY_OF_MONTH) == calendarCurrent.get(Calendar.DAY_OF_MONTH) -> {
-                //when photo is from today
-                SimpleDateFormat("HH:mm:ss").format(photoDate)
-            }
-            calendarInput.get(Calendar.YEAR) == calendarCurrent.get(Calendar.YEAR) &&
-                    calendarInput.get(Calendar.MONTH) == calendarCurrent.get(Calendar.MONTH) -> {
-                //when photo is from this month
-                SimpleDateFormat("MMM d", Locale.getDefault()).format(photoDate)
-            }
-            else -> {
-                //when photo is from this year or older
-                SimpleDateFormat("dd-MM-yyyy").format(photoDate)
-            }
+            diffInMonths > 12 -> SimpleDateFormat("dd-MM-yyyy").format(photoDate)
+            diffInMonths > 1 -> "$diffInMonths months ago"
+            diffInMonths == 1L -> "$diffInMonths month ago"
+            diffInWeeks > 1 -> "$diffInWeeks weeks ago"
+            diffInWeeks == 1L -> "$diffInWeeks week ago"
+            diffInDays > 1 -> "$diffInDays days ago"
+            diffInDays == 1L -> "Yesterday"
+            diffInHours > 1 -> "$diffInHours hours ago"
+            diffInHours == 1L -> "$diffInHours hour ago"
+            diffInMinutes > 1 -> "$diffInMinutes minutes ago"
+            diffInMinutes == 1L -> "$diffInMinutes minute ago"
+            else -> "Just now"
         }
     }
 

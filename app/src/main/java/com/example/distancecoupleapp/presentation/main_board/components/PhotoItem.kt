@@ -25,6 +25,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color.Companion.Gray
+import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -64,8 +66,8 @@ fun PhotoItem(
                     fontWeight = FontWeight.Bold
                     )
                 Text(
-                    text = viewModel.convertMillisToDateTime(state.photoList[it].timestamp),
-                    color = Grey
+                    text = viewModel.convertMillisToReadableDateTime(state.photoList[it].timestamp),
+                    color = Gray
                 )
             }
         }
@@ -73,8 +75,10 @@ fun PhotoItem(
             .fillMaxWidth()
             .clip(RoundedCornerShape(19.dp)),
         ){
+            //image state
             val painter = rememberAsyncImagePainter(state.photoList[it].imageUrl)
 
+            //display circular progress indicator when image is loading or an error occurs
             if (painter.state is AsyncImagePainter.State.Loading || painter.state is AsyncImagePainter.State.Error) {
                 CircularProgressIndicator(
                     modifier = Modifier
@@ -92,13 +96,16 @@ fun PhotoItem(
         }
         Text(
             text = state.photoList[it].description,
-            color = MaterialTheme.colorScheme.secondary
+            color = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.padding(start = 8.dp)
         )
         Text(text = "Add a comment...",
             color = Grey,
             modifier = Modifier.clickable {
                 viewModel.navigateToCommentScreen(navController, roomId, state.photoList[it].id)
-            })
+            }
+                .padding(start = 8.dp)
+            )
         Spacer(modifier = Modifier.height(12.dp))
     }
 }
