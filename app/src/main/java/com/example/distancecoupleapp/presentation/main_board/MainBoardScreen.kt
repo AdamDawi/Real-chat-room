@@ -34,7 +34,7 @@ fun MainBoardScreen(
     viewModel.getPhotosFromDatabase(roomId)
     viewModel.getUsersFromDatabase(roomId)
 
-    Scaffold(topBar = {AppBarView(navController, state)}) {
+    Scaffold(topBar = {AppBarView(navController, viewModel)}) {
         Column(
             modifier = Modifier.fillMaxSize().padding(it),
             horizontalAlignment = Alignment.CenterHorizontally,

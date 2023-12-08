@@ -51,6 +51,14 @@ class MainBoardViewModel: ViewModel() {
         }
         postReference.addValueEventListener(photosListener)
     }
+    //check which user is current user
+    fun checkRoomWithUser(): String{
+        if(auth.currentUser!=null){
+            return if(auth.currentUser!!.uid==mainBoardState.user1.id) mainBoardState.user2.username
+            else mainBoardState.user1.username
+        }
+        return ""
+    }
 
     fun getUsersFromDatabase(roomId: String) {
         val userList: ArrayList<User> = ArrayList()

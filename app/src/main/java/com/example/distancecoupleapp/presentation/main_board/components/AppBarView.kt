@@ -17,15 +17,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.distancecoupleapp.presentation.main_board.MainBoardState
+import com.example.distancecoupleapp.presentation.main_board.MainBoardViewModel
 import com.example.distancecoupleapp.presentation.theme.Secondary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppBarView(navController: NavController, state: MainBoardState) {
+fun AppBarView(navController: NavController, viewModel: MainBoardViewModel) {
 
     CenterAlignedTopAppBar(title = {
-        Text(text = "Room with: ${state.user2.username}",
+        Text(text = "Room with: ${viewModel.checkRoomWithUser()}",
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
             maxLines = 1
@@ -47,7 +47,8 @@ fun AppBarView(navController: NavController, state: MainBoardState) {
             }
         },
         actions = {
-            IconButton(onClick = { /* do something */ }) {
+            //TODO make user page
+            IconButton(onClick = {  }) {
                 Icon(
                     imageVector = Icons.Default.Person2,
                     contentDescription = "Localized description",
