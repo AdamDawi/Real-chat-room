@@ -62,7 +62,7 @@ fun LoginScreen(viewModel: LoginViewModel,
                 Text(
                     text = "Register",
                     Modifier.clickable { viewModel.changeIsRegisteringState(true)},
-                    color = if(state.isRegistering) Grey else MaterialTheme.colorScheme.secondary,
+                    color = if(state.isRegistering) MaterialTheme.colorScheme.secondary else Grey,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.width(10.dp))
@@ -77,7 +77,7 @@ fun LoginScreen(viewModel: LoginViewModel,
 
                 Text(text = "Log in",
                     Modifier.clickable { viewModel.changeIsRegisteringState(false)},
-                    color = if(state.isRegistering) MaterialTheme.colorScheme.secondary else Grey,
+                    color = if(state.isRegistering) Grey else MaterialTheme.colorScheme.secondary,
                     fontWeight = FontWeight.Bold
                 )
             }

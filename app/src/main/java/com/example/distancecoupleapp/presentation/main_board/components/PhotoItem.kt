@@ -26,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color.Companion.Gray
-import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -41,7 +40,7 @@ import com.example.distancecoupleapp.presentation.theme.Grey
 fun PhotoItem(
     viewModel: MainBoardViewModel,
     state:MainBoardState,
-    it: Int,
+    index: Int,
     roomId:String,
     navController: NavController
 ) {
@@ -61,12 +60,12 @@ fun PhotoItem(
             Spacer(modifier = Modifier.width(3.dp))
             Column(verticalArrangement = Arrangement.Center) {
                 Text(
-                    text = viewModel.getUserNameById(state.photoList[it].owner),
+                    text = viewModel.getUserNameById(state.photoList[index].owner),
                     color = MaterialTheme.colorScheme.secondary,
                     fontWeight = FontWeight.Bold
                     )
                 Text(
-                    text = viewModel.convertMillisToReadableDateTime(state.photoList[it].timestamp),
+                    text = viewModel.convertMillisToReadableDateTime(state.photoList[index].timestamp),
                     color = Gray
                 )
             }
@@ -76,7 +75,7 @@ fun PhotoItem(
             .clip(RoundedCornerShape(19.dp)),
         ){
             //image state
-            val painter = rememberAsyncImagePainter(state.photoList[it].imageUrl)
+            val painter = rememberAsyncImagePainter(state.photoList[index].imageUrl)
 
             //display circular progress indicator when image is loading or an error occurs
             if (painter.state is AsyncImagePainter.State.Loading || painter.state is AsyncImagePainter.State.Error) {
@@ -95,14 +94,14 @@ fun PhotoItem(
 
         }
         Text(
-            text = state.photoList[it].description,
+            text = state.photoList[index].description,
             color = MaterialTheme.colorScheme.secondary,
             modifier = Modifier.padding(start = 8.dp)
         )
         Text(text = "Add a comment...",
             color = Grey,
             modifier = Modifier.clickable {
-                viewModel.navigateToCommentScreen(navController, roomId, state.photoList[it].id)
+                viewModel.navigateToCommentScreen(navController, roomId, state.photoList[index].id)
             }
                 .padding(start = 8.dp)
             )
