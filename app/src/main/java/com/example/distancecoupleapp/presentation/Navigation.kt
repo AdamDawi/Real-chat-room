@@ -28,7 +28,7 @@ fun Navigation(
                 viewModel(),
                 context,
                 // Navigate to the user search screen after successful login
-                navigateToMainPhotosScreen = { navController.navigate(Screen.SearchUserScreen.route) }
+                navigateToMainBoardScreen = { navController.navigate(Screen.SearchUserScreen.route) }
             )
         }
 

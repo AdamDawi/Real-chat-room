@@ -24,6 +24,7 @@ class LoginViewModel: ViewModel(){
     init {
         changeIsLoadingState(true)
         checkIfLogged()
+        changeIsLoadingState(false)
     }
 
     // Check if the user is already logged in and update the state accordingly
@@ -80,7 +81,7 @@ class LoginViewModel: ViewModel(){
                         else if(loginState.password.length<6)
                             Toast.makeText(context, "Password should be at least 6 characters", Toast.LENGTH_SHORT).show()
                         else {
-                            Toast.makeText(context, "Authentication failed", Toast.LENGTH_SHORT)
+                            Toast.makeText(context, "Registration failed", Toast.LENGTH_SHORT)
                                 .show()
                             Log.w(TAG, "createUserWithEmail:failure", task.exception)
                         }

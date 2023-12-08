@@ -42,13 +42,13 @@ class SearchUserViewModel: ViewModel() {
     }
 
     fun connectWithUser(navController: NavController, it: Int){
-        if(auth.currentUser!= null && auth.currentUser!!.uid!=searchUserState.userList[it].id){
-            roomId = getChatroomId(auth.currentUser!!.uid, searchUserState.userList[it].id)
+        if(auth.currentUser!= null && auth.currentUser!!.uid!=searchUserState.filteredUserList[it].id){
+            roomId = getChatroomId(auth.currentUser!!.uid, searchUserState.filteredUserList[it].id)
 
             //navigate to main board screen with roomId
             navController.navigate(Screen.MainBoardScreen.withArgs(roomId?:"Error"))
 
-        }else if(auth.currentUser!!.uid==searchUserState.userList[it].id)
+        }else if(auth.currentUser!!.uid==searchUserState.filteredUserList[it].id)
             Log.e("Connecting with user error", "Current user is you")
         else
             Log.e("Connecting with user error", "Current user is null")
