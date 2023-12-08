@@ -5,5 +5,7 @@ data class LoginState(
     var password: String ="",
     var isLogged: Boolean = false,
     var isRegistering: Boolean = true,
-    var name: String = ""
+    var name: String = "",
+    //is loading is true when program checks if user is logged in
+    var isLoading: Boolean = false
 )

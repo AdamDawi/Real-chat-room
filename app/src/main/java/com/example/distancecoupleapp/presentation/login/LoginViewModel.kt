@@ -22,6 +22,7 @@ class LoginViewModel: ViewModel(){
 
     // Initialize the ViewModel and check if the user is already logged in
     init {
+        changeIsLoadingState(true)
         checkIfLogged()
     }
 
@@ -30,6 +31,10 @@ class LoginViewModel: ViewModel(){
         if (auth.currentUser != null) {
             loginState = loginState.copy(isLogged = true)
         }
+    }
+
+    fun changeIsLoadingState(s: Boolean){
+        loginState = loginState.copy(isLoading = s)
     }
     // Methods to update specific fields in the login state
     fun changeEmailState(newEmail: String){

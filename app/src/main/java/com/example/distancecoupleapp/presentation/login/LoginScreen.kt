@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -40,8 +42,29 @@ fun LoginScreen(viewModel: LoginViewModel,
         navigateToMainPhotosScreen()
         //prevents from navigating to the main photos screen again
         viewModel.changeIsLoggedState(false)
+        viewModel.changeIsLoadingState(false)
     }
 
+    if(state.isLoading){
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ){
+            Box(modifier = Modifier.fillMaxHeight()
+            ){
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .padding(3.dp)
+                        .align(Alignment.Center),
+                    color = MaterialTheme.colorScheme.secondary
+                )
+            }
+        }
+    }else{
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -89,5 +112,8 @@ fun LoginScreen(viewModel: LoginViewModel,
             }
 
         }
+    }
+
+
 
 }
