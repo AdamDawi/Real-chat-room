@@ -129,6 +129,17 @@ class MainBoardViewModel: ViewModel() {
         }
     }
 
+    fun backButton(navController: NavController){
+        if(mainBoardState.buttonEnabled){
+            changeButtonEnabledState(false)
+            navController.popBackStack()
+        }
+    }
+
+    private fun changeButtonEnabledState(enabled: Boolean){
+        mainBoardState = mainBoardState.copy(buttonEnabled = enabled)
+    }
+
     fun getUserNameById(id: String): String{
         return if(mainBoardState.user1.id==id) mainBoardState.user1.username else mainBoardState.user2.username
     }

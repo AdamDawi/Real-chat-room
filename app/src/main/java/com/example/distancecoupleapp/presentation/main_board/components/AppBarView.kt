@@ -1,5 +1,6 @@
 package com.example.distancecoupleapp.presentation.main_board.components
 
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -26,22 +27,23 @@ fun AppBarView(navController: NavController, viewModel: MainBoardViewModel) {
 
     CenterAlignedTopAppBar(title = {
         Text(text = "Room with: ${viewModel.checkRoomWithUser()}",
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.ExtraBold,
             fontSize = 20.sp,
             maxLines = 1
         ) },
         modifier = Modifier
-            .padding(12.dp)
-            .heightIn(max = 24.dp),
+            .padding(8.dp)
+            .heightIn(max = 34.dp)
+            .height(34.dp),
         colors = androidx.compose.material3.TopAppBarDefaults.smallTopAppBarColors(
             containerColor = Color.Transparent,
             titleContentColor = Secondary,
         ),
         navigationIcon = {
-            IconButton(onClick = { navController.popBackStack() }) {
+            IconButton(onClick = { viewModel.backButton(navController) }) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Localized description",
+                    contentDescription = "Back button",
                     tint = Secondary
                 )
             }
@@ -51,8 +53,8 @@ fun AppBarView(navController: NavController, viewModel: MainBoardViewModel) {
             IconButton(onClick = {  }) {
                 Icon(
                     imageVector = Icons.Default.Person2,
-                    contentDescription = "Localized description",
-                    tint = Secondary
+                    contentDescription = "Account button",
+                    tint = Secondary,
                 )
             }
         }
