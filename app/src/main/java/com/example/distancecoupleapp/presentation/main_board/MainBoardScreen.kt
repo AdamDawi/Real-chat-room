@@ -50,6 +50,11 @@ fun MainBoardScreen(
                     PhotoItem(viewModel = viewModel, state = state, index, roomId, navController)
                 }
             }
+
+        }
+        AppBarView(navController, viewModel)
+
+        Column(modifier = Modifier.align(Alignment.BottomCenter)) {
             Box(modifier = Modifier
                 .border(7.dp, Color.White, CircleShape)
                 .size(80.dp)
@@ -58,8 +63,9 @@ fun MainBoardScreen(
                 }
                 .background(Color.Transparent)
             )
+            Spacer(modifier = Modifier.height(5.dp))
         }
-        AppBarView(navController, viewModel)
+        
     }
 
 }
