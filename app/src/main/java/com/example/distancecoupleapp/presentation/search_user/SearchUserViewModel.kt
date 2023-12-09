@@ -62,11 +62,6 @@ class SearchUserViewModel: ViewModel() {
         return userId2+"_"+userId1
     }
 
-    fun signOut(popToLoginScreen: () -> Unit){
-        auth.signOut()
-        popToLoginScreen()
-    }
-
     private fun getUsersFromDatabase() {
         val userList: ArrayList<User> = ArrayList()
         val postReference = FirebaseManager().getFirebaseDatabaseUserReference()

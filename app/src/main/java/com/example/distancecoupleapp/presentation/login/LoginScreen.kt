@@ -31,21 +31,25 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.distancecoupleapp.presentation.login.components.LoginColumn
 import com.example.distancecoupleapp.presentation.login.components.RegisterColumn
-import com.example.distancecoupleapp.presentation.theme.Grey
+import com.example.distancecoupleapp.presentation.theme.Primary
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(viewModel: LoginViewModel,
                 context: Context,
-                navigateToMainBoardScreen: () -> Unit
+                navigateToMainBoardScreen: () -> Unit,
+                navController: NavController
 ) {
     val state = viewModel.loginState
 
     if(state.isLogged)
     {
+        //pop login screen because we don't need that when person is log in
+        navController.popBackStack()
         //anytime user is logged navigate to main photos screen
         navigateToMainBoardScreen()
         //prevents from navigating to the main photos screen again
@@ -62,7 +66,7 @@ fun LoginScreen(viewModel: LoginViewModel,
                 Text(
                     text = "Register",
                     Modifier.clickable { viewModel.changeIsRegisteringState(true)},
-                    color = if(state.isRegistering) MaterialTheme.colorScheme.secondary else Grey,
+                    color = if(state.isRegistering) MaterialTheme.colorScheme.secondary else Primary,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.width(10.dp))
@@ -77,7 +81,7 @@ fun LoginScreen(viewModel: LoginViewModel,
 
                 Text(text = "Log in",
                     Modifier.clickable { viewModel.changeIsRegisteringState(false)},
-                    color = if(state.isRegistering) Grey else MaterialTheme.colorScheme.secondary,
+                    color = if(state.isRegistering) Primary else MaterialTheme.colorScheme.secondary,
                     fontWeight = FontWeight.Bold
                 )
             }

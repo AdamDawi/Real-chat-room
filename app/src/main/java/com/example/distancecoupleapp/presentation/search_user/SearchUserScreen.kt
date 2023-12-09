@@ -6,7 +6,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +17,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -42,7 +40,6 @@ import com.example.distancecoupleapp.presentation.search_user.components.UserIte
 @Composable
 fun SearchUserScreen(
     viewModel: SearchUserViewModel,
-    popToLoginScreen: () -> Unit,
     navController: NavController
 ) {
     val state = viewModel.searchUserState
@@ -52,15 +49,6 @@ fun SearchUserScreen(
         .background(colorScheme.background)
         .padding(8.dp),
     ) {
-        Row(modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            Button(onClick = { viewModel.signOut(popToLoginScreen) }) {
-                Text(text = "SignOut",
-                    fontWeight = FontWeight.Bold,
-                    color = colorScheme.secondary)
-            }
-        }
         Column(modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally

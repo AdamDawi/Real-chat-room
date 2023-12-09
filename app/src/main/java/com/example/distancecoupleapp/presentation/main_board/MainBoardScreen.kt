@@ -44,8 +44,8 @@ fun MainBoardScreen(
                     .fillMaxHeight()
                     .weight(10f)
             ) {
-                item { Spacer(modifier = Modifier.height(34.dp)) }
-                item {Spacer(modifier = Modifier.height(2.dp)) }
+                item { Spacer(modifier = Modifier.height(44.dp)) }
+                item { Spacer(modifier = Modifier.height(2.dp)) }
                 items(state.photoList.size) { index->
                     PhotoItem(viewModel = viewModel, state = state, index, roomId, navController)
                 }

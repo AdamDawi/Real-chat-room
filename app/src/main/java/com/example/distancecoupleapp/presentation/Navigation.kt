@@ -1,6 +1,8 @@
 package com.example.distancecoupleapp.presentation
 
 import android.content.Context
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
@@ -13,6 +15,7 @@ import com.example.distancecoupleapp.presentation.comments.CommentsScreen
 import com.example.distancecoupleapp.presentation.login.LoginScreen
 import com.example.distancecoupleapp.presentation.main_board.MainBoardScreen
 import com.example.distancecoupleapp.presentation.search_user.SearchUserScreen
+import com.example.distancecoupleapp.presentation.user.UserScreen
 
 @Composable
 fun Navigation(
@@ -28,15 +31,27 @@ fun Navigation(
                 viewModel(),
                 context,
                 // Navigate to the user search screen after successful login
-                navigateToMainBoardScreen = { navController.navigate(Screen.SearchUserScreen.route) }
+                navigateToMainBoardScreen = { navController.navigate(Screen.SearchUserScreen.route) },
+                navController
             )
         }
 
-        composable(route = Screen.SearchUserScreen.route){
+        composable(route = Screen.SearchUserScreen.route,
+            //animations
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(400)
+                )},
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(400)
+                )
+            }
+            ){
             SearchUserScreen(
                 viewModel(),
-                // Navigate to the previous screen (login screen)
-                popToLoginScreen = { navController.popBackStack() },
                 // Pass NavController to the user search screen
                 navController = navController
             )
@@ -86,6 +101,27 @@ fun Navigation(
             // Retrieve room ID from the navigation arguments
             val roomId = it.arguments?.getString("roomId")?:"Error"
             CameraScreen(viewModel(), context, navController, roomId)
+        }
+
+        composable(route = Screen.UserScreen.route,
+            //animations
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(400)
+                )},
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(400)
+                )
+            }
+            ){
+            UserScreen(viewModel = viewModel(),
+                { navController.popBackStack() },
+                // Navigate to the previous screen (login screen)
+                navigateToLoginScreen = { navController.navigate(Screen.LoginScreen.route) },
+            )
         }
     }
 
