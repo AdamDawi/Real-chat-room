@@ -100,7 +100,7 @@ fun SearchUserScreen(
             }
             else{
                 LazyColumn(modifier = Modifier
-                    .fillMaxHeight()
+                    .fillMaxSize()
                     .weight(10f)) {
                     items(
                         state.filteredUserList.size,

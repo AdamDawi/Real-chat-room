@@ -40,13 +40,13 @@ fun Navigation(
             //animations
             enterTransition = {
                 slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    AnimatedContentTransitionScope.SlideDirection.Companion.Right,
                     animationSpec = tween(500)
                 )},
             exitTransition = {
                 slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Left,
-                    animationSpec = tween(600)
+                    AnimatedContentTransitionScope.SlideDirection.Companion.Left,
+                    animationSpec = tween(500)
                 )
             }
             ){
@@ -107,13 +107,13 @@ fun Navigation(
             //animations
             enterTransition = {
                 slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Left,
-                    animationSpec = tween(400)
+                    AnimatedContentTransitionScope.SlideDirection.Companion.Left,
+                    animationSpec = tween(500)
                 )},
             exitTransition = {
                 slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Right,
-                    animationSpec = tween(400)
+                    AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                    animationSpec = tween(500)
                 )
             }
             ){

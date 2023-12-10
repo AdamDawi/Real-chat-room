@@ -33,7 +33,7 @@ fun UserScreen(viewModel: UserViewModel,
                navigateToLoginScreen: () -> Unit
 ) {
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {CenterAlignedTopAppBar(title = {
-        Text(text = "Name",
+        Text(text = viewModel.getUserName(),
             fontWeight = FontWeight.ExtraBold,
             fontSize = 24.sp,
             maxLines = 1
@@ -59,7 +59,7 @@ fun UserScreen(viewModel: UserViewModel,
     )}) {
         Column(modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.End
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(modifier = Modifier.padding(it), onClick = { viewModel.signOut(navigateToLoginScreen) }) {
                 Text(text = "SignOut",

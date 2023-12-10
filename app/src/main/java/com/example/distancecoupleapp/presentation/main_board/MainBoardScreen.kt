@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -41,13 +40,14 @@ fun MainBoardScreen(
         ) {
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxHeight()
+                    .fillMaxSize()
                     .weight(10f)
             ) {
                 item { Spacer(modifier = Modifier.height(44.dp)) }
                 item { Spacer(modifier = Modifier.height(2.dp)) }
                 items(state.photoList.size) { index->
-                    PhotoItem(viewModel = viewModel, state = state, index, roomId, navController)
+                    //first index in photo item is the last from photo list
+                    PhotoItem(viewModel = viewModel, state = state, state.photoList.size-1-index, roomId, navController)
                 }
             }
 
@@ -67,5 +67,6 @@ fun MainBoardScreen(
         }
         
     }
+
 
 }
