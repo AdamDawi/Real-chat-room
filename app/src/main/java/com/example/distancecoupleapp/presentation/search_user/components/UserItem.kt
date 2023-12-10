@@ -49,7 +49,7 @@ fun UserItem(
         ){
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.AccountCircle,
-                    contentDescription = null,
+                    contentDescription = "User icon",
                     Modifier.size(50.dp),
                     tint = MaterialTheme.colorScheme.secondary
                 )

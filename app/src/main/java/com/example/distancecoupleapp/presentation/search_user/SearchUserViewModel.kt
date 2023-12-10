@@ -55,7 +55,7 @@ class SearchUserViewModel: ViewModel() {
     }
 
     private fun getChatroomId(userId1: String, userId2: String): String{
-        // Compare user ID hashes to determine their order.
+        // Compare user ID hashes to determine their order in room ID.
         if(userId1.hashCode()<userId2.hashCode()){
             return userId1+"_"+userId2
         }

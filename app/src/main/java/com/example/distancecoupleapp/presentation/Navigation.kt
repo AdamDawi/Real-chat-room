@@ -88,7 +88,7 @@ fun Navigation(
             // Retrieve room ID and photo ID from the navigation arguments
             val roomId = it.arguments?.getString("roomId")?:"Error"
             val photoId = it.arguments?.getString("photoId")?:"Error"
-            CommentsScreen(viewModel(), roomId, photoId)
+            CommentsScreen(viewModel(), roomId, photoId, {navController.popBackStack()})
         }
 
         composable(route = Screen.CameraScreen.route+ "/{roomId}", arguments =

@@ -43,8 +43,7 @@ fun MainBoardScreen(
                     .fillMaxSize()
                     .weight(10f)
             ) {
-                item { Spacer(modifier = Modifier.height(44.dp)) }
-                item { Spacer(modifier = Modifier.height(2.dp)) }
+                item { Spacer(modifier = Modifier.height(46.dp)) }
                 items(state.photoList.size) { index->
                     //first index in photo item is the last from photo list
                     PhotoItem(viewModel = viewModel, state = state, state.photoList.size-1-index, roomId, navController)

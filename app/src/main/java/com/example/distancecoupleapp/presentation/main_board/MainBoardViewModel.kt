@@ -60,6 +60,7 @@ class MainBoardViewModel: ViewModel() {
         return ""
     }
 
+    //function to get two users which make chat room together
     fun getUsersFromDatabase(roomId: String) {
         val userList: ArrayList<User> = ArrayList()
         val postReference = FirebaseManager().getFirebaseDatabaseUserReference()
@@ -79,11 +80,10 @@ class MainBoardViewModel: ViewModel() {
                         userList.add(user)
                     }
                 }
+                //only 2 users can be in userList
                 mainBoardState = mainBoardState.copy(user1 = userList[0])
                 mainBoardState = mainBoardState.copy(user2 = userList[1])
-
             }
-
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.w(ContentValues.TAG, "loadPost:onCancelled", databaseError.toException())
             }
@@ -113,6 +113,7 @@ class MainBoardViewModel: ViewModel() {
         val diffInWeeks = diffInDays / 7
         val diffInMonths = diffInDays / 30
 
+        //return readable date
         return when {
             diffInMonths > 12 -> SimpleDateFormat("dd-MM-yyyy").format(photoDate)
             diffInMonths > 1 -> "$diffInMonths months ago"
@@ -130,15 +131,9 @@ class MainBoardViewModel: ViewModel() {
     }
 
     fun backButton(navController: NavController){
-        if(mainBoardState.buttonEnabled){
-            changeButtonEnabledState(false)
-            navController.popBackStack()
-        }
+        navController.popBackStack()
     }
 
-    private fun changeButtonEnabledState(enabled: Boolean){
-        mainBoardState = mainBoardState.copy(buttonEnabled = enabled)
-    }
 
     fun getUserNameById(id: String): String{
         return if(mainBoardState.user1.id==id) mainBoardState.user1.username else mainBoardState.user2.username

@@ -3,7 +3,9 @@ package com.example.distancecoupleapp.presentation.search_user
 import com.example.distancecoupleapp.data.User
 
 data class SearchUserState(
+    //logged user name
     var name: String = "",
+    //text from search field on the screen
     var searchUserField: String = "",
     //stores user list from database
     var userList: ArrayList<User> = ArrayList(),

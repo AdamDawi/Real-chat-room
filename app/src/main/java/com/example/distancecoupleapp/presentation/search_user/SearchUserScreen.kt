@@ -43,7 +43,7 @@ fun SearchUserScreen(
     navController: NavController
 ) {
     val state = viewModel.searchUserState
-
+    
     Column(modifier = Modifier
         .fillMaxSize()
         .background(colorScheme.background)
