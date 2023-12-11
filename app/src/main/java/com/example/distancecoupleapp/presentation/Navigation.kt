@@ -41,12 +41,12 @@ fun Navigation(
             enterTransition = {
                 slideIntoContainer(
                     AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-                    animationSpec = tween(500)
+                    animationSpec = tween(500),
                 )},
             exitTransition = {
                 slideOutOfContainer(
                     AnimatedContentTransitionScope.SlideDirection.Companion.Left,
-                    animationSpec = tween(500)
+                    animationSpec = tween(500),
                 )
             }
             ){
@@ -88,7 +88,7 @@ fun Navigation(
             // Retrieve room ID and photo ID from the navigation arguments
             val roomId = it.arguments?.getString("roomId")?:"Error"
             val photoId = it.arguments?.getString("photoId")?:"Error"
-            CommentsScreen(viewModel(), roomId, photoId, {navController.popBackStack()})
+            CommentsScreen(viewModel(), roomId, photoId) { navController.popBackStack() }
         }
 
         composable(route = Screen.CameraScreen.route+ "/{roomId}", arguments =
@@ -124,6 +124,8 @@ fun Navigation(
             )
         }
     }
+    
 
 
 }
+
