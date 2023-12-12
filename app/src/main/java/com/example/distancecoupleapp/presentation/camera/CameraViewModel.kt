@@ -39,6 +39,10 @@ class CameraViewModel: ViewModel() {
         cameraState = cameraState.copy(isLoading = isLoading)
     }
 
+    fun changeDescriptionState(newText: String){
+        cameraState = cameraState.copy(descriptionTextField = newText)
+    }
+
     fun changeIconState(controller: LifecycleCameraController){
         val newImageVector = when (controller.imageCaptureFlashMode) {
             ImageCapture.FLASH_MODE_OFF -> Icons.Default.FlashOff
@@ -66,8 +70,9 @@ class CameraViewModel: ViewModel() {
         changeIconState(controller)
     }
 
-    private fun addPhoto(imageUrl: String, description: String, roomId: String, navController: NavController) {
+    fun addPhotoToDatabase(description: String, roomId: String, navController: NavController) {
         val ownerId = auth.currentUser?.uid
+        val imageUrl = cameraState.imageUrl
 
         if (ownerId != null) {
             //make unique photo id and add it to photos in database
@@ -90,9 +95,7 @@ class CameraViewModel: ViewModel() {
     }
     fun takePhoto(
         controller: LifecycleCameraController,
-        context: Context,
-        roomId: String,
-        navController: NavController
+        context: Context
     ) {
         controller.takePicture(
             ContextCompat.getMainExecutor(context),
@@ -117,7 +120,7 @@ class CameraViewModel: ViewModel() {
                     //loading is true when you taking photo
                     changeIsLoadingState(true)
                     cameraState = cameraState.copy(image = rotatedBitmap)
-                    uploadBitmapToFirebase(rotatedBitmap, roomId, navController)
+                    uploadBitmapToFirebaseStore(rotatedBitmap)
                 }
 
                 override fun onError(exception: ImageCaptureException) {
@@ -128,7 +131,7 @@ class CameraViewModel: ViewModel() {
         )
     }
 
-    fun uploadBitmapToFirebase(bitmap: Bitmap, roomId: String, navController: NavController) {
+    fun uploadBitmapToFirebaseStore(bitmap: Bitmap) {
         // converting bitmap to jpeg
         val stream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream)
@@ -150,8 +153,8 @@ class CameraViewModel: ViewModel() {
             //if success downloading url to photo in storage
             imageRef.downloadUrl.addOnSuccessListener { uri ->
                 val imageUrl = uri.toString()
-                Log.e("Picture", imageUrl)
-                addPhoto(imageUrl, "Description", roomId, navController)
+                cameraState = cameraState.copy(isPhotoTaken = true, imageUrl = imageUrl)
+                //addPhotoToDatabase(imageUrl, "Description", roomId, navController)
             }
         }.addOnFailureListener { e ->
             Log.e("Uploading photo to firebase store", e.message?:"Failure")

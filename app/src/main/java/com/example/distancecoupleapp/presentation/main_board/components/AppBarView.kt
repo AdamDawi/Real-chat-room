@@ -42,7 +42,8 @@ fun AppBarView(navController: NavController, viewModel: MainBoardViewModel) {
             titleContentColor = Secondary,
         ),
         navigationIcon = {
-            IconButton(onClick = { viewModel.backButton(navController) }) {
+            IconButton(onClick = {
+                    viewModel.backButton(navController) }) {
                 Icon(
                     imageVector = Icons.Default.Group,
                     contentDescription = "Back button",

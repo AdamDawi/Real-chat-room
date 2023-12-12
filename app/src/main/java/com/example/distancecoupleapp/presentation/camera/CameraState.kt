@@ -10,5 +10,10 @@ data class CameraState (
     var isLoading: Boolean = false,
     //image displayed after taking a photo
     //default value is bitmap with params
-    var image: Bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+    var image: Bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888),
+    //change elements on the screen
+    var isPhotoTaken: Boolean = false,
+    //image URL from firebase data store
+    var imageUrl: String = "",
+    var descriptionTextField: String = ""
 )
