@@ -121,6 +121,7 @@ fun Navigation(
                 { navController.popBackStack() },
                 // Navigate to the previous screen (login screen)
                 navigateToLoginScreen = { navController.navigate(Screen.LoginScreen.route) },
+                context
             )
         }
     }

@@ -1,5 +1,6 @@
 package com.example.distancecoupleapp.presentation.user
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -28,10 +30,13 @@ import com.example.distancecoupleapp.presentation.theme.Secondary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserScreen(viewModel: UserViewModel,
-               popToSearchScreen: () -> Unit,
-               navigateToLoginScreen: () -> Unit
+fun UserScreen(
+    viewModel: UserViewModel,
+    popToSearchScreen: () -> Unit,
+    navigateToLoginScreen: () -> Unit,
+    context: Context
 ) {
+    val state = viewModel.userState
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {CenterAlignedTopAppBar(title = {
         Text(text = viewModel.getUserName(),
             fontWeight = FontWeight.ExtraBold,
@@ -58,10 +63,19 @@ fun UserScreen(viewModel: UserViewModel,
         }
     )}) {
         Column(modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Bottom,
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Button(modifier = Modifier.padding(it), onClick = { viewModel.signOut(navigateToLoginScreen) }) {
+            OutlinedTextField(value = state.userName,
+                onValueChange = {viewModel.changeUsernameState(it)})
+            //change user name
+            Button(modifier = Modifier.padding(8.dp), onClick = { viewModel.changeUsername(state.userName, context) }) {
+                Text(text = "Change username",
+                    fontWeight = FontWeight.Bold,
+                    color = Secondary)
+            }
+            Button(modifier = Modifier.padding(it), onClick = { viewModel.signOut(navigateToLoginScreen) },
+            ) {
                 Text(text = "SignOut",
                     fontWeight = FontWeight.Bold,
                     color = Color.Red)

@@ -171,7 +171,8 @@ fun CameraScreen(viewModel: CameraViewModel,
             }
 
             Row(modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(8.dp),
                 verticalAlignment = Alignment.Bottom
             ) {
                 Column{
@@ -180,9 +181,9 @@ fun CameraScreen(viewModel: CameraViewModel,
                         modifier = Modifier
                             .border(BorderStroke(0.dp, Color.Transparent))
                             .clip(RoundedCornerShape(10.dp))
-                            .background(MaterialTheme.colorScheme.background)
+                            .background(MaterialTheme.colorScheme.primary)
                             .fillMaxWidth()
-                            .height(180.dp),
+                            .height(150.dp),
                         placeholder = { Text("Description") },
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             textColor = MaterialTheme.colorScheme.secondary,
@@ -195,7 +196,7 @@ fun CameraScreen(viewModel: CameraViewModel,
                     Row(modifier = Modifier
                         .fillMaxWidth()
                         .background(CustomBackground)
-                        .padding(bottom = 10.dp),
+                        .padding(bottom = 10.dp, top = 10.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
 
