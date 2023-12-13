@@ -44,6 +44,17 @@ class MainBoardViewModel: ViewModel() {
                 }
                 mainBoardState = mainBoardState.copy(photoList = photoList)
 
+                //first time getting photos from database filling descriptionExpandedList with false values
+                if(mainBoardState.descriptionExpandedList.isNotEmpty()){
+                    //add only particular amount of photos
+                    val newArray = mainBoardState.descriptionExpandedList
+                    for (i in 1..photoList.size-newArray.size)
+                        newArray.add(false)
+                    mainBoardState = mainBoardState.copy(descriptionExpandedList = newArray)
+                }else{
+                    mainBoardState = mainBoardState.copy(descriptionExpandedList = ArrayList(List(photoList.size){ false }))
+                }
+
             }
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.w(ContentValues.TAG, "loadPost:onCancelled", databaseError.toException())
@@ -139,6 +150,13 @@ class MainBoardViewModel: ViewModel() {
         return if(mainBoardState.user1.id==id) mainBoardState.user1.username else mainBoardState.user2.username
     }
 
+    fun changeDescriptionExpandedState(index: Int) {
+        val newArray = ArrayList(mainBoardState.descriptionExpandedList)
+        newArray[index] = !mainBoardState.descriptionExpandedList[index]
+
+        mainBoardState = mainBoardState.copy(descriptionExpandedList = newArray)
+
+    }
 
 
 }

@@ -28,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImagePainter
@@ -96,7 +97,11 @@ fun PhotoItem(
         Text(
             text = state.photoList[index].description,
             color = MaterialTheme.colorScheme.secondary,
-            modifier = Modifier.padding(start = 8.dp)
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .clickable { viewModel.changeDescriptionExpandedState(index) },
+            maxLines = if(!state.descriptionExpandedList[index]) 1 else 10,
+            overflow = TextOverflow.Ellipsis
         )
         Text(text = "Add a comment...",
             color = Grey,

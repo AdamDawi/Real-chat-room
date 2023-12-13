@@ -42,7 +42,7 @@ class UserViewModel: ViewModel() {
 
     fun changeUsername(newName: String, context: Context){
         val user = auth.currentUser
-        if(user!=null){
+        if(user!=null && newName.isNotEmpty()){
             val profileUpdates = userProfileChangeRequest {
                 displayName = newName
             }
@@ -63,7 +63,10 @@ class UserViewModel: ViewModel() {
             database.updateChildren(childUpdates)
 
             Toast.makeText(context, "Username changed ", Toast.LENGTH_SHORT).show()
-        }else{
+        }else if(newName.isEmpty()){
+            Toast.makeText(context, "Username can't be empty ", Toast.LENGTH_SHORT).show()
+        }
+        else{
             Log.e("change username", "current user is null")
         }
 
