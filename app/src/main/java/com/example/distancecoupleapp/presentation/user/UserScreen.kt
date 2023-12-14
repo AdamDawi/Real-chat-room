@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.distancecoupleapp.presentation.theme.Secondary
@@ -48,7 +49,8 @@ fun UserScreen(
         Text(text = viewModel.getUserName(),
             fontWeight = FontWeight.ExtraBold,
             fontSize = 24.sp,
-            maxLines = 1
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         ) },
         modifier = Modifier
             .padding(top = 10.dp, bottom = 10.dp)

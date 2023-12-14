@@ -140,6 +140,7 @@ fun CameraScreen(viewModel: CameraViewModel,
                         context
                     )
                 }
+                //for custom ripple effect u must clip and set border shape
                 .indication(interactionSource = MutableInteractionSource(), rememberRipple(radius = 50.dp))
             )
 

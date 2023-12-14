@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -34,7 +35,8 @@ fun AppBarView(navController: NavController, viewModel: MainBoardViewModel) {
         Text(text = "Room with: ${viewModel.checkRoomWithUser()}",
             fontWeight = FontWeight.ExtraBold,
             fontSize = 24.sp,
-            maxLines = 1
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         ) },
         modifier = Modifier
             .padding(top = 10.dp, bottom = 10.dp)

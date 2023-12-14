@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -57,10 +58,16 @@ fun UserItem(
                 Column(verticalArrangement = Arrangement.Center) {
                     Text(text = state.filteredUserList[index].email,
                         color = MaterialTheme.colorScheme.secondary,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.width(150.dp)
                     )
                     Text(text = state.filteredUserList[index].username,
-                        color = Grey
+                        color = Grey,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.width(150.dp)
                     )
                 }
             }

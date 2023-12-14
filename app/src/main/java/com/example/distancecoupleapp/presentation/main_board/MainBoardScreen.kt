@@ -84,6 +84,7 @@ fun MainBoardScreen(
                         viewModel.navigateToCameraScreen(navController, roomId)
                     }
                     .align(Alignment.BottomCenter)
+                    //for custom ripple effect u must clip and set border shape
                     .indication(interactionSource = MutableInteractionSource(), rememberRipple(radius = 50.dp))
                 )
                 Spacer(modifier = Modifier.height(5.dp))
