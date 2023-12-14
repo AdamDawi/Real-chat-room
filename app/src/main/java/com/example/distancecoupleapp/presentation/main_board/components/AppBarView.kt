@@ -1,5 +1,7 @@
 package com.example.distancecoupleapp.presentation.main_board.components
 
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -7,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Person2
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -46,7 +49,7 @@ fun AppBarView(navController: NavController, viewModel: MainBoardViewModel) {
                     viewModel.backButton(navController) }) {
                 Icon(
                     imageVector = Icons.Default.Group,
-                    contentDescription = "Back button",
+                    contentDescription = "Go to search user screen",
                     tint = Secondary,
                     modifier = Modifier.size(28.dp)
                 )
@@ -56,7 +59,7 @@ fun AppBarView(navController: NavController, viewModel: MainBoardViewModel) {
             IconButton(onClick = { navController.navigate(Screen.UserScreen.route) }) {
                 Icon(
                     imageVector = Icons.Default.Person2,
-                    contentDescription = "Account button",
+                    contentDescription = "Go to account screen",
                     tint = Secondary,
                     modifier = Modifier.size(28.dp)
                 )

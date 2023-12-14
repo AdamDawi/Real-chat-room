@@ -8,6 +8,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +27,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cameraswitch
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -130,12 +133,14 @@ fun CameraScreen(viewModel: CameraViewModel,
             Box(modifier = Modifier
                 .border(7.dp, Color.White, CircleShape)
                 .size(90.dp)
+                .clip(CircleShape)
                 .clickable {
                     viewModel.takePhoto(
                         controller = controller,
                         context
                     )
                 }
+                .indication(interactionSource = MutableInteractionSource(), rememberRipple(radius = 50.dp))
             )
 
             IconButton(

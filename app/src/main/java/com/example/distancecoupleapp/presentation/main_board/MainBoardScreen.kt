@@ -3,6 +3,8 @@ package com.example.distancecoupleapp.presentation.main_board
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,10 +14,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -70,16 +74,19 @@ fun MainBoardScreen(
         }
             AppBarView(navController, viewModel)
 
-            Column(modifier = Modifier.align(Alignment.BottomCenter)) {
+
                 Box(modifier = Modifier
-                    .border(7.dp, Color.White, CircleShape)
                     .size(80.dp)
-                    .clickable {
+                    .clip(CircleShape)
+                    .background(Color.Transparent)
+                    .border(7.dp, Color.White, CircleShape)
+                    .clickable{
                         viewModel.navigateToCameraScreen(navController, roomId)
                     }
-                    .background(Color.Transparent)
+                    .align(Alignment.BottomCenter)
+                    .indication(interactionSource = MutableInteractionSource(), rememberRipple(radius = 50.dp))
                 )
                 Spacer(modifier = Modifier.height(5.dp))
-            }
+
     }
 }
