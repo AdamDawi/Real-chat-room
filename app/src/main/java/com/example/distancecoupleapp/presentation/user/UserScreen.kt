@@ -62,19 +62,19 @@ fun UserScreen(
             }
         }
     )}) {
-        Column(modifier = Modifier.fillMaxSize(),
+        Column(modifier = Modifier.fillMaxSize().padding(it),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedTextField(value = state.userName,
-                onValueChange = {viewModel.changeUsernameState(it)})
+                onValueChange = {newName -> viewModel.changeUsernameState(newName)})
             //change user name
             Button(modifier = Modifier.padding(8.dp), onClick = { viewModel.changeUsername(state.userName, context) }) {
                 Text(text = "Change username",
                     fontWeight = FontWeight.Bold,
                     color = Secondary)
             }
-            Button(modifier = Modifier.padding(it), onClick = { viewModel.signOut(navigateToLoginScreen) },
+            Button(onClick = { viewModel.signOut(navigateToLoginScreen) },
             ) {
                 Text(text = "SignOut",
                     fontWeight = FontWeight.Bold,

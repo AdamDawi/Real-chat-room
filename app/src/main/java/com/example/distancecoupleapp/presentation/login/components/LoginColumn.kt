@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -52,7 +56,16 @@ fun LoginColumn(
             focusedBorderColor = Color.Transparent,
             unfocusedBorderColor = Color.Transparent
         ),
-        maxLines = 3
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Go
+        ),
+        keyboardActions = KeyboardActions(
+            onGo = {
+                viewModel.signIn(context) //navigate to next screen if sign in is success
+            }
+        )
         )
     Button(
         modifier = Modifier
@@ -60,9 +73,7 @@ fun LoginColumn(
             .fillMaxWidth()
             .height(52.dp),
         onClick = {
-            viewModel.changeIsLoadingState(true)
             viewModel.signIn(context) //navigate to next screen if sign in is success
-            viewModel.changeIsLoadingState(false)
         }) {
         Text("Log in",
             color = MaterialTheme.colorScheme.secondary,

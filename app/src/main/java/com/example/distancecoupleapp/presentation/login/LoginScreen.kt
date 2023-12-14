@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -30,6 +32,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.distancecoupleapp.presentation.login.components.LoginColumn
@@ -117,6 +121,21 @@ fun LoginScreen(viewModel: LoginViewModel,
                             cursorColor = MaterialTheme.colorScheme.secondary,
                             focusedBorderColor = Color.Transparent,
                             unfocusedBorderColor = Color.Transparent
+                        ),
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Email,
+                            imeAction = ImeAction.Go
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onGo = {
+                                //because we have shared email text field for login screen and register screen
+                                if(state.isRegistering) {
+                                    viewModel.createAccount(context) //navigate to next screen if sign in is success
+                                }else{
+                                    viewModel.signIn(context) //navigate to next screen if sign in is success
+                                }
+                            }
                         )
                     )
                     if (state.isRegistering) {

@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -19,6 +21,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,7 +54,16 @@ fun RegisterColumn(
             focusedBorderColor = Color.Transparent,
             unfocusedBorderColor = Color.Transparent
         ),
-        maxLines = 3
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(
+            capitalization = KeyboardCapitalization.Words,
+            imeAction = ImeAction.Go
+        ),
+        keyboardActions = KeyboardActions(
+            onGo = {
+                viewModel.createAccount(context) //navigate to next screen if sign in is success
+            }
+        )
     )
     Spacer(modifier = Modifier.height(12.dp))
     OutlinedTextField(value = state.password,
@@ -70,7 +83,15 @@ fun RegisterColumn(
             focusedBorderColor = Color.Transparent,
             unfocusedBorderColor = Color.Transparent
         ),
-        maxLines = 3
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Go
+        ),
+        keyboardActions = KeyboardActions(
+            onGo = {
+                viewModel.createAccount(context) //navigate to next screen if sign in is success
+            }
+        )
         )
 
     Button(
@@ -78,7 +99,10 @@ fun RegisterColumn(
             .padding(top = 50.dp)
             .fillMaxWidth()
             .height(52.dp),
-        onClick = {viewModel.createAccount(context) }) {
+        onClick = {
+            viewModel.createAccount(context)
+        }
+    ) {
         Text("Register",
             color = MaterialTheme.colorScheme.secondary,
             fontSize = 16.sp)

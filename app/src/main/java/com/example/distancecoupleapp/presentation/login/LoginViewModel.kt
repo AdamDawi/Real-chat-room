@@ -33,11 +33,11 @@ class LoginViewModel: ViewModel(){
             loginState = loginState.copy(isLogged = true)
         }
     }
-
-    fun changeIsLoadingState(s: Boolean){
+    // Methods to update specific fields in the login state
+    private fun changeIsLoadingState(s: Boolean){
         loginState = loginState.copy(isLoading = s)
     }
-    // Methods to update specific fields in the login state
+
     fun changeEmailState(newEmail: String){
         loginState = loginState.copy(email = newEmail)
     }
@@ -59,6 +59,7 @@ class LoginViewModel: ViewModel(){
     }
 
     fun createAccount(context: Context){
+        changeIsLoadingState(true)
         if(loginState.email.isNotEmpty()
             && loginState.password.isNotEmpty()
             && (!loginState.isRegistering
@@ -89,9 +90,11 @@ class LoginViewModel: ViewModel(){
                 }
         }
         else Toast.makeText(context, "Field is empty", Toast.LENGTH_SHORT).show()
+        changeIsLoadingState(false)
     }
 
     fun signIn(context: Context){
+        changeIsLoadingState(true)
         if(loginState.email.isNotEmpty() && loginState.password.isNotEmpty() ){
             auth.signInWithEmailAndPassword(loginState.email, loginState.password)
                 .addOnCompleteListener{ task ->
@@ -108,6 +111,7 @@ class LoginViewModel: ViewModel(){
             }
         }
         else Toast.makeText(context, "Field is empty", Toast.LENGTH_SHORT).show()
+        changeIsLoadingState(false)
     }
 
     // Update the username in the Firebase user profile
