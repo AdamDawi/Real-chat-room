@@ -20,6 +20,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cameraswitch
 import androidx.compose.material.icons.filled.Send
@@ -40,6 +42,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -158,8 +162,10 @@ fun CameraScreen(viewModel: CameraViewModel,
                     .fillMaxWidth()
                     .fillMaxHeight()
                     .background(Color.Black)
-                    .padding(bottom = 250.dp, top = 8.dp)
+                    .padding(bottom = 250.dp, top = 20.dp)
+                    .padding(start = 20.dp, end = 20.dp)
                     .clip(RoundedCornerShape(19.dp))
+
 
             ) {
                 Image(
@@ -180,10 +186,10 @@ fun CameraScreen(viewModel: CameraViewModel,
                         onValueChange = {viewModel.changeDescriptionState(it) },
                         modifier = Modifier
                             .border(BorderStroke(0.dp, Color.Transparent))
-                            .clip(RoundedCornerShape(10.dp))
+                            .clip(RoundedCornerShape(16.dp))
                             .background(MaterialTheme.colorScheme.primary)
                             .fillMaxWidth()
-                            .height(150.dp),
+                            .height(140.dp),
                         placeholder = { Text("Description") },
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             textColor = MaterialTheme.colorScheme.secondary,
@@ -191,12 +197,24 @@ fun CameraScreen(viewModel: CameraViewModel,
                             focusedBorderColor = Color.Transparent,
                             unfocusedBorderColor = Color.Transparent
                         ),
-                        maxLines = 6
+                        maxLines = 6,
+                        keyboardOptions = KeyboardOptions(
+                            imeAction = ImeAction.Send
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onSend = {
+                                viewModel.addPhotoToDatabase(state.descriptionTextField, roomId, navController)
+                            }
+                        )
+                    )
+                    Text(text = "${state.descriptionTextField.length} / 210",
+                    modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.End
                     )
                     Row(modifier = Modifier
                         .fillMaxWidth()
                         .background(CustomBackground)
-                        .padding(bottom = 10.dp, top = 10.dp),
+                        .padding(top = 10.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
 

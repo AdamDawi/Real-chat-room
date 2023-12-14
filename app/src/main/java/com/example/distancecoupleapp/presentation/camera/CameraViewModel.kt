@@ -40,7 +40,9 @@ class CameraViewModel: ViewModel() {
     }
 
     fun changeDescriptionState(newText: String){
-        cameraState = cameraState.copy(descriptionTextField = newText)
+        if(newText.length<=210){
+            cameraState = cameraState.copy(descriptionTextField = newText)
+        }
     }
 
     fun changeIconState(controller: LifecycleCameraController){
