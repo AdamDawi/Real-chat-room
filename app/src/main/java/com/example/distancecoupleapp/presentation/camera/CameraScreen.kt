@@ -231,7 +231,7 @@ fun CameraScreen(viewModel: CameraViewModel,
                         ) {
                             Text(text = "Upload ",
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 40.sp,
+                                fontSize = 30.sp,
                                 color = Secondary)
                             Icon(imageVector = Icons.Default.Send,
                                 contentDescription = "Image",

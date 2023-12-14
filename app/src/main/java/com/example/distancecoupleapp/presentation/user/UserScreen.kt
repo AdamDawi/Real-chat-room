@@ -6,7 +6,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -71,7 +73,7 @@ fun UserScreen(
             }
         }
     )}) {
-        Column(modifier = Modifier.fillMaxSize().padding(it),
+        Column(modifier = Modifier.fillMaxSize().padding(it).padding(16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -80,6 +82,8 @@ fun UserScreen(
                         newName -> viewModel.changeUsernameState(newName)
                 },
                 modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
                     .border(BorderStroke(0.dp, Color.Transparent))
                     .clip(RoundedCornerShape(10.dp))
                     .background(MaterialTheme.colorScheme.primary),
@@ -93,16 +97,29 @@ fun UserScreen(
                 singleLine = true
             )
             //change user name
-            Button(modifier = Modifier.padding(8.dp), onClick = { viewModel.changeUsername(state.userName, context) }) {
+            Button(modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+                onClick = { viewModel.changeUsername(state.userName, context) },
+                shape = RoundedCornerShape(10.dp),
+                contentPadding = PaddingValues(12.dp)
+            ) {
                 Text(text = "Change username",
                     fontWeight = FontWeight.Bold,
-                    color = Secondary)
+                    color = Secondary,
+                    fontSize = 18.sp)
             }
             Button(onClick = { viewModel.signOut(navigateToLoginScreen) },
+                shape = RoundedCornerShape(10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                contentPadding = PaddingValues(12.dp)
             ) {
-                Text(text = "SignOut",
+                Text(text = "Sign out",
                     fontWeight = FontWeight.Bold,
-                    color = Color.Red)
+                    color = Color.Red,
+                    fontSize = 18.sp)
             }
         }
 

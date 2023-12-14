@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.distancecoupleapp.data.FirebaseManager
 import com.example.distancecoupleapp.data.Photo
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -26,41 +28,45 @@ class MainBoardViewModel: ViewModel() {
         private set
 
     fun getPhotosFromDatabase(roomId: String) {
-        val photoList: ArrayList<Photo> = ArrayList()
-        val postReference = FirebaseManager().getFirebaseDatabasePhotosReference(roomId)
+        viewModelScope.launch {
 
-        val photosListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // for all photos in particular room
-                for (photoSnapshot in dataSnapshot.children) {
-                    // getting one user
-                    var photo = photoSnapshot.getValue(Photo::class.java)
-                    photo = photo?.copy(id = photoSnapshot.key ?: "Error")
+            val photoList: ArrayList<Photo> = ArrayList()
+            val postReference = FirebaseManager().getFirebaseDatabasePhotosReference(roomId)
+            val photosListener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // for all photos in particular room
+                    for (photoSnapshot in dataSnapshot.children) {
+                        // getting one user
+                        var photo = photoSnapshot.getValue(Photo::class.java)
+                        photo = photo?.copy(id = photoSnapshot.key ?: "Error")
 
-                    if (photo != null && photo.id!=auth.currentUser?.uid) {
-                        //adding all photos to list without the currently logged in user
-                        photoList.add(photo)
+                        if (photo != null && photo.id!=auth.currentUser?.uid) {
+                            //adding all photos to list without the currently logged in user
+                            photoList.add(photo)
+                        }
                     }
-                }
-                mainBoardState = mainBoardState.copy(photoList = photoList)
+                    mainBoardState = mainBoardState.copy(photoList = photoList)
 
-                //first time getting photos from database filling descriptionExpandedList with false values
-                if(mainBoardState.descriptionExpandedList.isNotEmpty()){
-                    //add only particular amount of photos
-                    val newArray = mainBoardState.descriptionExpandedList
-                    for (i in 1..photoList.size-newArray.size)
-                        newArray.add(false)
-                    mainBoardState = mainBoardState.copy(descriptionExpandedList = newArray)
-                }else{
-                    mainBoardState = mainBoardState.copy(descriptionExpandedList = ArrayList(List(photoList.size){ false }))
-                }
+                    //first time getting photos from database filling descriptionExpandedList with false values
+                    if(mainBoardState.descriptionExpandedList.isNotEmpty()){
+                        //add only particular amount of photos
+                        val newArray = mainBoardState.descriptionExpandedList
+                        for (i in 1..photoList.size-newArray.size)
+                            newArray.add(false)
+                        mainBoardState = mainBoardState.copy(descriptionExpandedList = newArray)
+                    }else{
+                        mainBoardState = mainBoardState.copy(descriptionExpandedList = ArrayList(List(photoList.size){ false }))
+                    }
 
+                }
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.w(ContentValues.TAG, "loadPost:onCancelled", databaseError.toException())
+                }
             }
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w(ContentValues.TAG, "loadPost:onCancelled", databaseError.toException())
-            }
+            postReference.addValueEventListener(photosListener)
         }
-        postReference.addValueEventListener(photosListener)
+
+
     }
     //check which user is current user
     fun checkRoomWithUser(): String{
@@ -73,33 +79,36 @@ class MainBoardViewModel: ViewModel() {
 
     //function to get two users which make chat room together
     fun getUsersFromDatabase(roomId: String) {
-        val userList: ArrayList<User> = ArrayList()
-        val postReference = FirebaseManager().getFirebaseDatabaseUserReference()
-        //retrieve users ids from room id
-        val usersId = roomId.split('_')
+        viewModelScope.launch {
+            val userList: ArrayList<User> = ArrayList()
+            val postReference = FirebaseManager().getFirebaseDatabaseUserReference()
+            //retrieve users ids from room id
+            val usersId = roomId.split('_')
 
-        val usersListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // for all users in database
-                for (userSnapshot in dataSnapshot.children) {
-                    // getting one user
-                    var user = userSnapshot.getValue(User::class.java)
-                    user = user?.copy(id = userSnapshot.key ?: "Error")
+            val usersListener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // for all users in database
+                    for (userSnapshot in dataSnapshot.children) {
+                        // getting one user
+                        var user = userSnapshot.getValue(User::class.java)
+                        user = user?.copy(id = userSnapshot.key ?: "Error")
 
-                    if (user != null && usersId.contains(user.id)) {
-                        //adding to list
-                        userList.add(user)
+                        if (user != null && usersId.contains(user.id)) {
+                            //adding to list
+                            userList.add(user)
+                        }
                     }
+                    //only 2 users can be in userList
+                    mainBoardState = mainBoardState.copy(user1 = userList[0])
+                    mainBoardState = mainBoardState.copy(user2 = userList[1])
                 }
-                //only 2 users can be in userList
-                mainBoardState = mainBoardState.copy(user1 = userList[0])
-                mainBoardState = mainBoardState.copy(user2 = userList[1])
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.w(ContentValues.TAG, "loadPost:onCancelled", databaseError.toException())
+                }
             }
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w(ContentValues.TAG, "loadPost:onCancelled", databaseError.toException())
-            }
+            postReference.addValueEventListener(usersListener)
         }
-        postReference.addValueEventListener(usersListener)
     }
 
     fun navigateToCommentScreen(navController: NavController, roomId: String, photoId: String){

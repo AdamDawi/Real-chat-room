@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.distancecoupleapp.data.FirebaseManager
 import com.example.distancecoupleapp.data.User
@@ -14,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.launch
 
 class SearchUserViewModel: ViewModel() {
     private val auth: FirebaseAuth = FirebaseManager().getFirebaseAuth()
@@ -23,8 +25,10 @@ class SearchUserViewModel: ViewModel() {
         private set
 
     init {
-        getLoggedUserName()
-        getUsersFromDatabase()
+        viewModelScope.launch {
+            getLoggedUserName()
+            getUsersFromDatabase()
+        }
     }
 
     private fun getLoggedUserName() {

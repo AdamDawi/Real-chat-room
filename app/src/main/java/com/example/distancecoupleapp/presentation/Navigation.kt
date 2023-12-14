@@ -41,7 +41,7 @@ fun Navigation(
             enterTransition = {
                 slideIntoContainer(
                     AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-                    animationSpec = tween(500),
+                    animationSpec = tween(500)
                 )},
             exitTransition = {
                 slideOutOfContainer(

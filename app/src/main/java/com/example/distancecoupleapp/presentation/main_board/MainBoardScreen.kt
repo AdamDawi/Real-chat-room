@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -50,7 +51,7 @@ fun MainBoardScreen(
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .weight(10f),
+                        .weight(10f)
                 ) {
                     item { Spacer(modifier = Modifier.height(46.dp)) }
                     items(state.photoList.size,
@@ -73,21 +74,26 @@ fun MainBoardScreen(
             )
         }
             AppBarView(navController, viewModel)
-
-
-                Box(modifier = Modifier
-                    .size(80.dp)
-                    .clip(CircleShape)
-                    .background(Color.Transparent)
-                    .border(7.dp, Color.White, CircleShape)
-                    .clickable{
-                        viewModel.navigateToCameraScreen(navController, roomId)
-                    }
-                    .align(Alignment.BottomCenter)
-                    //for custom ripple effect u must clip and set border shape
-                    .indication(interactionSource = MutableInteractionSource(), rememberRipple(radius = 50.dp))
+        Column(modifier = Modifier.align(Alignment.BottomCenter)) {
+            Box(modifier = Modifier
+                .size(80.dp)
+                .clip(CircleShape)
+                .background(Color.Transparent)
+                .border(7.dp, Color.White, CircleShape)
+                .clickable {
+                    viewModel.navigateToCameraScreen(navController, roomId)
+                }
+                //for custom ripple effect u must clip and set border shape
+                .indication(
+                    interactionSource = MutableInteractionSource(),
+                    rememberRipple(radius = 50.dp)
                 )
-                Spacer(modifier = Modifier.height(5.dp))
+                .padding(bottom = 1.dp)
+            )
+            Spacer(modifier = Modifier
+                .height(5.dp))
+        }
+
 
     }
 }
