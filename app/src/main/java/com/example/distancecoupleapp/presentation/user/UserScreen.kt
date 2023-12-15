@@ -48,7 +48,8 @@ fun UserScreen(
 ) {
     val state = viewModel.userState
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {CenterAlignedTopAppBar(title = {
-        Text(text = viewModel.getUserName(),
+        //take() because of long name
+        Text(text = viewModel.getUserName().take(15),
             fontWeight = FontWeight.ExtraBold,
             fontSize = 24.sp,
             maxLines = 1,

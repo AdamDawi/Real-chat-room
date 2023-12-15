@@ -54,12 +54,15 @@ fun SearchUserScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Your nick: ${state.name}",
-                color = colorScheme.secondary,
-                fontWeight = FontWeight.Bold,
-                fontSize = 24.sp,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis)
+                Text(
+                    //take() because of long name
+                    text = "Your nick: ${state.name.take(15)}",
+                    color = colorScheme.secondary,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             Spacer(modifier = Modifier.height(20.dp))
 
             OutlinedTextField(

@@ -60,10 +60,13 @@ fun PhotoItem(
             )
             Spacer(modifier = Modifier.width(3.dp))
             Column(verticalArrangement = Arrangement.Center) {
-                Text(
-                    text = viewModel.getUserNameById(state.photoList[index].owner),
-                    color = MaterialTheme.colorScheme.secondary,
-                    fontWeight = FontWeight.Bold
+                    Text(
+                        //take() because of long name
+                        text = viewModel.getUserNameById(state.photoList[index].owner).take(20),
+                        color = MaterialTheme.colorScheme.secondary,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 Text(
                     text = viewModel.convertMillisToReadableDateTime(state.photoList[index].timestamp),

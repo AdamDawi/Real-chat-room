@@ -20,7 +20,7 @@ import com.example.distancecoupleapp.presentation.user.UserScreen
 @Composable
 fun Navigation(
     context: Context
-) {
+){
     // Initialize NavController using rememberNavController() function, which allows maintaining the navigation state
     val navController = rememberNavController()
 

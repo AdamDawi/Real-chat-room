@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.distancecoupleapp.presentation.comments.CommentsState
 import com.example.distancecoupleapp.presentation.comments.CommentsViewModel
@@ -36,21 +37,27 @@ fun CommentItem(
         Icon(Icons.Default.AccountCircle,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.secondary,
-            modifier = Modifier.size(50.dp).align(Alignment.Top)
+            modifier = Modifier
+                .size(50.dp)
+                .align(Alignment.Top)
             )
 
         Spacer(modifier = Modifier.width(3.dp))
 
         Column(verticalArrangement = Arrangement.Center) {
             Row {
-                Text(text = viewModel.getUserNameById(state.commentsList[it].user),
-                    color = MaterialTheme.colorScheme.secondary,
-                    fontWeight = FontWeight.Bold
-                )
+                //take() because of long name
+                    Text(text = viewModel.getUserNameById(state.commentsList[it].user).take(20),
+                        color = MaterialTheme.colorScheme.secondary,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
                 Spacer(modifier = Modifier.width(8.dp))
 
                 Text(text = viewModel.convertMillisToReadableDateTime(state.commentsList[it].timestamp),
-                    color = Gray
+                    color = Gray,
+                    maxLines = 1
                 )
             }
             Text(text = state.commentsList[it].text,
