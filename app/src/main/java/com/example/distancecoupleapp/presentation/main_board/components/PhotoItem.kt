@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
+import com.example.distancecoupleapp.common.Constants
 import com.example.distancecoupleapp.presentation.main_board.MainBoardState
 import com.example.distancecoupleapp.presentation.main_board.MainBoardViewModel
 import com.example.distancecoupleapp.presentation.theme.Grey
@@ -62,7 +63,7 @@ fun PhotoItem(
             Column(verticalArrangement = Arrangement.Center) {
                     Text(
                         //take() because of long name
-                        text = viewModel.getUserNameById(state.photoList[index].owner).take(20),
+                        text = viewModel.getUserNameById(state.photoList[index].owner).take(Constants.MAX_SIZE_OF_NAME_ITEM),
                         color = MaterialTheme.colorScheme.secondary,
                         fontWeight = FontWeight.Bold,
                         maxLines = 1,

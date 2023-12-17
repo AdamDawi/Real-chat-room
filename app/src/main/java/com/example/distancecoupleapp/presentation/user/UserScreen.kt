@@ -7,6 +7,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -36,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.distancecoupleapp.common.Constants
 import com.example.distancecoupleapp.presentation.theme.Secondary
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,7 +52,7 @@ fun UserScreen(
     val state = viewModel.userState
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {CenterAlignedTopAppBar(title = {
         //take() because of long name
-        Text(text = viewModel.getUserName().take(15),
+        Text(text = viewModel.getUserName().take(Constants.MAX_SIZE_OF_NAME_APPBAR),
             fontWeight = FontWeight.ExtraBold,
             fontSize = 24.sp,
             maxLines = 1,
@@ -74,10 +77,19 @@ fun UserScreen(
             }
         }
     )}) {
-        Column(modifier = Modifier.fillMaxSize().padding(it).padding(16.dp),
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(it)
+            .padding(16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Icon(imageVector = Icons.Default.AccountCircle,
+                contentDescription = "Account icon",
+                modifier = Modifier.size(300.dp),
+                tint = Secondary
+            )
+            Spacer(modifier = Modifier.height(12.dp))
             OutlinedTextField(value = state.userName,
                 onValueChange = {
                         newName -> viewModel.changeUsernameState(newName)

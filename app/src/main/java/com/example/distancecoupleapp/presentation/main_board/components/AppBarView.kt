@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.distancecoupleapp.common.Constants
 import com.example.distancecoupleapp.presentation.Screen
 import com.example.distancecoupleapp.presentation.main_board.MainBoardViewModel
 import com.example.distancecoupleapp.presentation.theme.Secondary
@@ -30,7 +31,7 @@ fun AppBarView(navController: NavController, viewModel: MainBoardViewModel) {
 
     CenterAlignedTopAppBar(title = {
         //take() because of long name
-        Text(text = "Room with: ${viewModel.checkRoomWithUser().take(15)}",
+        Text(text = "Room with: ${viewModel.checkRoomWithUser().take(Constants.MAX_SIZE_OF_NAME_APPBAR)}",
             fontWeight = FontWeight.ExtraBold,
             fontSize = 24.sp,
             maxLines = 1,

@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.distancecoupleapp.common.Constants
 import com.example.distancecoupleapp.presentation.search_user.components.UserItem
 
 
@@ -56,7 +57,7 @@ fun SearchUserScreen(
         ) {
                 Text(
                     //take() because of long name
-                    text = "Your nick: ${state.name.take(15)}",
+                    text = "Your nick: ${state.name.take(Constants.MAX_SIZE_OF_NAME_APPBAR)}",
                     color = colorScheme.secondary,
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp,
@@ -110,10 +111,11 @@ fun SearchUserScreen(
                     .weight(10f)) {
                     items(
                         state.filteredUserList.size,
-                        key = {
-                            //increase scrolling efficiency
-                            state.filteredUserList[it].id
-                        },){
+//                        key = {
+//                            //increase scrolling efficiency
+//                            state.filteredUserList[it].id
+//                        }
+                        ){
                         UserItem(viewModel = viewModel, state = state, it, navController)
                     }
                 }

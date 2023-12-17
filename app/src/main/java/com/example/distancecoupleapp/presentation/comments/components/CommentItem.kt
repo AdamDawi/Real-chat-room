@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.example.distancecoupleapp.common.Constants
 import com.example.distancecoupleapp.presentation.comments.CommentsState
 import com.example.distancecoupleapp.presentation.comments.CommentsViewModel
 
@@ -47,7 +48,7 @@ fun CommentItem(
         Column(verticalArrangement = Arrangement.Center) {
             Row {
                 //take() because of long name
-                    Text(text = viewModel.getUserNameById(state.commentsList[it].user).take(20),
+                    Text(text = viewModel.getUserNameById(state.commentsList[it].user).take(Constants.MAX_SIZE_OF_NAME_ITEM),
                         color = MaterialTheme.colorScheme.secondary,
                         fontWeight = FontWeight.Bold,
                         maxLines = 1,
