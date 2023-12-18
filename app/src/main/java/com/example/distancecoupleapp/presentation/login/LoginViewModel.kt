@@ -135,7 +135,7 @@ class LoginViewModel: ViewModel(){
         if(auth.currentUser!=null)
         {
             val currentUserId = auth.currentUser!!.uid
-            val user = User(name, auth.currentUser?.email ?: "Error", currentUserId)
+            val user = User(name, auth.currentUser?.email ?: "Error", currentUserId, "")
 
             val userValues = user.toMap()
             val childUpdates = HashMap<String, Any>()
@@ -150,6 +150,7 @@ class LoginViewModel: ViewModel(){
         return mapOf(
             "username" to username,
             "email" to email,
+            "picture" to picture
         )
     }
 }

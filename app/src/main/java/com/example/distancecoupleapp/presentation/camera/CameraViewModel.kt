@@ -156,7 +156,6 @@ class CameraViewModel: ViewModel() {
             imageRef.downloadUrl.addOnSuccessListener { uri ->
                 val imageUrl = uri.toString()
                 cameraState = cameraState.copy(isPhotoTaken = true, imageUrl = imageUrl)
-                //addPhotoToDatabase(imageUrl, "Description", roomId, navController)
             }
         }.addOnFailureListener { e ->
             Log.e("Uploading photo to firebase store", e.message?:"Failure")

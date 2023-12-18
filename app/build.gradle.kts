@@ -84,6 +84,7 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-database")
 
+    //image loading
     implementation("io.coil-kt:coil-compose:2.4.0")
 
     // Add the dependency for the Cloud Storage library
