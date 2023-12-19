@@ -56,6 +56,10 @@ class UserViewModel: ViewModel() {
         userState = userState.copy(userName = newName)
     }
 
+    fun changeImageState(newState: String){
+        userState = userState.copy(imageState = newState)
+    }
+
     fun changeSelectedImageUriState(uri: Uri?, context: Context){
         if(uri!=null){
             userState = userState.copy(selectedImageUri = uri)
@@ -122,7 +126,7 @@ class UserViewModel: ViewModel() {
         userState = userState.copy(isUploading = true)
         // Firebase storage reference
         val storageRef = FirebaseManager().getFirebaseStoreReference()
-        val imagesRef = storageRef.child("images")
+        val imagesRef = storageRef.child("profile_pictures")
 
         // making unique id with date
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
@@ -147,7 +151,7 @@ class UserViewModel: ViewModel() {
             // Create a storage reference from our app
             val storageRef = FirebaseManager().getFirebaseStoreReference()
             // Create a reference to the file to delete
-            val imagesRef = storageRef.child("images/${extractFileNameFromUrl(imageUrl)}")
+            val imagesRef = storageRef.child("profile_pictures/${extractFileNameFromUrl(imageUrl)}")
 
             // Delete the file
             imagesRef.delete().addOnSuccessListener {

@@ -5,5 +5,6 @@ import android.net.Uri
 data class UserState(
     var userName: String = "",
     var isUploading: Boolean = false,
-    var selectedImageUri: Uri? = null
+    var selectedImageUri: Uri? = null,
+    var imageState: String = "loading"
 )

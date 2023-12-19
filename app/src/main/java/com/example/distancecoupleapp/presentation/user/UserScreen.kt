@@ -48,6 +48,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
 import com.example.distancecoupleapp.common.Constants
 import com.example.distancecoupleapp.presentation.theme.Secondary
 
@@ -110,22 +111,40 @@ fun UserScreen(
                     )
                 }
             ){
-
-                if(state.selectedImageUri!=null){
-                    AsyncImage(
-                        model = state.selectedImageUri,
-                        contentDescription = "Profile picture",
-                        modifier = Modifier.clip(CircleShape),
-                        contentScale = ContentScale.Crop
+                AsyncImage(
+                    model = state.selectedImageUri,
+                    contentDescription = "Profile picture",
+                    modifier = Modifier.clip(CircleShape),
+                    contentScale = ContentScale.Crop,
+                    onState = {
+                        stateAsync ->
+                        when (stateAsync) {
+                            is AsyncImagePainter.State.Error -> viewModel.changeImageState("error")
+                            is AsyncImagePainter.State.Loading -> viewModel.changeImageState("loading")
+                            is AsyncImagePainter.State.Success -> viewModel.changeImageState("success")
+                            else -> {}
+                        }
+                    }
+                )
+                if(state.imageState=="loading"){
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .padding(3.dp)
+                            .align(Alignment.Center),
+                        color = MaterialTheme.colorScheme.secondary
                     )
                 }
-                else{
-                        Icon(modifier = Modifier.fillMaxSize(),
-                            imageVector = Icons.Default.AccountCircle,
-                            contentDescription = "Account icon",
-                            tint = Secondary
-                        )
+                else if(state.imageState=="error"){
+                    Icon(
+                        modifier = Modifier.fillMaxSize(),
+                        imageVector = Icons.Default.AccountCircle,
+                        contentDescription = "Account icon",
+                        tint = Secondary
+                    )
                 }
+
+
                 Icon(modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .size(30.dp),
