@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import com.example.distancecoupleapp.common.Constants
@@ -51,15 +53,49 @@ fun PhotoItem(
             .fillMaxWidth()
             .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Default.AccountCircle,
-                contentDescription = null,
-                modifier = Modifier
+            if(state.currentUserProfilePicture!=null){
+                Box(modifier = Modifier
                     .fillMaxHeight()
                     .height(50.dp)
-                    .aspectRatio(1f),
-                tint = MaterialTheme.colorScheme.secondary
-            )
-            Spacer(modifier = Modifier.width(3.dp))
+                    .aspectRatio(1f)
+                ){
+                    AsyncImage(
+                        model = state.currentUserProfilePicture,
+                        contentDescription = "Profile picture",
+                        modifier = Modifier
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop,
+                        onState = {
+                                stateAsync ->
+                            when (stateAsync) {
+                                is AsyncImagePainter.State.Loading -> viewModel.changeImageState("loading")
+                                is AsyncImagePainter.State.Success -> viewModel.changeImageState("success")
+                                else -> {}
+                            }
+                        }
+                    )
+                    if(state.imageState=="loading"){
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .padding(3.dp)
+                                .align(Alignment.Center),
+                            color = MaterialTheme.colorScheme.secondary
+                        )
+                    }
+                }
+            }else{
+                Icon(Icons.Default.AccountCircle,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .height(50.dp)
+                        .aspectRatio(1f),
+                    tint = MaterialTheme.colorScheme.secondary
+                )
+            }
+
+            Spacer(modifier = Modifier.width(4.dp))
             Column(verticalArrangement = Arrangement.Center) {
                     Text(
                         //take() because of long name

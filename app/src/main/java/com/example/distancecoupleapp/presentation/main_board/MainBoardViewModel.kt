@@ -27,6 +27,10 @@ class MainBoardViewModel: ViewModel() {
     var mainBoardState by mutableStateOf(MainBoardState())
         private set
 
+    fun changeImageState(newState: String){
+        mainBoardState = mainBoardState.copy(imageState = newState)
+    }
+
     fun getPhotosFromDatabase(roomId: String) {
         viewModelScope.launch {
 

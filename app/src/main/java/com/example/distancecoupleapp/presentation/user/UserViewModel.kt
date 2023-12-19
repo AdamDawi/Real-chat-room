@@ -28,7 +28,7 @@ class UserViewModel: ViewModel() {
 
 
     init {
-        getUserProfilePicture()
+        getCurrentUserProfilePicture()
     }
     fun signOut(navigateToLoginScreen: () -> Unit) {
         auth.signOut()
@@ -44,11 +44,18 @@ class UserViewModel: ViewModel() {
         }
         return ""
     }
-    //change profile picture in user auth
-    private fun getUserProfilePicture(){
-        val user = auth.currentUser
-        if(user != null){
-            userState = userState.copy(selectedImageUri = user.photoUrl)
+    private fun getCurrentUserProfilePicture(){
+        val currUser = auth.currentUser
+
+        if(currUser!=null){
+            database.child("users").child(currUser.uid).child("picture").get().addOnSuccessListener {
+                userState = userState.copy(selectedImageUri = it.value.toString())
+            }.addOnFailureListener{
+                Log.e("firebase", "Error getting data", it)
+            }
+
+        }else{
+            Log.e("Get user profile picture", "User is null")
         }
     }
 
@@ -60,10 +67,23 @@ class UserViewModel: ViewModel() {
         userState = userState.copy(imageState = newState)
     }
 
-    fun changeSelectedImageUriState(uri: Uri?, context: Context){
+    fun uploadImageUri(uri: Uri?, context: Context){
         if(uri!=null){
-            userState = userState.copy(selectedImageUri = uri)
-            userState.selectedImageUri?.let { uploadBitmapToFirebaseStore(it, context) }
+            //delete old picture before upload new
+            val selectedImageUri = userState.selectedImageUri
+            if(selectedImageUri!=null){
+                val pictureName = extractFileNameFromUrl(selectedImageUri)
+                if(pictureName!=null){
+                    deleteImageFromFirebaseStorage(pictureName)
+                }else
+                    Log.e("Extract File Name From Url", "Didn't find name in url")
+            }else{
+                Log.e("Delete picture", "Picture is null")
+            }
+            //set new picture for image to display on screen
+            userState = userState.copy(selectedImageUri = uri.toString())
+            //upload picture
+            uploadProfilePictureToFirebaseStorage(uri, context)
         }
     }
 
@@ -98,31 +118,25 @@ class UserViewModel: ViewModel() {
         }
     }
 
-    private fun changeProfilePicture(newPicture: Uri, context: Context) {
+    private fun uploadPictureUriToDatabase(newPictureUri: Uri, context: Context) {
         val user = auth.currentUser
+        if(user!=null){
+            val currentUserId = auth.currentUser!!.uid
+            val userData = User(user.displayName ?: "Error", auth.currentUser?.email ?: "Error", currentUserId, newPictureUri.toString())
 
-        if (user != null) {
-            //delete old image from firebase storage
-            deleteImageFromFirebaseStorage(user.photoUrl.toString())
+            val userValues = userData.toMap()
+            val childUpdates = HashMap<String, Any>()
+            childUpdates["/users/$currentUserId"] = userValues
+            database.updateChildren(childUpdates)
 
-            val profileUpdates = userProfileChangeRequest {
-                photoUri = newPicture
-            }
-
-            user.updateProfile(profileUpdates)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(context, "Profile picture changed ", Toast.LENGTH_SHORT).show()
-                    }else{
-                        Toast.makeText(context, "Profile picture changed failure", Toast.LENGTH_SHORT).show()
-                    }
-                    userState = userState.copy(isUploading = false)
-                }
-        } else {
-            Log.e("change user picture", "current user is null")
+            Toast.makeText(context, "Profile picture changed ", Toast.LENGTH_SHORT).show()
+            userState = userState.copy(isUploading = false)
+        }
+        else{
+            Log.e("change profile picture", "current user is null")
         }
     }
-    private fun uploadBitmapToFirebaseStore(imageUri: Uri, context: Context) {
+    private fun uploadProfilePictureToFirebaseStorage(imageUri: Uri, context: Context) {
         userState = userState.copy(isUploading = true)
         // Firebase storage reference
         val storageRef = FirebaseManager().getFirebaseStoreReference()
@@ -138,9 +152,8 @@ class UserViewModel: ViewModel() {
 
         uploadTask.addOnSuccessListener {
             //if success downloading url to photo in storage
-
             imageRef.downloadUrl.addOnSuccessListener { uri ->
-                changeProfilePicture(uri, context)
+                uploadPictureUriToDatabase(uri, context)
             }
         }.addOnFailureListener { e ->
             Log.e("Uploading picture to firebase store", e.message?:"Failure")
@@ -157,7 +170,7 @@ class UserViewModel: ViewModel() {
             imagesRef.delete().addOnSuccessListener {
                 Log.d("Deleting", "Success")
             }.addOnFailureListener {
-                Log.e("Deleting", "Fail")
+                Log.e("Deleting", "Failure")
             }
         }
 

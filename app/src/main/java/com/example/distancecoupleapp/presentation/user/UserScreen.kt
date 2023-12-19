@@ -63,7 +63,7 @@ fun UserScreen(
     val state = viewModel.userState
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = {uri -> viewModel.changeSelectedImageUriState(uri, context)}
+        onResult = {uri -> viewModel.uploadImageUri(uri, context)}
     )
 
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {CenterAlignedTopAppBar(title = {
@@ -104,17 +104,18 @@ fun UserScreen(
         ) {
             Box(modifier = Modifier
                 .size(250.dp)
-                .clickable {
-                    //picker for photos
-                    singlePhotoPickerLauncher.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                    )
-                }
             ){
                 AsyncImage(
                     model = state.selectedImageUri,
                     contentDescription = "Profile picture",
-                    modifier = Modifier.clip(CircleShape),
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .clickable(enabled = !state.isUploading) {
+                            //picker for photos
+                            singlePhotoPickerLauncher.launch(
+                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                            )
+                        },
                     contentScale = ContentScale.Crop,
                     onState = {
                         stateAsync ->
@@ -135,16 +136,22 @@ fun UserScreen(
                         color = MaterialTheme.colorScheme.secondary
                     )
                 }
-                else if(state.imageState=="error"){
+                else if(state.imageState=="error" || state.selectedImageUri==null){
                     Icon(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(CircleShape)
+                            .clickable(enabled = !state.isUploading) {
+                                //picker for photos
+                                singlePhotoPickerLauncher.launch(
+                                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                )
+                            },
                         imageVector = Icons.Default.AccountCircle,
                         contentDescription = "Account icon",
                         tint = Secondary
                     )
                 }
-
-
                 Icon(modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .size(30.dp),
