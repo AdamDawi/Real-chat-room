@@ -57,8 +57,10 @@ class UserViewModel: ViewModel() {
     }
 
     fun changeSelectedImageUriState(uri: Uri?, context: Context){
-        userState = userState.copy(selectedImageUri = uri)
-        userState.selectedImageUri?.let { uploadBitmapToFirebaseStore(it, context) }
+        if(uri!=null){
+            userState = userState.copy(selectedImageUri = uri)
+            userState.selectedImageUri?.let { uploadBitmapToFirebaseStore(it, context) }
+        }
     }
 
     fun changeUsername(newName: String, context: Context){
@@ -96,6 +98,9 @@ class UserViewModel: ViewModel() {
         val user = auth.currentUser
 
         if (user != null) {
+            //delete old image from firebase storage
+            deleteImageFromFirebaseStorage(user.photoUrl.toString())
+
             val profileUpdates = userProfileChangeRequest {
                 photoUri = newPicture
             }
@@ -129,12 +134,36 @@ class UserViewModel: ViewModel() {
 
         uploadTask.addOnSuccessListener {
             //if success downloading url to photo in storage
+
             imageRef.downloadUrl.addOnSuccessListener { uri ->
                 changeProfilePicture(uri, context)
             }
         }.addOnFailureListener { e ->
             Log.e("Uploading picture to firebase store", e.message?:"Failure")
         }
+    }
+    private fun deleteImageFromFirebaseStorage(imageUrl: String){
+        if(imageUrl!="null"){
+            // Create a storage reference from our app
+            val storageRef = FirebaseManager().getFirebaseStoreReference()
+            // Create a reference to the file to delete
+            val imagesRef = storageRef.child("images/${extractFileNameFromUrl(imageUrl)}")
+
+            // Delete the file
+            imagesRef.delete().addOnSuccessListener {
+                Log.d("Deleting", "Success")
+            }.addOnFailureListener {
+                Log.e("Deleting", "Fail")
+            }
+        }
+
+    }
+
+    private fun extractFileNameFromUrl(url: String): String? {
+        val regex = """image_\d{8}_\d{6}\.jpg""".toRegex()
+        val matchResult = regex.find(url)
+
+        return matchResult?.value
     }
 
     private fun User.toMap(): Map<String, Any> {
