@@ -37,8 +37,8 @@ fun MainBoardScreen(
     roomId: String
 ) {
     val state = viewModel.mainBoardState
-    viewModel.getPhotosFromDatabase(roomId)
     viewModel.getUsersFromDatabase(roomId)
+    viewModel.getPhotosFromDatabase(roomId)
 
     Box(modifier = Modifier.fillMaxSize()
     ) {

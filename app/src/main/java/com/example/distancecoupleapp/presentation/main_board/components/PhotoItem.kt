@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,7 +33,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import com.example.distancecoupleapp.common.Constants
@@ -53,49 +53,47 @@ fun PhotoItem(
             .fillMaxWidth()
             .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically) {
-            if(state.currentUserProfilePicture!=null){
+
                 Box(modifier = Modifier
                     .fillMaxHeight()
-                    .height(50.dp)
+                    .height(40.dp)
                     .aspectRatio(1f)
+                    .clip(CircleShape)
                 ){
-                    AsyncImage(
-                        model = state.currentUserProfilePicture,
-                        contentDescription = "Profile picture",
-                        modifier = Modifier
-                            .clip(CircleShape),
-                        contentScale = ContentScale.Crop,
-                        onState = {
-                                stateAsync ->
-                            when (stateAsync) {
-                                is AsyncImagePainter.State.Loading -> viewModel.changeImageState("loading")
-                                is AsyncImagePainter.State.Success -> viewModel.changeImageState("success")
-                                else -> {}
-                            }
-                        }
-                    )
-                    if(state.imageState=="loading"){
-                        CircularProgressIndicator(
+                    //image state
+                    val painter = rememberAsyncImagePainter(viewModel.getUsersProfilesPictures(state.photoList[index].owner))
+
+                    //display circular progress indicator when image is loading or an error occurs
+                    if(viewModel.getUsersProfilesPictures(state.photoList[index].owner).isNotEmpty()) {
+                        Image(
                             modifier = Modifier
-                                .size(40.dp)
-                                .padding(3.dp)
-                                .align(Alignment.Center),
-                            color = MaterialTheme.colorScheme.secondary
+                                .fillMaxSize()
+                                .aspectRatio(1f)
+                                .clip(CircleShape),
+                            painter = painter,
+                            contentDescription = "profile picture",
+                            contentScale = ContentScale.Crop
+                        )
+                        if (painter.state is AsyncImagePainter.State.Loading) {
+                            CircularProgressIndicator(
+                                modifier = Modifier
+                                    .size(30.dp)
+                                    .align(Alignment.Center),
+                                color = MaterialTheme.colorScheme.secondary
+                            )
+                        }
+
+                    }else if(painter.state is AsyncImagePainter.State.Error || viewModel.getUsersProfilesPictures(state.photoList[index].owner).isEmpty()){
+                        Icon(Icons.Default.AccountCircle,
+                            contentDescription = "Account icon",
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .aspectRatio(1f),
+                            tint = MaterialTheme.colorScheme.secondary
                         )
                     }
                 }
-            }else{
-                Icon(Icons.Default.AccountCircle,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .height(50.dp)
-                        .aspectRatio(1f),
-                    tint = MaterialTheme.colorScheme.secondary
-                )
-            }
-
-            Spacer(modifier = Modifier.width(4.dp))
+            Spacer(modifier = Modifier.width(5.dp))
             Column(verticalArrangement = Arrangement.Center) {
                     Text(
                         //take() because of long name

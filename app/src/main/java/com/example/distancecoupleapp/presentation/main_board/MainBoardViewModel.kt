@@ -30,6 +30,12 @@ class MainBoardViewModel: ViewModel() {
     fun changeImageState(newState: String){
         mainBoardState = mainBoardState.copy(imageState = newState)
     }
+    fun getUsersProfilesPictures(owner: String): String {
+        if(mainBoardState.user1.id==owner){
+            return mainBoardState.user1.picture
+        }
+        return mainBoardState.user2.picture
+    }
 
     fun getPhotosFromDatabase(roomId: String) {
         viewModelScope.launch {
