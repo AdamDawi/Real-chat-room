@@ -53,18 +53,17 @@ fun PhotoItem(
             .fillMaxWidth()
             .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically) {
-
+            //image state
+            val painter = rememberAsyncImagePainter(viewModel.getUsersProfilesPictures(state.photoList[index].owner))
+            if(viewModel.getUsersProfilesPictures(state.photoList[index].owner).isNotEmpty()) {
                 Box(modifier = Modifier
                     .fillMaxHeight()
                     .height(40.dp)
                     .aspectRatio(1f)
                     .clip(CircleShape)
                 ){
-                    //image state
-                    val painter = rememberAsyncImagePainter(viewModel.getUsersProfilesPictures(state.photoList[index].owner))
-
                     //display circular progress indicator when image is loading or an error occurs
-                    if(viewModel.getUsersProfilesPictures(state.photoList[index].owner).isNotEmpty()) {
+
                         Image(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -82,18 +81,21 @@ fun PhotoItem(
                                 color = MaterialTheme.colorScheme.secondary
                             )
                         }
-
-                    }else if(painter.state is AsyncImagePainter.State.Error || viewModel.getUsersProfilesPictures(state.photoList[index].owner).isEmpty()){
-                        Icon(Icons.Default.AccountCircle,
-                            contentDescription = "Account icon",
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .aspectRatio(1f),
-                            tint = MaterialTheme.colorScheme.secondary
-                        )
-                    }
                 }
-            Spacer(modifier = Modifier.width(5.dp))
+                Spacer(modifier = Modifier.width(5.dp))
+            }
+            else if(painter.state is AsyncImagePainter.State.Error || viewModel.getUsersProfilesPictures(state.photoList[index].owner).isEmpty()){
+                Icon(Icons.Default.AccountCircle,
+                    contentDescription = "Account icon",
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .height(45.dp)
+                        .aspectRatio(1f),
+                    tint = MaterialTheme.colorScheme.secondary
+                )
+                Spacer(modifier = Modifier.width(1.dp))
+            }
+
             Column(verticalArrangement = Arrangement.Center) {
                     Text(
                         //take() because of long name

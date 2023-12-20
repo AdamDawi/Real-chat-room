@@ -27,9 +27,6 @@ class MainBoardViewModel: ViewModel() {
     var mainBoardState by mutableStateOf(MainBoardState())
         private set
 
-    fun changeImageState(newState: String){
-        mainBoardState = mainBoardState.copy(imageState = newState)
-    }
     fun getUsersProfilesPictures(owner: String): String {
         if(mainBoardState.user1.id==owner){
             return mainBoardState.user1.picture

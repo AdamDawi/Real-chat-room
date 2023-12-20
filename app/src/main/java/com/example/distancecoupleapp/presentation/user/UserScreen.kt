@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -33,7 +34,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
@@ -66,78 +66,24 @@ fun UserScreen(
         onResult = {uri -> viewModel.uploadImageUri(uri, context)}
     )
 
-    Scaffold(modifier = Modifier.fillMaxSize(), topBar = {CenterAlignedTopAppBar(title = {
-        //take() because of long name
-        Text(text = viewModel.getUserName().take(Constants.MAX_SIZE_OF_NAME_APPBAR),
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 24.sp,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        ) },
-        modifier = Modifier
-            .padding(top = 10.dp, bottom = 10.dp)
-            .heightIn(max = 34.dp)
-            .height(34.dp),
-        colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = Color.Transparent,
-            titleContentColor = Secondary,
-        ),
-        navigationIcon = {
-            IconButton(onClick = { popToSearchScreen() },
-                //u can't click when uploading
-                enabled = !state.isUploading
-                ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back button",
-                    tint = Secondary,
-                    modifier = Modifier.size(28.dp)
-                )
-            }
-        }
-    )}) {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(it)
-            .padding(16.dp),
+    Box(modifier = Modifier
+        .fillMaxSize()
+    ) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(modifier = Modifier
-                .size(250.dp)
-            ){
-                AsyncImage(
-                    model = state.selectedImageUri,
-                    contentDescription = "Profile picture",
+            item { Spacer(modifier = Modifier.height(46.dp)) }
+            item {
+                Box(
                     modifier = Modifier
-                        .clip(CircleShape)
-                        .clickable(enabled = !state.isUploading) {
-                            //picker for photos
-                            singlePhotoPickerLauncher.launch(
-                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                            )
-                        },
-                    contentScale = ContentScale.Crop,
-                    onState = {
-                        stateAsync ->
-                        when (stateAsync) {
-                            is AsyncImagePainter.State.Error -> viewModel.changeImageState("error")
-                            is AsyncImagePainter.State.Loading -> viewModel.changeImageState("loading")
-                            is AsyncImagePainter.State.Success -> viewModel.changeImageState("success")
-                            else -> {}
-                        }
-                    }
-                )
-                if(state.imageState=="loading"){
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .padding(3.dp)
-                            .align(Alignment.Center),
-                        color = MaterialTheme.colorScheme.secondary
-                    )
-                }
-                else if(state.imageState=="error" || state.selectedImageUri==null){
-                    Icon(
+                        .size(250.dp)
+                ) {
+                    AsyncImage(
+                        model = state.selectedImageUri,
+                        contentDescription = "Profile picture",
                         modifier = Modifier
                             .fillMaxSize()
                             .clip(CircleShape)
@@ -147,82 +93,153 @@ fun UserScreen(
                                     PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                                 )
                             },
-                        imageVector = Icons.Default.AccountCircle,
-                        contentDescription = "Account icon",
-                        tint = Secondary
+                        contentScale = ContentScale.Crop,
+                        alignment = Alignment.TopCenter,
+                        onState = { stateAsync ->
+                            when (stateAsync) {
+                                is AsyncImagePainter.State.Error -> viewModel.changeImageState("error")
+                                is AsyncImagePainter.State.Loading -> viewModel.changeImageState("loading")
+                                is AsyncImagePainter.State.Success -> viewModel.changeImageState("success")
+                                else -> {}
+                            }
+                        }
                     )
-                }
-                Icon(modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .size(30.dp),
-                    imageVector = Icons.Default.PhotoCamera,
-                    contentDescription = "Change picture",
-                    tint = Secondary
-                )
-            }
-            Column {
-                //progress bar when picture is uploading
-                if(state.isUploading) {
-                    Box(modifier = Modifier.fillMaxSize()){
+                    if (state.imageState == "loading") {
                         CircularProgressIndicator(
                             modifier = Modifier
                                 .size(40.dp)
                                 .padding(3.dp)
-                                .fillMaxSize()
                                 .align(Alignment.Center),
                             color = MaterialTheme.colorScheme.secondary
                         )
+                    } else if (state.imageState == "error" || state.selectedImageUri == null) {
+                        Icon(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(CircleShape)
+                                .clickable(enabled = !state.isUploading) {
+                                    //picker for photos
+                                    singlePhotoPickerLauncher.launch(
+                                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                    )
+                                },
+                            imageVector = Icons.Default.AccountCircle,
+                            contentDescription = "Account icon",
+                            tint = Secondary
+                        )
                     }
-                }else{
-                    Spacer(modifier = Modifier.height(40.dp))
-                    OutlinedTextField(value = state.userName,
-                        onValueChange = {
-                                newName -> viewModel.changeUsernameState(newName)
-                        },
+                    Icon(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .border(BorderStroke(0.dp, Color.Transparent))
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(MaterialTheme.colorScheme.primary),
-                        placeholder = { Text("Username") },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.secondary,
-                            cursorColor = MaterialTheme.colorScheme.secondary,
-                            focusedBorderColor = Color.Transparent,
-                            unfocusedBorderColor = Color.Transparent
-                        ),
-                        singleLine = true
+                            .align(Alignment.BottomEnd)
+                            .size(30.dp),
+                        imageVector = Icons.Default.PhotoCamera,
+                        contentDescription = "Change picture",
+                        tint = Secondary
                     )
-                    //change user name
-                    Button(modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                        onClick = { viewModel.changeUsername(state.userName, context) },
-                        shape = RoundedCornerShape(10.dp),
-                        contentPadding = PaddingValues(12.dp)
-                    ) {
-                        Text(text = "Change username",
-                            fontWeight = FontWeight.Bold,
-                            color = Secondary,
-                            fontSize = 18.sp)
-                    }
-                    Button(onClick = { viewModel.signOut(navigateToLoginScreen) },
-                        shape = RoundedCornerShape(10.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
-                        contentPadding = PaddingValues(12.dp)
-                    ) {
-                        Text(text = "Sign out",
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Red,
-                            fontSize = 18.sp)
+                }
+                Column {
+                    //progress bar when picture is uploading
+                    if (state.isUploading) {
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            CircularProgressIndicator(
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .padding(3.dp)
+                                    .fillMaxSize()
+                                    .align(Alignment.Center),
+                                color = MaterialTheme.colorScheme.secondary
+                            )
+                        }
+                    } else {
+                        Spacer(modifier = Modifier.height(40.dp))
+                        OutlinedTextField(
+                            value = state.userName,
+                            onValueChange = { newName ->
+                                viewModel.changeUsernameState(newName)
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                                .border(BorderStroke(0.dp, Color.Transparent))
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(MaterialTheme.colorScheme.primary),
+                            placeholder = { Text("Username") },
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = MaterialTheme.colorScheme.secondary,
+                                cursorColor = MaterialTheme.colorScheme.secondary,
+                                focusedBorderColor = Color.Transparent,
+                                unfocusedBorderColor = Color.Transparent
+                            ),
+                            singleLine = true
+                        )
+                        //change user name
+                        Button(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            onClick = { viewModel.changeUsername(state.userName, context) },
+                            shape = RoundedCornerShape(10.dp),
+                            contentPadding = PaddingValues(12.dp)
+                        ) {
+                            Text(
+                                text = "Change username",
+                                fontWeight = FontWeight.Bold,
+                                color = Secondary,
+                                fontSize = 18.sp
+                            )
+                        }
+                        Button(
+                            onClick = { viewModel.signOut(navigateToLoginScreen) },
+                            shape = RoundedCornerShape(10.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            contentPadding = PaddingValues(12.dp)
+                        ) {
+                            Text(
+                                text = "Sign out",
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Red,
+                                fontSize = 18.sp
+                            )
+                        }
                     }
                 }
             }
         }
-
+        CenterAlignedTopAppBar(title = {
+            //take() because of long name
+            Text(
+                text = viewModel.getUserName().take(Constants.MAX_SIZE_OF_NAME_APPBAR),
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 24.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
+            modifier = Modifier
+                .padding(top = 10.dp, bottom = 10.dp)
+                .heightIn(max = 34.dp)
+                .height(34.dp)
+                .align(Alignment.TopCenter),
+            colors = TopAppBarDefaults.smallTopAppBarColors(
+                containerColor = Color.Transparent,
+                titleContentColor = Secondary,
+            ),
+            navigationIcon = {
+                IconButton(
+                    onClick = { popToSearchScreen() },
+                    //u can't click when uploading
+                    enabled = !state.isUploading
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Back button",
+                        tint = Secondary,
+                        modifier = Modifier.size(28.dp)
+                    )
+                }
+            })
     }
 
 }

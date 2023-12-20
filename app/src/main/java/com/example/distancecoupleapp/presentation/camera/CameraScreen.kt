@@ -171,8 +171,6 @@ fun CameraScreen(viewModel: CameraViewModel,
                     .padding(bottom = 250.dp, top = 20.dp)
                     .padding(start = 20.dp, end = 20.dp)
                     .clip(RoundedCornerShape(19.dp))
-
-
             ) {
                 Image(
                     bitmap = state.image.asImageBitmap(),
