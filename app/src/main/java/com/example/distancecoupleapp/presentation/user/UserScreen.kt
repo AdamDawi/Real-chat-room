@@ -72,13 +72,14 @@ fun UserScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(start = 16.dp, end = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            item { Spacer(modifier = Modifier.height(46.dp)) }
+            item { Spacer(modifier = Modifier.height(40.dp)) }
             item {
                 Box(
                     modifier = Modifier
+                        .padding(top = 20.dp)
                         .size(250.dp)
                 ) {
                     AsyncImage(
@@ -214,13 +215,13 @@ fun UserScreen(
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 24.sp,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(top = 5.dp)
             )
         },
             modifier = Modifier
-                .padding(top = 10.dp, bottom = 10.dp)
-                .heightIn(max = 34.dp)
-                .height(34.dp)
+                .heightIn(max = 44.dp)
+                .height(44.dp)
                 .align(Alignment.TopCenter),
             colors = TopAppBarDefaults.smallTopAppBarColors(
                 containerColor = Color.Transparent,

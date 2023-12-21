@@ -53,7 +53,7 @@ fun MainBoardScreen(
                         .fillMaxSize()
                         .weight(10f)
                 ) {
-                    item { Spacer(modifier = Modifier.height(46.dp)) }
+                    item { Spacer(modifier = Modifier.height(40.dp)) }
                     items(state.photoList.size,
                     ) { index->
                         //first index in photo item is the last from photo list

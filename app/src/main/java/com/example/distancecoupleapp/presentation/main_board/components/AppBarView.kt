@@ -1,5 +1,7 @@
 package com.example.distancecoupleapp.presentation.main_board.components
 
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -7,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Person2
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -35,19 +38,24 @@ fun AppBarView(navController: NavController, viewModel: MainBoardViewModel) {
             fontWeight = FontWeight.ExtraBold,
             fontSize = 24.sp,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(top = 5.dp)
         ) },
         modifier = Modifier
-            .padding(top = 10.dp, bottom = 10.dp)
-            .heightIn(max = 34.dp)
-            .height(34.dp),
+            .heightIn(max = 44.dp)
+            .height(44.dp),
         colors = androidx.compose.material3.TopAppBarDefaults.smallTopAppBarColors(
             containerColor = Color.Transparent,
             titleContentColor = Secondary,
         ),
         navigationIcon = {
             IconButton(onClick = {
-                    viewModel.backButton(navController) }) {
+                    viewModel.backButton(navController) },
+                modifier = Modifier.indication(
+                    interactionSource = MutableInteractionSource(),
+                    rememberRipple(bounded = false, radius = 0.5.dp)
+                )
+            ) {
                 Icon(
                     imageVector = Icons.Default.Group,
                     contentDescription = "Go to search user screen",
