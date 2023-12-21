@@ -141,7 +141,10 @@ fun CameraScreen(viewModel: CameraViewModel,
                     )
                 }
                 //for custom ripple effect u must clip and set border shape
-                .indication(interactionSource = MutableInteractionSource(), rememberRipple(radius = 50.dp))
+                .indication(
+                    interactionSource = MutableInteractionSource(),
+                    rememberRipple(radius = 50.dp)
+                )
             )
 
             IconButton(
@@ -169,7 +172,7 @@ fun CameraScreen(viewModel: CameraViewModel,
                     .fillMaxHeight()
                     .background(Color.Black)
                     .padding(bottom = 250.dp, top = 20.dp)
-                    .padding(start = 20.dp, end = 20.dp)
+
                     .clip(RoundedCornerShape(19.dp))
             ) {
                 Image(
@@ -182,7 +185,7 @@ fun CameraScreen(viewModel: CameraViewModel,
 
             Row(modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
+                .padding(12.dp),
                 verticalAlignment = Alignment.Bottom
             ) {
                 Column{
@@ -217,27 +220,47 @@ fun CameraScreen(viewModel: CameraViewModel,
                     )
                     Row(modifier = Modifier
                         .fillMaxWidth()
-                        .background(CustomBackground)
-                        .padding(top = 10.dp),
+                        .background(CustomBackground),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
-
                     ) {
-                        Row(modifier = Modifier.clickable { viewModel.addPhotoToDatabase(state.descriptionTextField, roomId, navController)},
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Text(text = "Upload ",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 30.sp,
-                                color = Secondary)
-                            Icon(imageVector = Icons.Default.Send,
-                                contentDescription = "Image",
-                                tint = Secondary,
-                                modifier = Modifier
-                                    .size(40.dp)
-                            )
-                        }
+                            Box(modifier = Modifier
+                                .clip(CircleShape)
+                                .indication(
+                                    interactionSource = MutableInteractionSource(),
+                                    rememberRipple(radius = 40.dp, bounded = true)
+                                )
+                                .clickable {
+                                    viewModel.addPhotoToDatabase(
+                                        state.descriptionTextField,
+                                        roomId,
+                                        navController
+                                    )
+                                }
+                                .padding(6.dp)
+                            ){
+                                Row(modifier = Modifier
+                                    ,
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Center
+                                ) {
+                                    Text(
+                                        text = "Upload ",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 30.sp,
+                                        color = Secondary
+                                    )
+                                    Icon(
+                                        imageVector = Icons.Default.Send,
+                                        contentDescription = "Image",
+                                        tint = Secondary,
+                                        modifier = Modifier
+                                            .size(40.dp)
+                                    )
+                                }
+                            }
+
+
 
                     }
                 }

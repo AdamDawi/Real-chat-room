@@ -138,6 +138,7 @@ fun UserScreen(
                     )
                 }
                 Column {
+                    Spacer(modifier = Modifier.height(40.dp))
                     //progress bar when picture is uploading
                     if (state.isUploading) {
                         Box(modifier = Modifier.fillMaxSize()) {
@@ -151,7 +152,6 @@ fun UserScreen(
                             )
                         }
                     } else {
-                        Spacer(modifier = Modifier.height(40.dp))
                         OutlinedTextField(
                             value = state.userName,
                             onValueChange = { newName ->
