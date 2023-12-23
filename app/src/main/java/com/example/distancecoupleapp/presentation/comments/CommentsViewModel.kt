@@ -24,6 +24,13 @@ class CommentsViewModel: ViewModel() {
 
     var commentsState by mutableStateOf(CommentsState())
         private set
+
+    fun getUsersProfilesPictures(owner: String): String {
+        if(commentsState.user1.id==owner){
+            return commentsState.user1.picture
+        }
+        return commentsState.user2.picture
+    }
     fun getCommentsFromDatabase(roomId: String, photoId: String) {
         val commentList: ArrayList<Comment> = ArrayList()
         val postReference = FirebaseManager().getFirebaseDatabaseCommentsReference(roomId, photoId)
