@@ -3,6 +3,8 @@ package com.example.distancecoupleapp.presentation.camera
 import android.content.Context
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,10 +39,12 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -117,7 +121,7 @@ fun CameraScreen(viewModel: CameraViewModel,
             IconButton(
                 onClick = {
                     viewModel.changeFlashMode(controller)
-                },
+                          },
                 modifier = Modifier
                     .size(90.dp)
                     .padding(end = 20.dp)
@@ -128,7 +132,9 @@ fun CameraScreen(viewModel: CameraViewModel,
                     modifier = Modifier.size(40.dp),
                     tint = MaterialTheme.colorScheme.secondary
                 )
+
             }
+
 
             Box(modifier = Modifier
                 .border(7.dp, Color.White, CircleShape)
@@ -146,14 +152,21 @@ fun CameraScreen(viewModel: CameraViewModel,
                     rememberRipple(radius = 50.dp)
                 )
             )
-
+            //rotation animation
+            val rotation by animateFloatAsState(
+                targetValue = state.cameraIconRotation,
+                label = "",
+                animationSpec = tween(400)
+            )
             IconButton(
                 onClick = {
                     viewModel.changeCameraMode(controller)
+                    viewModel.changeCameraRotationState()
                 },
                 modifier = Modifier
                     .size(90.dp)
                     .padding(start = 20.dp)
+                    .rotate(rotation)
             ) {
                 Icon(
                     imageVector = Icons.Default.Cameraswitch,

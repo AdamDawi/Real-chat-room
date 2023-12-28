@@ -38,7 +38,23 @@ fun Navigation(
         exitTransition = { ExitTransition.None }
     ){
 
-        composable(route = Screen.LoginScreen.route) {
+        composable(route = Screen.LoginScreen.route,
+            //animations
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        400, easing = EaseIn
+                    )
+                )
+            },
+            exitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        400, easing = EaseOut
+                    )
+                )
+            }
+            ) {
             LoginScreen(
                 viewModel(),
                 context,

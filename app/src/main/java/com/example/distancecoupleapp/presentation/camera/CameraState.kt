@@ -15,5 +15,6 @@ data class CameraState (
     var isPhotoTaken: Boolean = false,
     //image URL from firebase data store
     var imageUrl: String = "",
-    var descriptionTextField: String = ""
+    var descriptionTextField: String = "",
+    var cameraIconRotation: Float = 0f
 )

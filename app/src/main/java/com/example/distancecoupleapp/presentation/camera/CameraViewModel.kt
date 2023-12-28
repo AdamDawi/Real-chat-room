@@ -44,6 +44,9 @@ class CameraViewModel: ViewModel() {
             cameraState = cameraState.copy(descriptionTextField = newText)
         }
     }
+    fun changeCameraRotationState(){
+        cameraState = cameraState.copy(cameraIconRotation = if(cameraState.cameraIconRotation==0f) 360f else 0f)
+    }
 
     fun changeIconState(controller: LifecycleCameraController){
         val newImageVector = when (controller.imageCaptureFlashMode) {
