@@ -103,7 +103,22 @@ fun Navigation(
                 defaultValue = "Error"
                 nullable = false
             }
-        )
+        ),
+            //animations
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        400, easing = EaseIn
+                    )
+                )
+                              },
+            exitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        400, easing = EaseOut
+                    )
+                )
+            }
         ){
             // Retrieve room ID and photo ID from the navigation arguments
             val roomId = it.arguments?.getString("roomId")?:"Error"
@@ -117,7 +132,23 @@ fun Navigation(
                 type = NavType.StringType
                 defaultValue = "Error"
                 nullable = false
-            })){
+            }),
+            //animations
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        400, easing = EaseIn
+                    )
+                )
+            },
+            exitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        400, easing = EaseOut
+                    )
+                )
+            }
+            ){
             // Retrieve room ID from the navigation arguments
             val roomId = it.arguments?.getString("roomId")?:"Error"
             CameraScreen(viewModel(), context, navController, roomId)

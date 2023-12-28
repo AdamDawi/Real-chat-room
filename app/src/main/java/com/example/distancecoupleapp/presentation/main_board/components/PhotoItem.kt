@@ -2,7 +2,7 @@ package com.example.distancecoupleapp.presentation.main_board.components
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color.Companion.Gray
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -139,16 +140,29 @@ fun PhotoItem(
             color = MaterialTheme.colorScheme.secondary,
             modifier = Modifier
                 .padding(start = 8.dp)
-                .animateContentSize { _, _ ->  }
-                .clickable { viewModel.changeDescriptionExpandedState(index) },
+                .animateContentSize { _, _ -> }
+                //click without ripple
+                .pointerInput(Unit) {
+                    detectTapGestures {
+                        viewModel.changeDescriptionExpandedState(index)
+                    }
+                },
             maxLines = if(state.descriptionExpandedList[index]) 10 else 1,
             overflow = TextOverflow.Ellipsis
         )
         Text(text = "Add a comment...",
             color = Grey,
-            modifier = Modifier.clickable {
-                viewModel.navigateToCommentScreen(navController, roomId, state.photoList[index].id)
-            }
+            modifier = Modifier
+                //click without ripple
+                .pointerInput(Unit) {
+                    detectTapGestures {
+                        viewModel.navigateToCommentScreen(
+                            navController,
+                            roomId,
+                            state.photoList[index].id
+                        )
+                    }
+                }
                 .padding(start = 8.dp)
             )
         Spacer(modifier = Modifier.height(12.dp))

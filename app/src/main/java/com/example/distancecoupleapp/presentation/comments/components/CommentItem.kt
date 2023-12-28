@@ -45,7 +45,7 @@ fun CommentItem(
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically) {
+        ) {
         //image state
         val painter = rememberAsyncImagePainter(viewModel.getUsersProfilesPictures(state.commentsList[it].user))
         if(viewModel.getUsersProfilesPictures(state.commentsList[it].user).isNotEmpty()) {
@@ -54,6 +54,7 @@ fun CommentItem(
                 .height(40.dp)
                 .aspectRatio(1f)
                 .clip(CircleShape)
+                .padding(top = 4.dp)
             ){
                 //display circular progress indicator when image is loading or an error occurs
 
@@ -69,7 +70,7 @@ fun CommentItem(
                 if (painter.state is AsyncImagePainter.State.Loading) {
                     CircularProgressIndicator(
                         modifier = Modifier
-                            .size(30.dp)
+                            .size(25.dp)
                             .align(Alignment.Center),
                         color = MaterialTheme.colorScheme.secondary
                     )
@@ -83,7 +84,8 @@ fun CommentItem(
                 modifier = Modifier
                     .fillMaxHeight()
                     .height(45.dp)
-                    .aspectRatio(1f),
+                    .aspectRatio(1f)
+                    .padding(top = 4.dp),
                 tint = MaterialTheme.colorScheme.secondary
             )
             Spacer(modifier = Modifier.width(1.dp))
