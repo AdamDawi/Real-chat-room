@@ -2,7 +2,14 @@ package com.example.distancecoupleapp.presentation
 
 import android.content.Context
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.EaseIn
+import androidx.compose.animation.core.EaseOut
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
@@ -24,7 +31,12 @@ fun Navigation(
     // Initialize NavController using rememberNavController() function, which allows maintaining the navigation state
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Screen.LoginScreen.route ){
+    NavHost(
+        navController = navController,
+        startDestination = Screen.LoginScreen.route,
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None }
+    ){
 
         composable(route = Screen.LoginScreen.route) {
             LoginScreen(
@@ -39,14 +51,22 @@ fun Navigation(
         composable(route = Screen.SearchUserScreen.route,
             //animations
             enterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-                    animationSpec = tween(500)
+                fadeIn(
+                    animationSpec = tween(
+                        300, easing = LinearEasing
+                    )
+                ) + slideIntoContainer(
+                    animationSpec = tween(300, easing = EaseIn),
+                    towards = AnimatedContentTransitionScope.SlideDirection.End
                 )},
             exitTransition = {
-                slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Companion.Left,
-                    animationSpec = tween(500),
+                fadeOut(
+                    animationSpec = tween(
+                        300, easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    animationSpec = tween(300, easing = EaseOut),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start
                 )
             }
             ){
@@ -106,14 +126,22 @@ fun Navigation(
         composable(route = Screen.UserScreen.route,
             //animations
             enterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Companion.Left,
-                    animationSpec = tween(500)
+                fadeIn(
+                    animationSpec = tween(
+                        300, easing = LinearEasing
+                    )
+                ) + slideIntoContainer(
+                    animationSpec = tween(300, easing = EaseIn),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start
                 )},
             exitTransition = {
-                slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-                    animationSpec = tween(500)
+                fadeOut(
+                    animationSpec = tween(
+                        300, easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    animationSpec = tween(300, easing = EaseOut),
+                    towards = AnimatedContentTransitionScope.SlideDirection.End
                 )
             }
             ){

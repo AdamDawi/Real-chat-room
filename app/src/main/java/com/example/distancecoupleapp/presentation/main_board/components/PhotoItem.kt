@@ -1,5 +1,6 @@
 package com.example.distancecoupleapp.presentation.main_board.components
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -132,15 +133,15 @@ fun PhotoItem(
                 contentDescription = "photo",
                 modifier = Modifier.aspectRatio(0.7f),
                 contentScale = ContentScale.Crop)
-
         }
         Text(
             text = state.photoList[index].description,
             color = MaterialTheme.colorScheme.secondary,
             modifier = Modifier
                 .padding(start = 8.dp)
+                .animateContentSize { _, _ ->  }
                 .clickable { viewModel.changeDescriptionExpandedState(index) },
-            maxLines = if(!state.descriptionExpandedList[index]) 1 else 10,
+            maxLines = if(state.descriptionExpandedList[index]) 10 else 1,
             overflow = TextOverflow.Ellipsis
         )
         Text(text = "Add a comment...",

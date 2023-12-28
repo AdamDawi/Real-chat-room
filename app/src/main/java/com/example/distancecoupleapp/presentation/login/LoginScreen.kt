@@ -1,6 +1,7 @@
 package com.example.distancecoupleapp.presentation.login
 
 import android.content.Context
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -41,7 +42,7 @@ import com.example.distancecoupleapp.presentation.login.components.RegisterColum
 import com.example.distancecoupleapp.presentation.theme.Primary
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun LoginScreen(viewModel: LoginViewModel,
                 context: Context,
@@ -138,11 +139,32 @@ fun LoginScreen(viewModel: LoginViewModel,
                             }
                         )
                     )
-                    if (state.isRegistering) {
+                    if (state.isRegistering){
                         RegisterColumn(viewModel = viewModel, state = state, context = context)
-                    } else {
-                            LoginColumn(viewModel = viewModel, state = state, context = context)
+                    }else{
+                        LoginColumn(viewModel = viewModel, state = state, context = context)
                     }
+//                    AnimatedContent(targetState = state.isRegistering,
+//                        transitionSpec = {
+//                            slideInHorizontally(
+//                                initialOffsetX = {
+//                                    if(state.isRegistering) -it else it
+//                                }
+//                            ) with
+//                                    slideOutHorizontally(
+//                                        targetOffsetX = {
+//                                            if(state.isRegistering) it else -it
+//                                        }
+//                                    )
+//                        },
+//                        label = ""
+//                    ) {isVisible ->
+//                        if(isVisible){
+//                            RegisterColumn(viewModel = viewModel, state = state, context = context)
+//                        }else{
+//                            LoginColumn(viewModel = viewModel, state = state, context = context)
+//                        }
+//                    }
                 }
             }
 
