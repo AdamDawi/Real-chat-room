@@ -6,6 +6,7 @@ import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.
 import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.Start
 import androidx.compose.animation.core.EaseIn
 import androidx.compose.animation.core.EaseOut
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -13,7 +14,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,10 +38,12 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -49,7 +52,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.distancecoupleapp.presentation.theme.Primary
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,10 +80,24 @@ fun LoginScreen(viewModel: LoginViewModel,
         ) {
             Row(modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center) {
+                //animations for color
+                val textColor1 by animateFloatAsState(
+                    targetValue = state.registerTextAlpha,
+                    animationSpec = tween(durationMillis = 400), label = ""
+                )
+                val textColor2 by animateFloatAsState(
+                    targetValue = state.loginTextAlpha,
+                    animationSpec = tween(durationMillis = 400), label = ""
+                )
                 Text(
                     text = "Register",
-                    Modifier.clickable { viewModel.changeIsRegisteringState(true)},
-                    color = if(state.isRegistering) MaterialTheme.colorScheme.secondary else Primary,
+                    Modifier
+                        //click without ripple
+                        .pointerInput(Unit) {
+                            detectTapGestures { viewModel.changeIsRegisteringState(true)
+                                viewModel.changeTextAlphaState(1.0f, 0.2f) }
+                        },
+                    color = Color.White.copy(alpha = textColor1),
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.width(10.dp))
@@ -95,8 +111,13 @@ fun LoginScreen(viewModel: LoginViewModel,
                 Spacer(modifier = Modifier.width(10.dp))
 
                 Text(text = "Log in",
-                    Modifier.clickable { viewModel.changeIsRegisteringState(false)},
-                    color = if(state.isRegistering) Primary else MaterialTheme.colorScheme.secondary,
+                    Modifier
+                        //click without ripple
+                        .pointerInput(Unit) {
+                            detectTapGestures { viewModel.changeIsRegisteringState(false)
+                                viewModel.changeTextAlphaState(0.2f, 1f)}
+                        },
+                    color = Color.White.copy(alpha = textColor2),
                     fontWeight = FontWeight.Bold
                 )
             }

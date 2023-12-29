@@ -27,6 +27,11 @@ class LoginViewModel: ViewModel(){
         changeIsLoadingState(false)
     }
 
+    fun changeTextAlphaState(registerAlpha: Float, loginAlpha: Float) {
+        loginState = loginState.copy(registerTextAlpha = registerAlpha, loginTextAlpha = loginAlpha)
+    }
+
+
     // Check if the user is already logged in and update the state accordingly
     private fun checkIfLogged(){
         if (auth.currentUser != null) {
