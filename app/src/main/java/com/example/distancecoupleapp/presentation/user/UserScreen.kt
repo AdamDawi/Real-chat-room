@@ -190,7 +190,7 @@ fun UserScreen(
                             )
                         }
                         Button(
-                            onClick = { viewModel.signOut(navigateToLoginScreen) },
+                            onClick = { viewModel.signOut(navigateToLoginScreen, popToSearchScreen) },
                             shape = RoundedCornerShape(10.dp),
                             modifier = Modifier
                                 .fillMaxWidth()

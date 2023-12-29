@@ -139,7 +139,7 @@ class CameraViewModel: ViewModel() {
     fun uploadBitmapToFirebaseStore(bitmap: Bitmap) {
         // converting bitmap to jpeg
         val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream)
         val byteArray = stream.toByteArray()
 
         // Firebase storage reference

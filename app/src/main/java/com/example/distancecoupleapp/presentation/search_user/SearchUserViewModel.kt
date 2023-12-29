@@ -26,14 +26,15 @@ class SearchUserViewModel: ViewModel() {
 
     init {
         viewModelScope.launch {
-            getLoggedUserName()
             getUsersFromDatabase()
+            getLoggedUserName()
         }
     }
 
     private fun getLoggedUserName() {
         if(auth.currentUser?.displayName!=null)
             searchUserState = searchUserState.copy(name = auth.currentUser?.displayName.toString())
+        else Log.e("get logged user name", "user is null")
     }
 
     fun changeSearchUserFieldState(newEmail: String){
@@ -82,6 +83,9 @@ class SearchUserViewModel: ViewModel() {
                     if (user != null && user.id!=auth.currentUser?.uid) {
                         //adding to list
                         userList.add(user)
+                    }
+                    else if(user != null && user.id==auth.currentUser?.uid){
+                        searchUserState = searchUserState.copy(name = user.username)
                     }
                 }
                 //checking if it is first time getting users list, filtered users list must load for the first time
