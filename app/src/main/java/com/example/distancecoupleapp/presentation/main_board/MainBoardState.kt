@@ -11,5 +11,7 @@ data class MainBoardState(
     //user which is connected with the currently logged in user
     var user2: User = User(),
     //returns which photo does expanded description
-    var descriptionExpandedList: ArrayList<Boolean> = ArrayList()
+    var descriptionExpandedList: ArrayList<Boolean> = ArrayList(),
+    var isLoadingUsers: Boolean = true,
+    var isLoadingPhotos: Boolean = true
 )

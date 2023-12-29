@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -62,7 +64,16 @@ fun MainBoardScreen(
                 }
 
             }
-        }else{
+        }else if(state.isLoadingUsers || state.isLoadingPhotos){
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .size(40.dp)
+                    .padding(3.dp)
+                    .align(Alignment.Center),
+                color = MaterialTheme.colorScheme.secondary
+            )
+        } else
+        {
             Text(text = "No posts to display",
                 modifier = Modifier.align(Alignment.Center),
                 color = Secondary,

@@ -83,11 +83,11 @@ fun LoginScreen(viewModel: LoginViewModel,
                 //animations for color
                 val textColor1 by animateFloatAsState(
                     targetValue = state.registerTextAlpha,
-                    animationSpec = tween(durationMillis = 400), label = ""
+                    animationSpec = tween(durationMillis = 300), label = ""
                 )
                 val textColor2 by animateFloatAsState(
                     targetValue = state.loginTextAlpha,
-                    animationSpec = tween(durationMillis = 400), label = ""
+                    animationSpec = tween(durationMillis = 300), label = ""
                 )
                 Text(
                     text = "Register",

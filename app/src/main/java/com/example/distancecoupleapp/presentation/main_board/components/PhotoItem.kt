@@ -65,7 +65,6 @@ fun PhotoItem(
                     .clip(CircleShape)
                 ){
                     //display circular progress indicator when image is loading or an error occurs
-
                         Image(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -78,7 +77,7 @@ fun PhotoItem(
                         if (painter.state is AsyncImagePainter.State.Loading) {
                             CircularProgressIndicator(
                                 modifier = Modifier
-                                    .size(30.dp)
+                                    .size(20.dp)
                                     .align(Alignment.Center),
                                 color = MaterialTheme.colorScheme.secondary
                             )

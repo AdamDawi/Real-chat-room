@@ -64,6 +64,8 @@ class MainBoardViewModel: ViewModel() {
                     }else{
                         mainBoardState = mainBoardState.copy(descriptionExpandedList = ArrayList(List(photoList.size){ false }))
                     }
+                    //when photos loaded
+                    mainBoardState = mainBoardState.copy(isLoadingPhotos = false)
 
                 }
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -108,6 +110,9 @@ class MainBoardViewModel: ViewModel() {
                     //only 2 users can be in userList
                     mainBoardState = mainBoardState.copy(user1 = userList[0])
                     mainBoardState = mainBoardState.copy(user2 = userList[1])
+
+                    //when users loaded
+                    mainBoardState = mainBoardState.copy(isLoadingUsers = false)
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
