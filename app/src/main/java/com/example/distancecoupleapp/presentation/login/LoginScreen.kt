@@ -1,7 +1,15 @@
 package com.example.distancecoupleapp.presentation.login
 
 import android.content.Context
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.End
+import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.Start
+import androidx.compose.animation.core.EaseIn
+import androidx.compose.animation.core.EaseOut
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,6 +29,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -34,15 +43,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.distancecoupleapp.presentation.login.components.LoginColumn
-import com.example.distancecoupleapp.presentation.login.components.RegisterColumn
 import com.example.distancecoupleapp.presentation.theme.Primary
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(viewModel: LoginViewModel,
                 context: Context,
@@ -139,38 +149,138 @@ fun LoginScreen(viewModel: LoginViewModel,
                             }
                         )
                     )
-                    if (state.isRegistering){
-                        RegisterColumn(viewModel = viewModel, state = state, context = context)
-                    }else{
-                        LoginColumn(viewModel = viewModel, state = state, context = context)
-                    }
-//                    AnimatedContent(targetState = state.isRegistering,
-//                        transitionSpec = {
-//                            slideInHorizontally(
-//                                initialOffsetX = {
-//                                    if(state.isRegistering) -it else it
-//                                }
-//                            ) with
-//                                    slideOutHorizontally(
-//                                        targetOffsetX = {
-//                                            if(state.isRegistering) it else -it
-//                                        }
-//                                    )
-//                        },
-//                        label = ""
-//                    ) {isVisible ->
-//                        if(isVisible){
-//                            RegisterColumn(viewModel = viewModel, state = state, context = context)
-//                        }else{
-//                            LoginColumn(viewModel = viewModel, state = state, context = context)
-//                        }
+//                    if (state.isRegistering){
+//                        RegisterColumn(viewModel = viewModel, state = state, context = context)
+//                    }else{
+//                        LoginColumn(viewModel = viewModel, state = state, context = context)
 //                    }
+                    Spacer(modifier = Modifier.height(12.dp))
+                    AnimatedContent(targetState = state.isRegistering,
+                        transitionSpec = {
+                            slideIntoContainer(
+                                animationSpec = tween(300, easing = EaseIn),
+                                towards = Start
+                            ).togetherWith(
+                                slideOutOfContainer(
+                                    animationSpec = tween(300, easing = EaseOut),
+                                    towards = End
+                                )
+                            )
+                        },
+                        label = ""
+                    ) {targetValue ->
+                        if(targetValue){
+
+                            OutlinedTextField(value = state.name,
+                                modifier = Modifier
+                                    .border(BorderStroke(0.dp, Color.Transparent))
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .background(MaterialTheme.colorScheme.primary)
+                                    .fillMaxWidth(),
+                                onValueChange ={
+                                    viewModel.changeNameState(it)
+                                },
+                                placeholder = { Text("Username") },
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    textColor = MaterialTheme.colorScheme.secondary,
+                                    cursorColor = MaterialTheme.colorScheme.secondary,
+                                    focusedBorderColor = Color.Transparent,
+                                    unfocusedBorderColor = Color.Transparent
+                                ),
+                                singleLine = true,
+                                keyboardOptions = KeyboardOptions(
+                                    capitalization = KeyboardCapitalization.Words,
+                                    imeAction = ImeAction.Go
+                                ),
+                                keyboardActions = KeyboardActions(
+                                    onGo = {
+                                        viewModel.createAccount(context) //navigate to next screen if sign in is success
+                                    }
+                                )
+                            )
+                        }
+                    }
+                    if(state.isRegistering) Spacer(modifier = Modifier.height(12.dp))
+
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .border(BorderStroke(0.dp, Color.Transparent))
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(MaterialTheme.colorScheme.primary)
+                            .fillMaxWidth(),
+                        value = state.password,
+                        onValueChange ={
+                            viewModel.changePasswordState(it)
+                        },
+                        visualTransformation = PasswordVisualTransformation(),
+                        placeholder = { Text("Password") },
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            textColor = MaterialTheme.colorScheme.secondary,
+                            cursorColor = MaterialTheme.colorScheme.secondary,
+                            focusedBorderColor = Color.Transparent,
+                            unfocusedBorderColor = Color.Transparent
+                        ),
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Password,
+                            imeAction = ImeAction.Go
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onGo = {
+                                viewModel.signIn(context) //navigate to next screen if sign in is success
+                            }
+                        )
+                    )
+
+                    AnimatedContent(targetState = state.isRegistering,
+                        transitionSpec = {
+                            slideInHorizontally(
+                                animationSpec = tween(300, easing = EaseIn),
+                                initialOffsetX = {
+                                    if (state.isRegistering) -it else it
+                                },
+                            ).togetherWith(
+                                slideOutHorizontally(
+                                    animationSpec = tween(300, easing = EaseOut),
+                                    targetOffsetX = {
+                                        if (state.isRegistering) it else -it
+                                    }
+                                )
+                            )
+                        },
+                        label = ""
+                    ) {targetValue ->
+                        if(targetValue){
+                            Button(
+                                modifier = Modifier
+                                    .padding(top = 50.dp)
+                                    .fillMaxWidth()
+                                    .height(52.dp),
+                                onClick = {
+                                    viewModel.createAccount(context)
+                                }
+                            ) {
+                                Text("Register",
+                                    color = MaterialTheme.colorScheme.secondary,
+                                    fontSize = 16.sp)
+                            }
+                        }else{
+                            Button(
+                                modifier = Modifier
+                                    .padding(top = 50.dp)
+                                    .fillMaxWidth()
+                                    .height(52.dp),
+                                onClick = {
+                                    viewModel.signIn(context) //navigate to next screen if sign in is success
+                                }) {
+                                Text("Log in",
+                                    color = MaterialTheme.colorScheme.secondary,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp)
+                            }
+                        }
+                    }
                 }
             }
-
-
     }
-
-
-
 }
