@@ -124,7 +124,8 @@ fun CameraScreen(viewModel: CameraViewModel,
                           },
                 modifier = Modifier
                     .size(90.dp)
-                    .padding(end = 20.dp)
+                    .padding(end = 20.dp),
+                enabled = !state.isTakingPhoto
             ) {
                 Icon(
                     imageVector = state.flashIcon,
@@ -140,7 +141,7 @@ fun CameraScreen(viewModel: CameraViewModel,
                 .border(7.dp, Color.White, CircleShape)
                 .size(90.dp)
                 .clip(CircleShape)
-                .clickable {
+                .clickable(enabled = !state.isTakingPhoto) {
                     viewModel.takePhoto(
                         controller = controller,
                         context
@@ -166,7 +167,8 @@ fun CameraScreen(viewModel: CameraViewModel,
                 modifier = Modifier
                     .size(90.dp)
                     .padding(start = 20.dp)
-                    .rotate(rotation)
+                    .rotate(rotation),
+                enabled = !state.isTakingPhoto
             ) {
                 Icon(
                     imageVector = Icons.Default.Cameraswitch,

@@ -102,6 +102,7 @@ class CameraViewModel: ViewModel() {
         controller: LifecycleCameraController,
         context: Context
     ) {
+        changeIsTakingPhotoState(true)
         controller.takePicture(
             ContextCompat.getMainExecutor(context),
             object : ImageCapture.OnImageCapturedCallback() {
@@ -131,9 +132,14 @@ class CameraViewModel: ViewModel() {
                 override fun onError(exception: ImageCaptureException) {
                     super.onError(exception)
                     Log.e("Taking photo with camera", "Couldn't take photo: ", exception)
+                    changeIsTakingPhotoState(false)
                 }
             }
         )
+    }
+
+    private fun changeIsTakingPhotoState(s: Boolean) {
+        cameraState = cameraState.copy(isTakingPhoto = s)
     }
 
     fun uploadBitmapToFirebaseStore(bitmap: Bitmap) {
@@ -159,9 +165,11 @@ class CameraViewModel: ViewModel() {
             imageRef.downloadUrl.addOnSuccessListener { uri ->
                 val imageUrl = uri.toString()
                 cameraState = cameraState.copy(isPhotoTaken = true, imageUrl = imageUrl)
+                changeIsTakingPhotoState(false)
             }
         }.addOnFailureListener { e ->
             Log.e("Uploading photo to firebase store", e.message?:"Failure")
+            changeIsTakingPhotoState(false)
         }
     }
 
