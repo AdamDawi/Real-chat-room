@@ -49,7 +49,8 @@ fun CommentsScreen(
                     .weight(10f)
             ) {
                 item { Spacer(modifier = Modifier.height(46.dp)) }
-                items(state.commentsList.size) {
+                items(state.commentsList.size
+                ) {
                     CommentItem(viewModel = viewModel, state = state, it)
                 }
             }

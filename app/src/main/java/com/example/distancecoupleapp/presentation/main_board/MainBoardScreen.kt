@@ -57,6 +57,8 @@ fun MainBoardScreen(
                 ) {
                     item { Spacer(modifier = Modifier.height(40.dp)) }
                     items(state.photoList.size,
+                        //increase lazy column efficiency
+                        key = {state.photoList[state.photoList.size-1-it].id}
                     ) { index->
                         //first index in photo item is the last from photo list
                         PhotoItem(viewModel = viewModel, state = state, state.photoList.size-1-index, roomId, navController)

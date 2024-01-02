@@ -111,10 +111,10 @@ fun SearchUserScreen(
                     .weight(10f)) {
                     items(
                         state.filteredUserList.size,
-//                        key = {
-//                            //increase scrolling efficiency
-//                            state.filteredUserList[it].id
-//                        }
+                        key = {
+                            //increase lazy column efficiency
+                            state.filteredUserList[it].id
+                        }
                         ){
                         UserItem(viewModel = viewModel, state = state, it, navController)
                     }
