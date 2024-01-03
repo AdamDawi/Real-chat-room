@@ -31,7 +31,7 @@ The app uses Firebase for authentication, image storage, real-time data storage 
 
 - **Coil:** Image loading from database storage.🖼️
 
-- **MVVM Architecture** Separate the project into layers, use view model functionalities.🔧
+- **MVVM Architecture:** Separate the project into layers, use view model functionalities.🔧
 
 ## Installation
 
@@ -45,8 +45,9 @@ git clone https://github.com/AdamDawi/Real-chat-room
 
 ## Here is some overview pictures:
 
-![333](https://github.com/AdamDawi/Real-chat-room/assets/49430055/8dcdcc97-e7f4-47d3-8b2f-eeaecf1099c5)
-![222](https://github.com/AdamDawi/Real-chat-room/assets/49430055/3ef4d553-3181-49e6-a0d3-2bdb33e9c1e2)
+![222](https://github.com/AdamDawi/Real-chat-room/assets/49430055/35888a19-a05d-4d3a-8ef1-fe7c16e6cf8e)
+![222](https://github.com/AdamDawi/Real-chat-room/assets/49430055/35888a19-a05d-4d3a-8ef1-fe7c16e6cf8e)
+![222](https://github.com/AdamDawi/Real-chat-room/assets/49430055/35888a19-a05d-4d3a-8ef1-fe7c16e6cf8e)
 ![444](https://github.com/AdamDawi/Real-chat-room/assets/49430055/fac08a71-d9c3-44b6-aa38-d1bc7822c1b9)
 ![999](https://github.com/AdamDawi/Real-chat-room/assets/49430055/166f6f88-179d-4551-970c-17224b3546dd)
 ![555](https://github.com/AdamDawi/Real-chat-room/assets/49430055/6df523de-0ebc-40e7-a498-f3b4f0730786)
