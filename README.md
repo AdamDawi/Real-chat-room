@@ -44,19 +44,16 @@ git clone https://github.com/AdamDawi/Real-chat-room
 4. Add the configuration file google-services.json to the project.
 
 ## Here is some overview pictures:
-![222](https://github.com/AdamDawi/Real-chat-room/assets/49430055/1a4d5f28-a218-4f30-b04a-f2101c3d09ff)
-![222](https://github.com/AdamDawi/Real-chat-room/assets/49430055/1a4d5f28-a218-4f30-b04a-f2101c3d09ff)
-![333](https://github.com/AdamDawi/Real-chat-room/assets/49430055/8dcdcc97-e7f4-47d3-8b2f-eeaecf1099c5)
-![222](https://github.com/AdamDawi/Real-chat-room/assets/49430055/3ef4d553-3181-49e6-a0d3-2bdb33e9c1e2)
-![444](https://github.com/AdamDawi/Real-chat-room/assets/49430055/fac08a71-d9c3-44b6-aa38-d1bc7822c1b9)
-![999](https://github.com/AdamDawi/Real-chat-room/assets/49430055/166f6f88-179d-4551-970c-17224b3546dd)
-![555](https://github.com/AdamDawi/Real-chat-room/assets/49430055/6df523de-0ebc-40e7-a498-f3b4f0730786)
-![666](https://github.com/AdamDawi/Real-chat-room/assets/49430055/4277cb2f-3e77-486b-8fb2-9829ce28de1b)
+![333](https://github.com/AdamDawi/Real-chat-room/assets/49430055/42538ef2-b72f-425b-bdea-b591d06f4062)
+![222](https://github.com/AdamDawi/Real-chat-room/assets/49430055/6e2925de-5bd9-4d25-aad5-99f5714d8424)
+![444](https://github.com/AdamDawi/Real-chat-room/assets/49430055/39b12fe2-d1f1-47a3-b8dc-f6785a44a1d1)
+![999](https://github.com/AdamDawi/Real-chat-room/assets/49430055/6500b1e0-4208-4cd8-808b-b4d730597715)
+![555](https://github.com/AdamDawi/Real-chat-room/assets/49430055/fc70e1d5-9388-4a3e-b7d5-3929fc71fc24)
+![666](https://github.com/AdamDawi/Real-chat-room/assets/49430055/abf1c0d8-df24-459b-8c68-18d69f6378d8)
 
 ## Pictures from cameraX:
-
-![777](https://github.com/AdamDawi/Real-chat-room/assets/49430055/d013ddc8-ea5c-401a-86ae-be51005952e4)
-![888](https://github.com/AdamDawi/Real-chat-room/assets/49430055/304dd579-1f1a-479a-87e4-b3f0aa498df7)
+![777](https://github.com/AdamDawi/Real-chat-room/assets/49430055/ef9bf37c-fc97-4459-845b-e023690bb981)
+![888](https://github.com/AdamDawi/Real-chat-room/assets/49430055/97bca917-7095-4ccf-9857-c4c65a693e26)
 
 ## Requirements
 Android 7.0 (API level 24) or later📱
