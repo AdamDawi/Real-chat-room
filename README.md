@@ -45,18 +45,17 @@ git clone https://github.com/AdamDawi/Real-chat-room
 
 ## Here is some overview pictures:
 
+![333](https://github.com/AdamDawi/Real-chat-room/assets/49430055/4491388b-bbc2-4489-b5de-f4a4cc9e4b76)
 ![222](https://github.com/AdamDawi/Real-chat-room/assets/49430055/35888a19-a05d-4d3a-8ef1-fe7c16e6cf8e)
-![222](https://github.com/AdamDawi/Real-chat-room/assets/49430055/35888a19-a05d-4d3a-8ef1-fe7c16e6cf8e)
-![222](https://github.com/AdamDawi/Real-chat-room/assets/49430055/35888a19-a05d-4d3a-8ef1-fe7c16e6cf8e)
-![444](https://github.com/AdamDawi/Real-chat-room/assets/49430055/fac08a71-d9c3-44b6-aa38-d1bc7822c1b9)
-![999](https://github.com/AdamDawi/Real-chat-room/assets/49430055/166f6f88-179d-4551-970c-17224b3546dd)
-![555](https://github.com/AdamDawi/Real-chat-room/assets/49430055/6df523de-0ebc-40e7-a498-f3b4f0730786)
-![666](https://github.com/AdamDawi/Real-chat-room/assets/49430055/4277cb2f-3e77-486b-8fb2-9829ce28de1b)
+![444](https://github.com/AdamDawi/Real-chat-room/assets/49430055/f0a73e66-4235-4986-b339-bc1efc73d28e)
+![999](https://github.com/AdamDawi/Real-chat-room/assets/49430055/582b4175-ba32-4d84-b062-961a1e98a182)
+![555](https://github.com/AdamDawi/Real-chat-room/assets/49430055/aac60ef0-e7d5-45bc-9021-f37d76a6590b)
+![666](https://github.com/AdamDawi/Real-chat-room/assets/49430055/b3f02ff2-1dbc-4830-a857-09510a39486b)
 
 ## Pictures from cameraX:
 
-![777](https://github.com/AdamDawi/Real-chat-room/assets/49430055/d013ddc8-ea5c-401a-86ae-be51005952e4)
-![888](https://github.com/AdamDawi/Real-chat-room/assets/49430055/304dd579-1f1a-479a-87e4-b3f0aa498df7)
+![777](https://github.com/AdamDawi/Real-chat-room/assets/49430055/956bf060-f075-49e2-a9ba-49967e2df333)
+![888](https://github.com/AdamDawi/Real-chat-room/assets/49430055/65ce5777-83df-4f14-9a4b-a5ffb5c883ec)
 
 ## Requirements
 Android 7.0 (API level 24) or later📱
