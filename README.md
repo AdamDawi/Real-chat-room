@@ -19,11 +19,11 @@ The app uses Firebase for authentication, image storage, real-time data storage 
 
 ## Technologies
 
-- **Jetpack Compose:** Used to build user interface, including animations, top app bars and personalized outlined text fields and so on.🎨
+- **Jetpack Compose:** Building user interface, including animations, top app bars and personalized outlined text fields et cetera.🎨
 
 - **Firebase Authentication:** Authentication system, allowing users to register and log in.🔐
 
-- **Firebase Storage:** Storage and retrieval of images in the app.📤📥
+- **Firebase Storage:** Storage and obtaining images in the app.📤📥
 
 - **Firebase Realtime Database:** Storage of comments, user information and posts.💾
 
@@ -31,7 +31,7 @@ The app uses Firebase for authentication, image storage, real-time data storage 
 
 - **Coil:** Image loading from database storage.🖼️
 
-- **MVVM Architecture:** Separate the project into layers, use view model functionalities.🔧
+- **MVVM Architecture:** Separating the project into layers, using view model functionalities.🔧
 
 ## Installation
 
@@ -43,7 +43,7 @@ git clone https://github.com/AdamDawi/Real-chat-room
 3. Configure the Firebase according to Firebase instructions.
 4. Add the configuration file google-services.json to the project.
 
-## Here is some overview pictures:
+## Here are some overview pictures:
 ![333](https://github.com/AdamDawi/Real-chat-room/assets/49430055/42538ef2-b72f-425b-bdea-b591d06f4062)
 ![222](https://github.com/AdamDawi/Real-chat-room/assets/49430055/6e2925de-5bd9-4d25-aad5-99f5714d8424)
 ![444](https://github.com/AdamDawi/Real-chat-room/assets/49430055/39b12fe2-d1f1-47a3-b8dc-f6785a44a1d1)
