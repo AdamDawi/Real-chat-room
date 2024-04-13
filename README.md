@@ -1,4 +1,4 @@
-# <img src="https://github.com/AdamDawi/Real-chat-room/assets/49430055/166f2194-3e3d-431d-8c75-047256b03d0e" width="60" height="60" align="center" /> Real Chat Room
+# <img src="https://github.com/AdamDawi/Real-chat-room/assets/49430055/cfaaac58-30b5-44cb-aab8-b2dd87ef42f9" width="60" height="60" align="center" /> Real Chat Room
 
 Real Chat Room is an innovative communication application that allows users to create an account, connect with other registered users, share posts with images, add comments and manage their user profile. 🚀
 The app uses Firebase for authentication, image storage, real-time data storage and more.
